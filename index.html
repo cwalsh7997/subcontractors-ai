@@ -110,13 +110,14 @@ img { max-width: 100%; }
 
 /* ============ NAVIGATION ============ */
 .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gray-200); }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: 1200px; margin: 0 auto; }
-.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy); }
-.nav-logo svg { width: 32px; height: 32px; }
-.nav-links { display: flex; align-items: center; gap: 4px; }
-.nav-link { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.2s; }
-.nav-link:hover, .nav-link.active { color: var(--blue); background: var(--blue-bg); }
-.nav-cta { display: flex; align-items: center; gap: 12px; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; max-width: 1200px; margin: 0 auto; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; color: var(--navy); white-space: nowrap; letter-spacing: -0.02em; }
+.nav-logo svg { width: 34px; height: 34px; flex-shrink: 0; }
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-link { padding: 8px 14px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.nav-link:hover { color: var(--navy); background: var(--gray-50); }
+.nav-link.active { color: var(--blue); font-weight: 600; }
+.nav-cta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
 .mobile-menu-btn svg { width: 24px; height: 24px; color: var(--gray-700); }
 
@@ -468,17 +469,16 @@ img { max-width: 100%; }
       Subcontractors<span style="color:var(--blue)">.ai</span>
     </a>
     <div class="nav-links">
-      <a class="nav-link active" href="index.html">Home</a>
       <a class="nav-link" href="find-subs.html">Find Subs</a>
-      <a class="nav-link" href="project-board.html">Project Board</a>
+      <a class="nav-link" href="project-board.html">Projects</a>
       <a class="nav-link" href="gc-ratings.html">GC Ratings</a>
       <a class="nav-link" href="ai-tools.html">AI Tools</a>
       <a class="nav-link" href="pricing.html">Pricing</a>
-      <a class="nav-link" href="post-project.html" style="color:#f59e0b;font-weight:600;">Post a Project</a>
     </div>
     <div class="nav-cta">
-      <button class="btn btn-secondary btn-sm" onclick="window.location.href='app/login.html'">Log In</button>
-      <button class="btn btn-primary btn-sm" onclick="window.location.href='app/signup.html'">Get Started Free</button>
+      <a href="post-project.html" class="btn btn-sm" style="background:var(--orange);color:var(--navy);font-weight:600;">Post a Project</a>
+      <a href="app/login.html" class="btn btn-secondary btn-sm">Log In</a>
+      <a href="app/signup.html" class="btn btn-primary btn-sm">Get Started Free</a>
     </div>
     <button class="mobile-menu-btn" onclick="toggleMobile()">
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
