@@ -150,8 +150,29 @@
             <!-- Users Tab -->
             <div class="tab-content active" id="tab-users">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
                         <div class="card-title">Registered Users</div>
+                        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                            <input type="text" id="user-search" placeholder="Search users..." oninput="filterUsers()" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;width:200px;">
+                            <select id="user-trade-filter" onchange="filterUsers()" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;background:#fff;">
+                                <option value="">All Trades</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Plumbing">Plumbing</option>
+                                <option value="HVAC">HVAC</option>
+                                <option value="Glass & Glazing">Glass & Glazing</option>
+                                <option value="Concrete">Concrete</option>
+                                <option value="Roofing">Roofing</option>
+                                <option value="Drywall">Drywall</option>
+                                <option value="Painting">Painting</option>
+                                <option value="Framing">Framing</option>
+                                <option value="Fire Protection">Fire Protection</option>
+                                <option value="Flooring">Flooring</option>
+                                <option value="Steel/Iron">Steel/Iron</option>
+                                <option value="Landscaping">Landscaping</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span id="user-count" style="font-size:12px;color:#64748b;"></span>
+                        </div>
                     </div>
                     <div class="table-wrap">
                         <table>
@@ -295,6 +316,46 @@
             document.getElementById('tab-' + tab).classList.add('active');
         }
 
+        // User search/filter
+        let allUserRows = [];
+
+        function cacheUserRows() {
+            const tbody = document.getElementById('users-body');
+            allUserRows = Array.from(tbody.querySelectorAll('tr'));
+        }
+
+        function filterUsers() {
+            if (allUserRows.length === 0) cacheUserRows();
+            const search = (document.getElementById('user-search').value || '').toLowerCase();
+            const trade = document.getElementById('user-trade-filter').value.toLowerCase();
+            let shown = 0;
+
+            allUserRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const cells = row.querySelectorAll('td');
+                const rowTrade = cells[2] ? cells[2].textContent.toLowerCase().trim() : '';
+
+                const matchSearch = !search || text.includes(search);
+                const matchTrade = !trade || rowTrade.includes(trade);
+
+                if (matchSearch && matchTrade) {
+                    row.style.display = '';
+                    shown++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            document.getElementById('user-count').textContent = shown + ' of ' + allUserRows.length + ' users';
+        }
+
+        // Cache rows after data loads
+        const origLoadReal = loadRealData;
+        loadRealData = async function() {
+            await origLoadReal();
+            setTimeout(cacheUserRows, 100);
+        };
+
         async function handleSignOut() {
             if (typeof signOut === 'function') await signOut();
             else window.location.href = 'login.html';
@@ -302,5 +363,6 @@
 
         init();
     </script>
+    <script src="toast.js"></script>
 </body>
 </html>

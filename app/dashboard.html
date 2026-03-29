@@ -397,6 +397,18 @@
             }
 
             container.innerHTML = alerts.map(a => '<div class="' + a.type + '"><div class="alert-title">' + a.title + '</div><div>' + a.text + '</div></div>').join('');
+
+            // Fire toast notifications for critical items
+            if (window.toast) {
+                const overdueCount = parseInt(document.getElementById('stat-overdue')?.textContent) || 0;
+                if (overdueCount > 0) {
+                    setTimeout(() => toast.warning('You have ' + overdueCount + ' overdue invoice' + (overdueCount > 1 ? 's' : '') + '. Follow up to get paid!'), 1500);
+                }
+                const hasExpiredInsurance = alerts.some(a => a.title.includes('Expired'));
+                if (hasExpiredInsurance) {
+                    setTimeout(() => toast.error('Insurance has expired — update your profile to stay compliant.'), 2500);
+                }
+            }
         }
 
         function loadDemoState() {
@@ -418,5 +430,6 @@
 
         initDashboard();
     </script>
+    <script src="toast.js"></script>
 </body>
 </html>

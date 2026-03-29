@@ -406,17 +406,20 @@
             };
 
             if (!data.amount || !data.project) {
-                showToast('Please enter an amount and project name.');
+                if (window.toast) toast.warning('Please enter an amount and project name.');
+                else showToast('Please enter an amount and project name.');
                 return;
             }
 
             const editId = document.getElementById('edit-id').value;
             if (editId) {
                 await updatePayment(editId, data);
-                showToast('Invoice updated!');
+                if (window.toast) toast.success('Invoice updated!');
+                else showToast('Invoice updated!');
             } else {
                 await addPayment(data);
-                showToast('Invoice added!');
+                if (window.toast) toast.success('Invoice added!');
+                else showToast('Invoice added!');
             }
 
             closeModal();
@@ -442,5 +445,6 @@
 
         init();
     </script>
+    <script src="toast.js"></script>
 </body>
 </html>

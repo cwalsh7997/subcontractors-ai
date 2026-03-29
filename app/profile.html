@@ -242,6 +242,47 @@
                 </div>
             </div>
 
+            <!-- Documents Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Documents & Certificates</div>
+                        <div class="card-subtitle">Upload insurance certificates, W-9, and licenses for GC verification</div>
+                    </div>
+                </div>
+                <div class="doc-upload-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="doc-upload-card" id="doc-gl" style="border:2px dashed #d1d5db;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('file-gl').click()">
+                        <div style="font-size:28px;margin-bottom:8px;">&#x1f4c4;</div>
+                        <div style="font-weight:600;font-size:14px;color:#1e293b;">GL Certificate</div>
+                        <div style="font-size:12px;color:#64748b;margin-top:4px;" id="doc-gl-status">No file uploaded</div>
+                        <input type="file" id="file-gl" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="handleDocUpload('gl', this)">
+                    </div>
+                    <div class="doc-upload-card" id="doc-wc" style="border:2px dashed #d1d5db;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('file-wc').click()">
+                        <div style="font-size:28px;margin-bottom:8px;">&#x1f4c4;</div>
+                        <div style="font-weight:600;font-size:14px;color:#1e293b;">Workers Comp Certificate</div>
+                        <div style="font-size:12px;color:#64748b;margin-top:4px;" id="doc-wc-status">No file uploaded</div>
+                        <input type="file" id="file-wc" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="handleDocUpload('wc', this)">
+                    </div>
+                    <div class="doc-upload-card" id="doc-w9" style="border:2px dashed #d1d5db;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('file-w9').click()">
+                        <div style="font-size:28px;margin-bottom:8px;">&#x1f4c4;</div>
+                        <div style="font-weight:600;font-size:14px;color:#1e293b;">W-9 Form</div>
+                        <div style="font-size:12px;color:#64748b;margin-top:4px;" id="doc-w9-status">No file uploaded</div>
+                        <input type="file" id="file-w9" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="handleDocUpload('w9', this)">
+                    </div>
+                    <div class="doc-upload-card" id="doc-license" style="border:2px dashed #d1d5db;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('file-license').click()">
+                        <div style="font-size:28px;margin-bottom:8px;">&#x1f4c4;</div>
+                        <div style="font-weight:600;font-size:14px;color:#1e293b;">Business License</div>
+                        <div style="font-size:12px;color:#64748b;margin-top:4px;" id="doc-license-status">No file uploaded</div>
+                        <input type="file" id="file-license" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="handleDocUpload('license', this)">
+                    </div>
+                </div>
+                <div id="doc-list" style="margin-top:16px;"></div>
+                <style>
+                    .doc-upload-card:hover { border-color: #2563eb !important; background: #eff6ff; }
+                    .doc-upload-card.uploaded { border-color: #16a34a !important; border-style: solid !important; background: #f0fdf4; }
+                </style>
+            </div>
+
             <!-- Account Settings Card -->
             <div class="card">
                 <div class="card-header">
@@ -374,9 +415,9 @@
                 const email = document.getElementById('field-email').value;
                 updateProfileHeader(currentProfile, meta, email);
                 updateStats(currentProfile);
-                showToast('Profile saved successfully!');
+                if (window.toast) toast.success('Profile saved successfully!'); else showToast('Profile saved successfully!');
             } else {
-                showToast('Error saving profile. Please try again.');
+                if (window.toast) toast.error('Error saving profile. Please try again.'); else showToast('Error saving profile. Please try again.');
             }
         }
 
@@ -384,7 +425,7 @@
             const meta = {};
             const email = document.getElementById('field-email').value;
             populateForm(currentProfile, meta, email);
-            showToast('Changes discarded.');
+            if (window.toast) toast.info('Changes discarded.'); else showToast('Changes discarded.');
         }
 
         function showToast(msg) {
@@ -399,7 +440,117 @@
             else window.location.href = 'login.html';
         }
 
+        // Document Upload
+        const uploadedDocs = {};
+
+        async function handleDocUpload(type, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                if (window.toast) toast.error('File too large. Max 5MB.');
+                return;
+            }
+
+            const statusEl = document.getElementById('doc-' + type + '-status');
+            const cardEl = document.getElementById('doc-' + type);
+            statusEl.textContent = 'Uploading...';
+
+            try {
+                // Try Supabase Storage
+                const url = window.SUPABASE_URL;
+                const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+                let sbUpload = null;
+                if (url && key && window.supabase && window.supabase.createClient) {
+                    sbUpload = window.supabase.createClient(url, key);
+                }
+
+                if (sbUpload && currentUser && currentUser.id) {
+                    const ext = file.name.split('.').pop();
+                    const path = currentUser.id + '/' + type + '.' + ext;
+
+                    const { data, error } = await sbUpload.storage
+                        .from('documents')
+                        .upload(path, file, { upsert: true });
+
+                    if (error) {
+                        // Storage bucket may not exist yet — fall back to local
+                        console.warn('Storage upload failed (bucket may not exist):', error.message);
+                        handleLocalUpload(type, file, statusEl, cardEl);
+                        return;
+                    }
+
+                    uploadedDocs[type] = { name: file.name, path: path, size: file.size, uploaded: new Date().toISOString() };
+                    statusEl.innerHTML = '&#x2705; ' + file.name + ' <span style="color:#64748b;">(' + formatSize(file.size) + ')</span>';
+                    cardEl.classList.add('uploaded');
+                    if (window.toast) toast.success(getDocLabel(type) + ' uploaded!');
+                } else {
+                    handleLocalUpload(type, file, statusEl, cardEl);
+                }
+            } catch (e) {
+                console.error('Upload error:', e);
+                handleLocalUpload(type, file, statusEl, cardEl);
+            }
+
+            // Reset input so same file can be re-uploaded
+            input.value = '';
+            updateDocList();
+        }
+
+        function handleLocalUpload(type, file, statusEl, cardEl) {
+            // Store file info locally (actual file stays in browser memory)
+            uploadedDocs[type] = { name: file.name, size: file.size, uploaded: new Date().toISOString(), local: true };
+            statusEl.innerHTML = '&#x2705; ' + file.name + ' <span style="color:#64748b;">(' + formatSize(file.size) + ')</span>';
+            cardEl.classList.add('uploaded');
+            if (window.toast) toast.success(getDocLabel(type) + ' saved locally.');
+
+            // Store reference in localStorage
+            const stored = JSON.parse(localStorage.getItem('uploaded_docs') || '{}');
+            stored[type] = uploadedDocs[type];
+            localStorage.setItem('uploaded_docs', JSON.stringify(stored));
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        function getDocLabel(type) {
+            const labels = { gl: 'GL Certificate', wc: 'Workers Comp Certificate', w9: 'W-9 Form', license: 'Business License' };
+            return labels[type] || type;
+        }
+
+        function updateDocList() {
+            const list = document.getElementById('doc-list');
+            const docs = Object.entries(uploadedDocs);
+            if (docs.length === 0) { list.innerHTML = ''; return; }
+            list.innerHTML = '<div style="font-size:13px;color:#64748b;margin-top:8px;">' + docs.length + ' document' + (docs.length > 1 ? 's' : '') + ' uploaded</div>';
+        }
+
+        // Load previously uploaded doc references
+        function loadSavedDocs() {
+            try {
+                const stored = JSON.parse(localStorage.getItem('uploaded_docs') || '{}');
+                Object.entries(stored).forEach(([type, doc]) => {
+                    uploadedDocs[type] = doc;
+                    const statusEl = document.getElementById('doc-' + type + '-status');
+                    const cardEl = document.getElementById('doc-' + type);
+                    if (statusEl && cardEl) {
+                        statusEl.innerHTML = '&#x2705; ' + doc.name + ' <span style="color:#64748b;">(' + formatSize(doc.size) + ')</span>';
+                        cardEl.classList.add('uploaded');
+                    }
+                });
+                updateDocList();
+            } catch (e) {}
+        }
+
+        // Call after init
+        setTimeout(loadSavedDocs, 500);
+
         init();
     </script>
+    <script src="toast.js"></script>
 </body>
 </html>
