@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Orders - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .sign-out-btn:hover { background-color: #7f1d1d; border-color: #dc2626; color: #fca5a5; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; overflow-y: auto; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+        .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: #fff; border-radius: 12px; padding: 16px 20px; border: 1px solid #e2e8f0; border-top: 3px solid #e2e8f0; }
+        .stat-card.green { border-top-color: #16a34a; }
+        .stat-card.blue { border-top-color: #2563eb; }
+        .stat-card.orange { border-top-color: #f59e0b; }
+        .stat-card.red { border-top-color: #dc2626; }
+        .stat-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-value { font-size: 24px; font-weight: 800; margin-top: 4px; }
+        .stat-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        tbody td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+        tbody tr:hover { background: #f8fafc; }
+        .badge { padding: 3px 10px; border-radius: 16px; font-size: 11px; font-weight: 600; }
+        .badge-approved { background: #dcfce7; color: #16a34a; }
+        .badge-pending { background: #fef3c7; color: #d97706; }
+        .badge-rejected { background: #fee2e2; color: #dc2626; }
+        .badge-draft { background: #f1f5f9; color: #64748b; }
+        .badge-submitted { background: #dbeafe; color: #2563eb; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+        .modal.open { display: flex; }
+        .modal-content { background: #fff; border-radius: 12px; padding: 32px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+        .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .modal-subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; }
+        .form-textarea { min-height: 80px; resize: vertical; }
+        .btn-group { display: flex; gap: 8px; margin-top: 20px; }
+
+        .empty-state { text-align: center; padding: 48px 24px; }
+        .empty-state h3 { font-size: 16px; color: #334155; margin-bottom: 8px; }
+        .empty-state p { font-size: 13px; color: #64748b; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+            .stat-cards { grid-template-columns: 1fr 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail"></span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link">&#x1f4dd; Bid Assistant</a></li>
+                <li class="nav-item"><a href="compliance.html" class="nav-link">&#x1f6e1; Compliance</a></li>
+                <li class="nav-item"><a href="aia-pay-app.html" class="nav-link">&#x1f4c4; AIA Pay App</a></li>
+                <li class="nav-item"><a href="lien-waivers.html" class="nav-link">&#x1f4dc; Lien Waivers</a></li>
+                <li class="nav-item"><a href="change-orders.html" class="nav-link active">&#x1f504; Change Orders</a></li>
+                <li class="nav-item"><a href="projects.html" class="nav-link">&#x1f4cb; Project Board</a></li>
+                <li class="nav-item"><a href="../ai-tools.html" class="nav-link">&#x1f916; AI Tools</a></li>
+                <li class="nav-item"><a href="../gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
+                <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div>
+                    <div class="page-title">Change Orders</div>
+                    <div class="page-subtitle">Track COs, PCOs, and scope changes across all projects</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-outline" onclick="exportCOPdf()">&#x1f4c4; Export Log PDF</button>
+                    <button class="btn btn-primary" onclick="openModal()">+ New Change Order</button>
+                </div>
+            </div>
+
+            <div class="stat-cards">
+                <div class="stat-card blue">
+                    <div class="stat-label">Total COs</div>
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-sub">all change orders</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-label">Approved Value</div>
+                    <div class="stat-value" id="stat-approved" style="color:#16a34a;">$0</div>
+                    <div class="stat-sub" id="stat-approved-sub">0 approved</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-label">Pending Value</div>
+                    <div class="stat-value" id="stat-pending" style="color:#d97706;">$0</div>
+                    <div class="stat-sub" id="stat-pending-sub">0 pending</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-label">Net Change</div>
+                    <div class="stat-value" id="stat-net">$0</div>
+                    <div class="stat-sub">to original contract</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CO #</th>
+                            <th>Project</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date Submitted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="co-body"></tbody>
+                </table>
+                <div class="empty-state" id="empty-state" style="display:none;">
+                    <h3>No change orders yet</h3>
+                    <p>Click "+ New Change Order" to create your first CO.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="co-modal">
+        <div class="modal-content">
+            <div class="modal-title" id="modal-title">New Change Order</div>
+            <div class="modal-subtitle">Document scope changes and cost impacts</div>
+            <input type="hidden" id="edit-id">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">CO Number</label>
+                    <input type="text" class="form-input" id="m-number" placeholder="e.g. PCO-001">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Project</label>
+                    <input type="text" class="form-input" id="m-project" placeholder="Project name">
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="m-description" placeholder="Describe the scope change, reason, and impact"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount ($)</label>
+                    <input type="number" class="form-input" id="m-amount" placeholder="0.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="m-status">
+                        <option value="draft">Draft</option>
+                        <option value="submitted">Submitted to GC</option>
+                        <option value="pending">Pending Approval</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date Submitted</label>
+                    <input type="date" class="form-input" id="m-date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Requested By</label>
+                    <input type="text" class="form-input" id="m-requested-by" placeholder="GC, Owner, Architect, etc.">
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Notes</label>
+                    <input type="text" class="form-input" id="m-notes" placeholder="Internal notes">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveCO()">Save Change Order</button>
+                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let sbClient = null;
+        let currentUser = null;
+        let changeOrders = [];
+
+        async function init() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sbClient = window.supabase.createClient(url, key);
+            }
+            if (sbClient) {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                currentUser = session.user;
+            } else {
+                const demo = JSON.parse(localStorage.getItem('sb-demo-user') || 'null');
+                if (!demo) { window.location.href = 'login.html'; return; }
+                currentUser = demo;
+            }
+            const meta = currentUser.user_metadata || {};
+            document.getElementById('sidebar-name').textContent = meta.company_name || currentUser.email;
+            document.getElementById('sidebar-detail').textContent = meta.trade || '';
+            if (['connor@acglass.com'].includes(currentUser.email)) document.getElementById('admin-link').style.display = '';
+
+            loadCOs();
+            renderCOs();
+        }
+
+        function loadCOs() {
+            try {
+                changeOrders = JSON.parse(localStorage.getItem('change_orders') || '[]');
+            } catch (e) { changeOrders = []; }
+        }
+
+        function saveCOsToStorage() {
+            localStorage.setItem('change_orders', JSON.stringify(changeOrders));
+        }
+
+        function renderCOs() {
+            const tbody = document.getElementById('co-body');
+            const empty = document.getElementById('empty-state');
+
+            if (changeOrders.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = '';
+                updateStats();
+                return;
+            }
+
+            empty.style.display = 'none';
+            const sorted = [...changeOrders].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+            tbody.innerHTML = sorted.map(co => {
+                const amt = parseFloat(co.amount) || 0;
+                const badgeClass = 'badge-' + (co.status || 'draft');
+                const statusLabel = (co.status || 'Draft').charAt(0).toUpperCase() + (co.status || 'draft').slice(1);
+                const dateStr = co.date ? new Date(co.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+                return '<tr>' +
+                    '<td><strong>' + (co.number || '—') + '</strong></td>' +
+                    '<td>' + (co.project || '—') + '</td>' +
+                    '<td style="max-width:200px;">' + (co.description || '—') + '</td>' +
+                    '<td style="font-weight:600;' + (amt >= 0 ? 'color:#16a34a;' : 'color:#dc2626;') + '">' + fmtCurrency(amt) + '</td>' +
+                    '<td><span class="badge ' + badgeClass + '">' + statusLabel + '</span></td>' +
+                    '<td>' + dateStr + '</td>' +
+                    '<td><button class="btn btn-outline btn-sm" onclick="editCO(\'' + co.id + '\')">Edit</button> <button class="btn btn-sm" style="color:#dc2626;background:none;border:none;padding:6px;" onclick="deleteCO(\'' + co.id + '\')">&#x1f5d1;</button></td>' +
+                '</tr>';
+            }).join('');
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = changeOrders.length;
+            let approvedVal = 0, approvedCount = 0, pendingVal = 0, pendingCount = 0, netChange = 0;
+            changeOrders.forEach(co => {
+                const amt = parseFloat(co.amount) || 0;
+                if (co.status === 'approved') { approvedVal += amt; approvedCount++; netChange += amt; }
+                else if (co.status === 'pending' || co.status === 'submitted') { pendingVal += amt; pendingCount++; }
+            });
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-approved').textContent = fmtCurrency(approvedVal);
+            document.getElementById('stat-approved-sub').textContent = approvedCount + ' approved';
+            document.getElementById('stat-pending').textContent = fmtCurrency(pendingVal);
+            document.getElementById('stat-pending-sub').textContent = pendingCount + ' pending';
+            document.getElementById('stat-net').textContent = fmtCurrency(netChange);
+            document.getElementById('stat-net').style.color = netChange >= 0 ? '#16a34a' : '#dc2626';
+        }
+
+        function fmtCurrency(n) {
+            const abs = Math.abs(n);
+            const formatted = '$' + abs.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            return n < 0 ? '-' + formatted : formatted;
+        }
+
+        function openModal(id) {
+            document.getElementById('co-modal').classList.add('open');
+            if (!id) {
+                document.getElementById('modal-title').textContent = 'New Change Order';
+                document.getElementById('edit-id').value = '';
+                document.getElementById('m-number').value = 'CO-' + String(changeOrders.length + 1).padStart(3, '0');
+                document.getElementById('m-project').value = '';
+                document.getElementById('m-description').value = '';
+                document.getElementById('m-amount').value = '';
+                document.getElementById('m-status').value = 'draft';
+                document.getElementById('m-date').value = new Date().toISOString().slice(0, 10);
+                document.getElementById('m-requested-by').value = '';
+                document.getElementById('m-notes').value = '';
+            }
+        }
+
+        function closeModal() { document.getElementById('co-modal').classList.remove('open'); }
+
+        function editCO(id) {
+            const co = changeOrders.find(c => c.id === id);
+            if (!co) return;
+            openModal(id);
+            document.getElementById('modal-title').textContent = 'Edit Change Order';
+            document.getElementById('edit-id').value = id;
+            document.getElementById('m-number').value = co.number || '';
+            document.getElementById('m-project').value = co.project || '';
+            document.getElementById('m-description').value = co.description || '';
+            document.getElementById('m-amount').value = co.amount || '';
+            document.getElementById('m-status').value = co.status || 'draft';
+            document.getElementById('m-date').value = co.date || '';
+            document.getElementById('m-requested-by').value = co.requestedBy || '';
+            document.getElementById('m-notes').value = co.notes || '';
+        }
+
+        function saveCO() {
+            const data = {
+                number: document.getElementById('m-number').value,
+                project: document.getElementById('m-project').value,
+                description: document.getElementById('m-description').value,
+                amount: document.getElementById('m-amount').value,
+                status: document.getElementById('m-status').value,
+                date: document.getElementById('m-date').value,
+                requestedBy: document.getElementById('m-requested-by').value,
+                notes: document.getElementById('m-notes').value
+            };
+
+            if (!data.project || !data.description) {
+                if (window.toast) toast.warning('Please enter a project name and description.');
+                return;
+            }
+
+            const editId = document.getElementById('edit-id').value;
+            if (editId) {
+                const idx = changeOrders.findIndex(c => c.id === editId);
+                if (idx >= 0) { changeOrders[idx] = { ...changeOrders[idx], ...data }; }
+                if (window.toast) toast.success('Change order updated!');
+            } else {
+                data.id = 'co_' + Date.now();
+                data.created = new Date().toISOString();
+                changeOrders.push(data);
+                if (window.toast) toast.success('Change order created!');
+            }
+
+            saveCOsToStorage();
+            closeModal();
+            renderCOs();
+        }
+
+        function deleteCO(id) {
+            if (!confirm('Delete this change order?')) return;
+            changeOrders = changeOrders.filter(c => c.id !== id);
+            saveCOsToStorage();
+            renderCOs();
+            if (window.toast) toast.info('Change order deleted.');
+        }
+
+        function exportCOPdf() {
+            if (changeOrders.length === 0) {
+                if (window.toast) toast.warning('No change orders to export.');
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' });
+            const W = doc.internal.pageSize.getWidth();
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text('CHANGE ORDER LOG', W / 2, 40, { align: 'center' });
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.text('Generated: ' + new Date().toLocaleDateString(), W / 2, 54, { align: 'center' });
+
+            const tableData = changeOrders.map(co => [
+                co.number || '',
+                co.project || '',
+                (co.description || '').slice(0, 60),
+                '$' + (parseFloat(co.amount) || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }),
+                (co.status || 'draft').charAt(0).toUpperCase() + (co.status || 'draft').slice(1),
+                co.date || '',
+                co.requestedBy || ''
+            ]);
+
+            doc.autoTable({
+                head: [['CO #', 'Project', 'Description', 'Amount', 'Status', 'Date', 'Requested By']],
+                body: tableData,
+                startY: 68,
+                styles: { fontSize: 8, cellPadding: 5 },
+                headStyles: { fillColor: [15, 23, 41], textColor: [255, 255, 255] }
+            });
+
+            doc.setFontSize(6);
+            doc.setTextColor(150);
+            doc.text('Generated by Subcontractors.ai', W / 2, doc.internal.pageSize.getHeight() - 20, { align: 'center' });
+
+            doc.save('Change-Order-Log-' + new Date().toISOString().slice(0, 10) + '.pdf');
+            if (window.toast) toast.success('Change order log exported!');
+        }
+
+        document.getElementById('co-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+        async function handleSignOut() {
+            if (sbClient) await sbClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+    <script src="toast.js"></script>
+</body>
+</html>

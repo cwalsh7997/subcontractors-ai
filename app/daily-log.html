@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Field Log - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .sign-out-btn:hover { background-color: #7f1d1d; border-color: #dc2626; color: #fca5a5; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; overflow-y: auto; max-width: 900px; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; }
+        .form-textarea { min-height: 80px; resize: vertical; }
+
+        .weather-icons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .weather-btn { padding: 8px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; font-size: 13px; transition: all 0.2s; display: flex; align-items: center; gap: 4px; }
+        .weather-btn:hover { border-color: #93c5fd; }
+        .weather-btn.selected { border-color: #2563eb; background: #eff6ff; }
+
+        /* Crew table */
+        .crew-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .crew-table th { padding: 8px; text-align: left; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; }
+        .crew-table td { padding: 6px 8px; }
+        .crew-table input { width: 100%; padding: 6px 8px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px; font-family: inherit; }
+        .crew-table input:focus { outline: none; border-color: #2563eb; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: #16a34a; color: #fff; }
+        .btn-success:hover { background: #15803d; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-group { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+        .remove-btn { background: none; border: none; color: #dc2626; cursor: pointer; font-size: 16px; }
+
+        /* Log history */
+        .log-entry { padding: 16px; border-bottom: 1px solid #f1f5f9; }
+        .log-entry:last-child { border-bottom: none; }
+        .log-date { font-size: 14px; font-weight: 700; color: #0f1729; }
+        .log-project { font-size: 12px; color: #2563eb; font-weight: 600; }
+        .log-summary { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .log-meta { font-size: 11px; color: #94a3b8; margin-top: 4px; display: flex; gap: 16px; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+            .form-grid, .form-grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail"></span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link">&#x1f4dd; Bid Assistant</a></li>
+                <li class="nav-item"><a href="compliance.html" class="nav-link">&#x1f6e1; Compliance</a></li>
+                <li class="nav-item"><a href="aia-pay-app.html" class="nav-link">&#x1f4c4; AIA Pay App</a></li>
+                <li class="nav-item"><a href="lien-waivers.html" class="nav-link">&#x1f4dc; Lien Waivers</a></li>
+                <li class="nav-item"><a href="change-orders.html" class="nav-link">&#x1f504; Change Orders</a></li>
+                <li class="nav-item"><a href="daily-log.html" class="nav-link active">&#x1f4d3; Daily Log</a></li>
+                <li class="nav-item"><a href="projects.html" class="nav-link">&#x1f4cb; Project Board</a></li>
+                <li class="nav-item"><a href="../ai-tools.html" class="nav-link">&#x1f916; AI Tools</a></li>
+                <li class="nav-item"><a href="../gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
+                <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div>
+                    <div class="page-title">Daily Field Log</div>
+                    <div class="page-subtitle">Document daily activity, crew, weather, and work completed</div>
+                </div>
+            </div>
+
+            <!-- Today's Log -->
+            <div class="card">
+                <div class="card-title">Today's Report — <span id="today-date"></span></div>
+                <div class="card-subtitle">Fill in before end of day</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="log-date">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project</label>
+                        <input type="text" class="form-input" id="log-project" placeholder="Project name">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather -->
+            <div class="card">
+                <div class="card-title">Weather Conditions</div>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label class="form-label">Weather</label>
+                        <div class="weather-icons" id="weather-select">
+                            <button class="weather-btn" onclick="selectWeather(this, 'sunny')">&#x2600;&#xfe0f; Sunny</button>
+                            <button class="weather-btn" onclick="selectWeather(this, 'cloudy')">&#x2601;&#xfe0f; Cloudy</button>
+                            <button class="weather-btn" onclick="selectWeather(this, 'rain')">&#x1f327;&#xfe0f; Rain</button>
+                            <button class="weather-btn" onclick="selectWeather(this, 'storm')">&#x26c8;&#xfe0f; Storm</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Temperature (High)</label>
+                        <input type="text" class="form-input" id="log-temp" placeholder="e.g. 85°F">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Wind</label>
+                        <input type="text" class="form-input" id="log-wind" placeholder="e.g. 15 mph SW">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crew -->
+            <div class="card">
+                <div class="card-title">Crew on Site</div>
+                <div class="card-subtitle">Track labor hours for billing and documentation</div>
+                <table class="crew-table" id="crew-table">
+                    <thead>
+                        <tr>
+                            <th style="width:30%;">Name / Role</th>
+                            <th style="width:15%;">Start</th>
+                            <th style="width:15%;">End</th>
+                            <th style="width:15%;">Hours</th>
+                            <th style="width:20%;">Notes</th>
+                            <th style="width:5%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="crew-body"></tbody>
+                </table>
+                <button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="addCrewRow()">+ Add Crew Member</button>
+            </div>
+
+            <!-- Work Performed -->
+            <div class="card">
+                <div class="card-title">Work Performed</div>
+                <div class="form-group full">
+                    <label class="form-label">Description of Work Completed Today</label>
+                    <textarea class="form-textarea" id="log-work" placeholder="Detail what was accomplished, areas worked, materials installed, etc." style="min-height:120px;"></textarea>
+                </div>
+                <div class="form-grid" style="margin-top:16px;">
+                    <div class="form-group">
+                        <label class="form-label">Materials Received</label>
+                        <textarea class="form-textarea" id="log-materials" placeholder="List materials delivered or used today" style="min-height:60px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Equipment on Site</label>
+                        <textarea class="form-textarea" id="log-equipment" placeholder="Lifts, cranes, tools, etc." style="min-height:60px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Issues / Safety -->
+            <div class="card">
+                <div class="card-title">Issues, Delays & Safety</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Delays / Issues</label>
+                        <textarea class="form-textarea" id="log-delays" placeholder="Weather delays, material shortages, coordination issues, etc."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Safety Observations</label>
+                        <textarea class="form-textarea" id="log-safety" placeholder="Safety incidents, near misses, toolbox talks, etc."></textarea>
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Visitors / Inspections</label>
+                        <input type="text" class="form-input" id="log-visitors" placeholder="Inspector visits, owner visits, etc.">
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group" style="margin-bottom:32px;">
+                <button class="btn btn-success" onclick="saveLog()">&#x1f4be; Save Daily Log</button>
+                <button class="btn btn-primary" onclick="exportLogPdf()">&#x1f4c4; Export PDF</button>
+                <button class="btn btn-outline" onclick="clearLog()">Clear</button>
+            </div>
+
+            <!-- Log History -->
+            <div class="card">
+                <div class="card-title">Previous Logs</div>
+                <div class="card-subtitle">Your saved daily reports</div>
+                <div id="log-history"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let sbClient = null;
+        let currentUser = null;
+        let selectedWeather = '';
+        let logs = [];
+
+        async function init() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sbClient = window.supabase.createClient(url, key);
+            }
+            if (sbClient) {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                currentUser = session.user;
+            } else {
+                const demo = JSON.parse(localStorage.getItem('sb-demo-user') || 'null');
+                if (!demo) { window.location.href = 'login.html'; return; }
+                currentUser = demo;
+            }
+            const meta = currentUser.user_metadata || {};
+            document.getElementById('sidebar-name').textContent = meta.company_name || currentUser.email;
+            document.getElementById('sidebar-detail').textContent = meta.trade || '';
+            if (['connor@acglass.com'].includes(currentUser.email)) document.getElementById('admin-link').style.display = '';
+
+            const today = new Date();
+            document.getElementById('log-date').value = today.toISOString().slice(0, 10);
+            document.getElementById('today-date').textContent = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+            addCrewRow(); addCrewRow(); addCrewRow();
+            loadLogs();
+            renderHistory();
+        }
+
+        function selectWeather(btn, type) {
+            document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedWeather = type;
+        }
+
+        function addCrewRow() {
+            const tbody = document.getElementById('crew-body');
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td><input type="text" placeholder="Name / Role"></td><td><input type="time" value="07:00"></td><td><input type="time" value="15:30"></td><td><input type="number" step="0.5" value="8"></td><td><input type="text" placeholder="Notes"></td><td><button class="remove-btn" onclick="this.closest(\'tr\').remove()">&times;</button></td>';
+            tbody.appendChild(tr);
+        }
+
+        function gatherLogData() {
+            const crew = [];
+            document.querySelectorAll('#crew-body tr').forEach(tr => {
+                const inputs = tr.querySelectorAll('input');
+                if (inputs[0].value) {
+                    crew.push({ name: inputs[0].value, start: inputs[1].value, end: inputs[2].value, hours: inputs[3].value, notes: inputs[4].value });
+                }
+            });
+            return {
+                id: 'log_' + Date.now(),
+                date: document.getElementById('log-date').value,
+                project: document.getElementById('log-project').value,
+                weather: selectedWeather,
+                temp: document.getElementById('log-temp').value,
+                wind: document.getElementById('log-wind').value,
+                crew: crew,
+                totalHours: crew.reduce((sum, c) => sum + (parseFloat(c.hours) || 0), 0),
+                work: document.getElementById('log-work').value,
+                materials: document.getElementById('log-materials').value,
+                equipment: document.getElementById('log-equipment').value,
+                delays: document.getElementById('log-delays').value,
+                safety: document.getElementById('log-safety').value,
+                visitors: document.getElementById('log-visitors').value,
+                saved: new Date().toISOString()
+            };
+        }
+
+        function saveLog() {
+            const data = gatherLogData();
+            if (!data.project) { if (window.toast) toast.warning('Enter a project name.'); return; }
+            logs.push(data);
+            localStorage.setItem('daily_logs', JSON.stringify(logs));
+            renderHistory();
+            if (window.toast) toast.success('Daily log saved!');
+        }
+
+        function loadLogs() {
+            try { logs = JSON.parse(localStorage.getItem('daily_logs') || '[]'); } catch (e) { logs = []; }
+        }
+
+        function renderHistory() {
+            const el = document.getElementById('log-history');
+            if (logs.length === 0) {
+                el.innerHTML = '<div style="text-align:center;padding:24px;color:#94a3b8;font-size:13px;">No saved logs yet. Fill in today\'s report and click Save.</div>';
+                return;
+            }
+            const sorted = [...logs].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+            el.innerHTML = sorted.map(log => {
+                const dateStr = log.date ? new Date(log.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : 'Unknown';
+                return '<div class="log-entry">' +
+                    '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+                        '<div><div class="log-date">' + dateStr + '</div><div class="log-project">' + (log.project || '') + '</div></div>' +
+                        '<button class="btn btn-outline btn-sm" onclick="exportSingleLog(\'' + log.id + '\')">PDF</button>' +
+                    '</div>' +
+                    '<div class="log-summary">' + ((log.work || '').slice(0, 120) || 'No work description') + '</div>' +
+                    '<div class="log-meta">' +
+                        '<span>Crew: ' + (log.crew ? log.crew.length : 0) + '</span>' +
+                        '<span>Hours: ' + (log.totalHours || 0) + '</span>' +
+                        '<span>Weather: ' + (log.weather || '—') + '</span>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function clearLog() {
+            document.getElementById('log-project').value = '';
+            document.getElementById('log-work').value = '';
+            document.getElementById('log-materials').value = '';
+            document.getElementById('log-equipment').value = '';
+            document.getElementById('log-delays').value = '';
+            document.getElementById('log-safety').value = '';
+            document.getElementById('log-visitors').value = '';
+            document.getElementById('log-temp').value = '';
+            document.getElementById('log-wind').value = '';
+            document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('selected'));
+            selectedWeather = '';
+            if (window.toast) toast.info('Form cleared.');
+        }
+
+        function exportLogPdf() { exportSingleLogData(gatherLogData()); }
+
+        function exportSingleLog(id) {
+            const log = logs.find(l => l.id === id);
+            if (log) exportSingleLogData(log);
+        }
+
+        function exportSingleLogData(log) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+            const W = doc.internal.pageSize.getWidth();
+            const M = 50;
+            let y = 50;
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('DAILY FIELD REPORT', W / 2, y, { align: 'center' });
+            y += 20;
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Generated by Subcontractors.ai', W / 2, y, { align: 'center' });
+            y += 24;
+
+            doc.setLineWidth(1);
+            doc.line(M, y, W - M, y);
+            y += 18;
+
+            function addField(label, value) {
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(9);
+                doc.text(label + ':', M, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(String(value || '—'), M + 120, y);
+                y += 16;
+            }
+
+            addField('Date', log.date ? new Date(log.date + 'T12:00:00').toLocaleDateString() : '—');
+            addField('Project', log.project);
+            addField('Weather', (log.weather || '—') + '  |  Temp: ' + (log.temp || '—') + '  |  Wind: ' + (log.wind || '—'));
+            addField('Total Crew Hours', log.totalHours);
+            y += 8;
+
+            // Crew
+            if (log.crew && log.crew.length > 0) {
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.text('CREW ON SITE', M, y);
+                y += 14;
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                log.crew.forEach(c => {
+                    doc.text(c.name + '  |  ' + c.start + ' - ' + c.end + '  |  ' + c.hours + ' hrs' + (c.notes ? '  |  ' + c.notes : ''), M + 10, y);
+                    y += 12;
+                });
+                y += 8;
+            }
+
+            function addSection(title, text) {
+                if (!text) return;
+                if (y > 700) { doc.addPage(); y = 50; }
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.text(title, M, y);
+                y += 14;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                const lines = doc.splitTextToSize(text, W - M * 2);
+                lines.forEach(line => {
+                    if (y > 720) { doc.addPage(); y = 50; }
+                    doc.text(line, M + 10, y);
+                    y += 13;
+                });
+                y += 8;
+            }
+
+            addSection('WORK PERFORMED', log.work);
+            addSection('MATERIALS RECEIVED', log.materials);
+            addSection('EQUIPMENT ON SITE', log.equipment);
+            addSection('DELAYS / ISSUES', log.delays);
+            addSection('SAFETY OBSERVATIONS', log.safety);
+            addSection('VISITORS / INSPECTIONS', log.visitors);
+
+            // Signature
+            y += 20;
+            if (y > 680) { doc.addPage(); y = 50; }
+            doc.setLineWidth(0.5);
+            doc.line(M, y, M + 200, y);
+            doc.line(W / 2 + 20, y, W / 2 + 200, y);
+            y += 14;
+            doc.setFontSize(8);
+            doc.text('Foreman / Superintendent Signature', M, y);
+            doc.text('Date', W / 2 + 20, y);
+
+            const filename = 'Daily-Log-' + (log.date || 'report') + '-' + (log.project || 'project').replace(/[^a-zA-Z0-9]/g, '-').slice(0, 20) + '.pdf';
+            doc.save(filename);
+            if (window.toast) toast.success('Daily log exported!');
+        }
+
+        async function handleSignOut() {
+            if (sbClient) await sbClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+    <script src="toast.js"></script>
+</body>
+</html>
