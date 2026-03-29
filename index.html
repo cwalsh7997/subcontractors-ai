@@ -344,6 +344,8 @@ img { max-width: 100%; }
   .cta-input-group { flex-direction: column; }
   .ai-cost-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+  #how-it-works .container > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 40px !important; }
+  #how-it-works .container > div[style*="grid-template-columns"] > div[style*="position: absolute"] { display: none !important; }
 }
 </style>
 </head>
@@ -386,8 +388,8 @@ img { max-width: 100%; }
         <h1>Finally, a Platform<br>Built for <span>Subs.</span></h1>
         <p class="hero-sub">Get found by GCs. Win more bids. Track compliance. Protect your payments. AI-powered tools that help subcontractors run a better business.</p>
         <div class="hero-ctas">
-          <button class="btn btn-orange btn-lg" onclick="openModal()">Create Your Free Profile &rarr;</button>
-          <button class="btn btn-ghost" style="color:#94a3b8; border: 1px solid rgba(255,255,255,0.15);" onclick="document.getElementById('app-section').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+          <button class="btn btn-orange btn-lg" onclick="window.location.href='app/signup.html'">Create Your Free Profile &rarr;</button>
+          <button class="btn btn-ghost" style="color:#94a3b8; border: 1px solid rgba(255,255,255,0.15);" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">See How It Works</button>
         </div>
         <div class="hero-stats">
           <div class="hero-stat">
@@ -467,6 +469,73 @@ img { max-width: 100%; }
     </div>
   </div>
 </div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how-it-works" style="padding: 100px 0; background: #fff;">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label section-label-blue">How It Works</div>
+      <h2>Go From Invisible to In-Demand in 3 Steps</h2>
+      <p>No complicated setup. No expensive software. Just a smarter way to run your sub business.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 1000px; margin: 48px auto 0; position: relative;">
+      <!-- Connecting line -->
+      <div style="position: absolute; top: 60px; left: 16.5%; right: 16.5%; height: 3px; background: linear-gradient(90deg, #2563eb, #10b981, #f59e0b); z-index: 0; border-radius: 2px;"></div>
+
+      <!-- Step 1 -->
+      <div style="text-align: center; position: relative; z-index: 1;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #dbeafe, #eff6ff); border: 3px solid #2563eb; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 48px;">&#x1f4dd;</div>
+        <div style="background: #2563eb; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; margin-bottom: 16px;">1</div>
+        <h3 style="font-size: 20px; font-weight: 700; color: #0f1729; margin-bottom: 10px;">Create Your Profile</h3>
+        <p style="color: #6b7280; font-size: 15px; line-height: 1.6; padding: 0 8px;">Add your company, trade, location, and license info. It takes 2 minutes. Our AI auto-fills what it can from public records.</p>
+        <div style="margin-top: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; font-size: 13px; color: #166534;">
+          <strong>What you get:</strong> A public profile page that GCs can find when searching for your trade in your area.
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div style="text-align: center; position: relative; z-index: 1;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #d1fae5, #ecfdf5); border: 3px solid #10b981; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 48px;">&#x1f916;</div>
+        <div style="background: #10b981; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; margin-bottom: 16px;">2</div>
+        <h3 style="font-size: 20px; font-weight: 700; color: #0f1729; margin-bottom: 10px;">AI Does the Heavy Lifting</h3>
+        <p style="color: #6b7280; font-size: 15px; line-height: 1.6; padding: 0 8px;">Upload plans and specs — AI extracts your scope, flags contract red flags, tracks your insurance expirations, and matches you to relevant projects.</p>
+        <div style="margin-top: 16px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; font-size: 13px; color: #1e40af;">
+          <strong>What you get:</strong> Bid estimates in minutes, contract alerts before you sign, and a compliance score that builds trust with GCs.
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div style="text-align: center; position: relative; z-index: 1;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #fef3c7, #fffbeb); border: 3px solid #f59e0b; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 48px;">&#x1f4b0;</div>
+        <div style="background: #f59e0b; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; margin-bottom: 16px;">3</div>
+        <h3 style="font-size: 20px; font-weight: 700; color: #0f1729; margin-bottom: 10px;">Win More, Get Paid Faster</h3>
+        <p style="color: #6b7280; font-size: 15px; line-height: 1.6; padding: 0 8px;">Bid on matched projects, track your pay apps, send lien waivers, and rate GCs so the whole industry gets more transparent.</p>
+        <div style="margin-top: 16px; background: #fefce8; border: 1px solid #fde68a; border-radius: 8px; padding: 12px; font-size: 13px; color: #854d0e;">
+          <strong>What you get:</strong> More bids, faster payments, and a reputation that speaks for itself. Subs who use the platform win 40% more work.
+        </div>
+      </div>
+    </div>
+
+    <!-- Social proof + CTA -->
+    <div style="text-align: center; margin-top: 56px;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 32px; margin-bottom: 32px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="display: flex;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #2563eb; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff;">JM</div>
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #10b981; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; margin-left: -8px;">RK</div>
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #f59e0b; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; margin-left: -8px;">AL</div>
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #8b5cf6; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; margin-left: -8px;">DP</div>
+          </div>
+          <span style="font-size: 14px; color: #6b7280;">2,400+ subs already signed up</span>
+        </div>
+        <div style="font-size: 14px; color: #6b7280;">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605; <span style="font-weight: 600; color: #0f1729;">Rated 4.9/5</span> by early users</div>
+      </div>
+      <button class="btn btn-orange btn-lg" onclick="window.location.href='app/signup.html'" style="font-size: 18px; padding: 16px 40px;">Create Your Free Profile &rarr;</button>
+      <p style="margin-top: 12px; font-size: 14px; color: #9ca3af;">Free forever. No credit card required. Takes 2 minutes.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ============ FEATURES ============ -->
 <section class="section">
