@@ -434,6 +434,11 @@
               <label for="message">Message *</label>
               <textarea id="message" name="message" class="form-textarea" placeholder="Tell us how we can help..." required></textarea>
             </div>
+            <!-- Honeypot field - hidden from real users -->
+            <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+              <label for="fax_number">Fax</label>
+              <input type="text" id="fax_number" name="fax_number" tabindex="-1" autocomplete="off">
+            </div>
             <div class="form-submit-wrapper">
               <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">Send Message →</button>
               <p style="font-size: 0.8rem; color: var(--gray-400); text-align: center; margin-top: 12px; margin-bottom: 0;">We'll get back to you within 24 hours.</p>
@@ -687,6 +692,13 @@ function toggleAccordion(header) {
 // ============ CONTACT FORM HANDLER ============
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
+
+  // Honeypot check
+  const hp = document.getElementById('fax_number');
+  if (hp && hp.value) {
+    document.getElementById('formSuccess').classList.add('show');
+    return; // Fake success for bots
+  }
 
   // Get form data
   const formData = {

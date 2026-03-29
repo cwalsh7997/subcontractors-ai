@@ -391,7 +391,7 @@
             }
             try {
                 const { error } = await sbClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/app/login.html'
+                    redirectTo: window.location.origin + '/app/reset-password.html'
                 });
                 if (error) {
                     emailError.textContent = error.message;

@@ -396,6 +396,11 @@
                 Account created successfully! Redirecting to dashboard...
             </div>
 
+            <div class="success-message" id="confirmMessage" style="display:none; background-color: #dbeafe; color: #1e40af;">
+                <strong>Check your email!</strong><br>
+                We've sent a confirmation link to <span id="confirmEmail"></span>. Click the link to verify your account, then come back and sign in.
+            </div>
+
             <form id="signupForm">
                 <div class="form-group">
                     <label class="form-label" for="companyName">Company Name</label>
@@ -503,6 +508,12 @@
                         >
                         <div class="error-message" id="stateError"></div>
                     </div>
+                </div>
+
+                <!-- Honeypot field - hidden from real users, bots fill it -->
+                <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                 </div>
 
                 <div class="checkbox-group">
@@ -761,6 +772,13 @@
             cityInput.classList.remove('error');
             stateInput.classList.remove('error');
 
+            // Honeypot check — if bot filled hidden field, silently reject
+            const honeypot = document.getElementById('website');
+            if (honeypot && honeypot.value) {
+                successMessage.classList.add('show');
+                return; // Fake success to fool bots
+            }
+
             // Validate form
             if (!validateForm()) {
                 return;
@@ -823,11 +841,29 @@
                         return;
                     }
 
-                    if (data) {
-                        successMessage.classList.add('show');
-                        setTimeout(() => {
-                            window.location.href = 'welcome.html';
-                        }, 1500);
+                    if (data && data.user) {
+                        // Check if email confirmation is required
+                        // Supabase returns identities=[] when email confirmation is pending
+                        if (data.user.identities && data.user.identities.length === 0) {
+                            // Email already registered but unconfirmed — tell user
+                            emailError.textContent = 'This email is already registered. Check your inbox for a confirmation link.';
+                            emailError.classList.add('show');
+                            emailInput.classList.add('error');
+                        } else if (data.session) {
+                            // Auto-confirmed (e.g. email confirm disabled) — go to welcome
+                            successMessage.classList.add('show');
+                            setTimeout(() => {
+                                window.location.href = 'welcome.html';
+                            }, 1500);
+                        } else {
+                            // Email confirmation required — show check-email message
+                            signupForm.style.display = 'none';
+                            document.querySelector('.auth-subtext').style.display = 'none';
+                            document.querySelector('.auth-heading').textContent = 'Verify Your Email';
+                            const confirmMsg = document.getElementById('confirmMessage');
+                            document.getElementById('confirmEmail').textContent = emailInput.value;
+                            confirmMsg.style.display = 'block';
+                        }
                     }
                 }
             } catch (error) {

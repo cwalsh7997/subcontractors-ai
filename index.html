@@ -946,6 +946,7 @@ img { max-width: 100%; }
     <div id="cta-form-state">
       <div class="cta-input-group">
         <input type="email" class="cta-input" id="cta-email" placeholder="Enter your work email">
+        <input type="text" id="cta-hp" name="company_fax" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="btn btn-orange" onclick="submitCtaEmail()">Get Started Free</button>
       </div>
     </div>
@@ -1235,6 +1236,8 @@ function submitSignupForm() {
 }
 
 function submitCtaEmail() {
+  const hp = document.getElementById('cta-hp');
+  if (hp && hp.value) { document.getElementById('cta-form-state').style.display='none'; document.getElementById('cta-success-state').style.display='block'; return; }
   const email = document.getElementById('cta-email').value;
   if (!email || !email.includes('@')) {
     document.getElementById('cta-email').style.borderColor = '#ef4444';
