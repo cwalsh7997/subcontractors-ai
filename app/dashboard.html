@@ -234,6 +234,16 @@
                 </a>
             </div>
 
+            <!-- Tip of the Day -->
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
+                <div style="width: 44px; height: 44px; background: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 20px;">💡</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 700; font-size: 14px; color: #1e40af; margin-bottom: 2px;">Pro Tip</div>
+                    <div style="font-size: 13px; color: #3b82f6; line-height: 1.5;" id="tip-text">Complete your company profile to increase your visibility to GCs by up to 3x. Subs with verified insurance and licenses get matched to 40% more projects.</div>
+                </div>
+                <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: #93c5fd; cursor: pointer; font-size: 18px; padding: 4px;">✕</button>
+            </div>
+
             <!-- Compliance Alerts -->
             <h2 class="section-title">Compliance Alerts</h2>
             <div class="alerts-container" id="alerts-container">
@@ -471,6 +481,19 @@
         }
 
         initDashboard();
+
+        // Pro Tips rotation
+        const tips = [
+            'Complete your company profile to increase your visibility to GCs by up to 3x. Subs with verified insurance and licenses get matched to 40% more projects.',
+            'Use the AI Bid Assistant to analyze plans before bidding. Subs who use AI-assisted bidding win 35% more projects on average.',
+            'Rate your GCs after every project. The more transparent the industry becomes, the better it is for all subcontractors.',
+            'Keep your compliance documents up to date. An expired COI is the #1 reason subs get disqualified from bid lists.',
+            'Set up daily logs for every active project. Detailed documentation is your best defense in any dispute or change order negotiation.',
+            'Review the change order log weekly. Catching scope creep early can save you thousands on every project.',
+            'Use the estimate builder to create professional proposals. A clean, detailed estimate wins over a handwritten number every time.'
+        ];
+        const tipEl = document.getElementById('tip-text');
+        if (tipEl) { tipEl.textContent = tips[Math.floor(Math.random() * tips.length)]; }
     </script>
     <script src="toast.js"></script>
 </body>

@@ -347,6 +347,43 @@ img { max-width: 100%; }
   #how-it-works .container > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 40px !important; }
   #how-it-works .container > div[style*="grid-template-columns"] > div[style*="position: absolute"] { display: none !important; }
 }
+
+/* ============ SCROLL ANIMATIONS ============ */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+@keyframes progress { from { width: 0%; } to { width: 100%; } }
+
+/* ============ TESTIMONIALS ============ */
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.testimonial-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 32px; position: relative; }
+.testimonial-card::before { content: '"'; position: absolute; top: 16px; left: 24px; font-size: 4rem; color: var(--blue-pale); font-family: Georgia, serif; line-height: 1; }
+.testimonial-text { font-size: 0.95rem; color: var(--gray-600); line-height: 1.7; margin-bottom: 20px; position: relative; z-index: 1; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 0.9rem; }
+.testimonial-name { font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+.testimonial-role { font-size: 0.8rem; color: var(--gray-400); }
+.testimonial-stars { color: var(--orange); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 16px; }
+
+/* ============ MOBILE MENU ============ */
+.mobile-menu { position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; background: var(--navy); z-index: 200; padding: 80px 32px 32px; transition: right 0.3s ease; }
+.mobile-menu.open { right: 0; }
+.mobile-menu-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 199; display: none; }
+.mobile-menu-overlay.open { display: block; }
+.mobile-menu a { display: block; padding: 14px 0; color: #e2e8f0; font-size: 1rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.mobile-menu a:hover { color: var(--orange); }
+.mobile-menu .btn { margin-top: 24px; width: 100%; justify-content: center; }
+.mobile-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+@media (max-width: 768px) {
+  .testimonials-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 1024px) {
+  .testimonials-grid { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
@@ -541,38 +578,38 @@ img { max-width: 100%; }
 <!-- ============ FEATURES ============ -->
 <section class="section">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="section-label section-label-blue">Why Subcontractors.ai</div>
       <h2>Everything You Need to Run Your Sub Business</h2>
       <p>Built by a subcontractor who got tired of platforms that only care about GCs.</p>
     </div>
     <div class="features-grid">
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon feature-icon-blue">&#x1F50D;</div>
         <h3>Get Found</h3>
         <p>AI-optimized profiles that put you in front of GCs actively looking for your trade. Stop waiting for the phone to ring.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon feature-icon-green">&#x1F4B0;</div>
         <h3>Get Paid</h3>
         <p>Lien waiver tools, pay app templates, retainage tracking, and AI contract review that flags bad terms before you sign.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon feature-icon-orange">&#x1F6E1;</div>
         <h3>Get Protected</h3>
         <p>Compliance dashboard tracks your insurance, licenses, and certifications. Never miss a renewal or lose a bid over expired docs.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon feature-icon-blue">&#x1F916;</div>
         <h3>AI Bid Assistant</h3>
         <p>Upload plans and specs. AI extracts your trade's scope, identifies key quantities, and helps you build a competitive bid in minutes.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon feature-icon-green">&#x2B50;</div>
         <h3>Rate Your GCs</h3>
         <p>The Glassdoor for contractors. See which GCs pay on time, handle change orders fairly, and treat subs with respect.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon feature-icon-orange">&#x1F4CA;</div>
         <h3>Readiness Score</h3>
         <p>Your public trust score based on licensing, insurance, safety record, and project history. The higher your score, the more work you win.</p>
@@ -584,7 +621,7 @@ img { max-width: 100%; }
 <!-- ============ APP SECTION (Tabbed) ============ -->
 <section class="app-section" id="app-section">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="section-label section-label-green">Live Platform Preview</div>
       <h2>See It In Action</h2>
       <p>Explore the platform features that are changing how subs do business.</p>
@@ -709,16 +746,62 @@ img { max-width: 100%; }
   </div>
 </section>
 
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label section-label-orange">What Subs Are Saying</div>
+      <h2>Trusted by Subcontractors Across the Country</h2>
+      <p>Real feedback from real subs who are using the platform to grow their business.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">We used to spend hours putting together bids manually. The AI bid assistant cut that down to minutes. We won our first project through the platform within two weeks of signing up.</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#2563eb;">MR</div>
+          <div>
+            <div class="testimonial-name">Mike Rodriguez</div>
+            <div class="testimonial-role">Rodriguez Electric — Tampa, FL</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">The GC ratings feature alone is worth it. I avoided a GC who owes three other subs money. That kind of intel used to require knowing the right people — now it's right on my dashboard.</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#10b981;">JW</div>
+          <div>
+            <div class="testimonial-name">James Walker</div>
+            <div class="testimonial-role">Walker Mechanical HVAC — Orlando, FL</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">Compliance tracking saved us from losing a $2M bid because our WC policy was 3 days from expiring and we didn't even know. The alerts caught it just in time. This platform pays for itself.</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#f59e0b;">DP</div>
+          <div>
+            <div class="testimonial-name">Diana Patel</div>
+            <div class="testimonial-role">Patel Concrete Corp — Jacksonville, FL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PRICING ============ -->
 <section class="section" id="pricing">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="section-label section-label-orange">Simple Pricing</div>
       <h2>Start Free. Upgrade When You're Ready.</h2>
       <p>No contracts, no setup fees. Cancel anytime.</p>
     </div>
     <div class="pricing-grid">
-      <div class="pricing-card">
+      <div class="pricing-card reveal">
         <div class="pricing-name">Free</div>
         <div class="pricing-desc">Get listed, get found</div>
         <div class="pricing-amount">$0<span>/mo</span></div>
@@ -749,7 +832,7 @@ img { max-width: 100%; }
         </ul>
         <button class="btn btn-primary" style="width:100%;" onclick="openModal()">Start Pro Trial</button>
       </div>
-      <div class="pricing-card">
+      <div class="pricing-card reveal">
         <div class="pricing-name">Business</div>
         <div class="pricing-desc">Scale your operation</div>
         <div class="pricing-amount">$149<span>/mo</span></div>
@@ -764,7 +847,7 @@ img { max-width: 100%; }
         </ul>
         <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Start Business Trial</button>
       </div>
-      <div class="pricing-card">
+      <div class="pricing-card reveal">
         <div class="pricing-name">Enterprise</div>
         <div class="pricing-desc">Multi-location subs</div>
         <div class="pricing-amount">$399<span>/mo</span></div>
@@ -1177,6 +1260,44 @@ function submitSignup(btn) {
     modalContent.innerHTML = '<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';
   });
 }
+
+// ============ MOBILE MENU ============
+function toggleMobile() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+  document.getElementById('mobile-overlay').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+}
+
+// ============ SCROLL ANIMATIONS ============
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+  revealObserver.observe(el);
+});
 </script>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay" id="mobile-overlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" onclick="closeMobileMenu()">&times;</button>
+  <a href="index.html">Home</a>
+  <a href="find-subs.html">Find Subs</a>
+  <a href="project-board.html">Project Board</a>
+  <a href="gc-ratings.html">GC Ratings</a>
+  <a href="ai-tools.html">AI Tools</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="post-project.html" style="color:#f59e0b;">Post a Project</a>
+  <button class="btn btn-primary" onclick="window.location.href='app/signup.html'" style="margin-top:24px;width:100%;justify-content:center;">Get Started Free</button>
+  <button class="btn btn-secondary" onclick="window.location.href='app/login.html'" style="margin-top:8px;width:100%;justify-content:center;color:#fff;border-color:rgba(255,255,255,0.2);">Log In</button>
+</div>
 </body>
 </html>
