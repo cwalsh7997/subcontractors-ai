@@ -50,8 +50,8 @@
 <section class="section">
   <div class="container">
     <div class="directory-search">
-      <input type="text" class="search-input" placeholder="Search by company name, trade, or location..." id="sub-search" oninput="filterSubs()">
-      <select class="search-select" id="trade-filter" onchange="filterSubs()">
+      <input type="text" class="search-input" placeholder="Search by company name, trade, location, or badges..." id="sub-search" oninput="filterAndRender()">
+      <select class="search-select" id="trade-filter" onchange="filterAndRender()">
         <option value="">All Trades</option>
         <option>Electrical</option>
         <option>Plumbing</option>
@@ -61,9 +61,37 @@
         <option>Roofing</option>
         <option>Painting</option>
         <option>Framing</option>
+        <option>Drywall</option>
+        <option>Flooring</option>
+        <option>Fire Protection</option>
+        <option>Steel / Iron</option>
+        <option>Excavation</option>
+        <option>Mechanical</option>
+        <option>Insulation</option>
+      </select>
+      <select class="search-select" id="location-filter" onchange="filterAndRender()">
+        <option value="">All Locations</option>
+        <option>Florida</option>
+        <option>Texas</option>
+        <option>California</option>
+        <option>New York</option>
+        <option>Georgia</option>
+        <option>Illinois</option>
+        <option>Ohio</option>
+        <option>Arizona</option>
+        <option>Colorado</option>
+        <option>North Carolina</option>
+      </select>
+      <select class="search-select" id="sort-filter" onchange="filterAndRender()">
+        <option value="score">Readiness Score (High to Low)</option>
+        <option value="projects">Most Projects</option>
+        <option value="name">Company Name A-Z</option>
       </select>
     </div>
     <div class="sub-grid" id="sub-grid"></div>
+    <div style="text-align:center;margin-top:40px;">
+      <button class="btn btn-secondary" id="show-more-btn" onclick="showMore()" style="display:none;">Show More</button>
+    </div>
   </div>
 </section>
 
@@ -73,10 +101,14 @@
     <h2>Ready to Win More Bids?</h2>
     <p>Get listed on Subcontractors.ai and start connecting with GCs looking for your trade.</p>
     <div class="cta-input-group">
-      <input type="email" class="cta-input" placeholder="Enter your work email">
-      <button class="btn btn-orange" onclick="openModal()">Get Started Free</button>
+      <input type="email" class="cta-input" placeholder="Enter your work email" id="cta-email">
+      <button class="btn btn-orange" onclick="submitCta()">Get Started Free</button>
     </div>
-    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">No credit card required. Free plan available forever.</p>
+    <p style="font-size:0.8rem;color:#475569;margin-top:16px;" id="cta-message">No credit card required. Free plan available forever.</p>
+    <div id="cta-success" style="display:none;text-align:center;margin-top:20px;">
+      <div style="font-size:3rem;color:var(--green,#10b981);animation:popIn 0.5s ease-out;">✓</div>
+      <p style="color:var(--green,#10b981);font-weight:600;margin-top:8px;">You're on the list! We'll be in touch within 24 hours.</p>
+    </div>
   </div>
 </section>
 
@@ -148,6 +180,8 @@
       <option>Flooring</option>
       <option>Fire Protection</option>
       <option>Steel / Iron</option>
+      <option>Mechanical</option>
+      <option>Insulation</option>
       <option>Other</option>
     </select>
     <input type="text" class="modal-input" placeholder="City, State">
@@ -156,23 +190,145 @@
   </div>
 </div>
 
+<style>
+@keyframes popIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+</style>
+
 <script>
-// ============ MOCK DATA ============
-const subs = [
-  { name: "Sunshine Electric Co.", trade: "Electrical", location: "Miami, FL", score: 96, verified: true, initials: "SE", badges: ["Licensed", "Insured", "Union"], projects: 142 },
-  { name: "Gulf Coast Plumbing", trade: "Plumbing", location: "Tampa, FL", score: 91, verified: true, initials: "GC", badges: ["Licensed", "Insured", "MWBE"], projects: 87 },
-  { name: "American Commercial Glass", trade: "Glass & Glazing", location: "Fort Lauderdale, FL", score: 98, verified: true, initials: "AC", badges: ["Licensed", "Insured", "Impact Certified"], projects: 215 },
-  { name: "Summit HVAC Solutions", trade: "HVAC", location: "Orlando, FL", score: 89, verified: true, initials: "SH", badges: ["Licensed", "Insured"], projects: 64 },
-  { name: "Titan Concrete Corp", trade: "Concrete", location: "Jacksonville, FL", score: 93, verified: true, initials: "TC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 178 },
-  { name: "Apex Roofing Systems", trade: "Roofing", location: "West Palm Beach, FL", score: 87, verified: false, initials: "AR", badges: ["Licensed", "Insured"], projects: 56 },
-  { name: "Precision Framing LLC", trade: "Framing", location: "Naples, FL", score: 84, verified: true, initials: "PF", badges: ["Licensed", "Insured"], projects: 102 },
-  { name: "ProCoat Painting Inc.", trade: "Painting", location: "Sarasota, FL", score: 92, verified: true, initials: "PP", badges: ["Licensed", "Insured", "Lead-Safe"], projects: 231 },
+// ============ MOCK DATA (50+ SUBCONTRACTORS) ============
+const allSubs = [
+  // FLORIDA
+  { name: "Sunshine Electric Co.", trade: "Electrical", location: "Miami, FL", state: "Florida", score: 96, verified: true, initials: "SE", badges: ["Licensed", "Insured", "Union"], projects: 142 },
+  { name: "Gulf Coast Plumbing", trade: "Plumbing", location: "Tampa, FL", state: "Florida", score: 91, verified: true, initials: "GC", badges: ["Licensed", "Insured", "MWBE"], projects: 87 },
+  { name: "American Commercial Glass", trade: "Glass & Glazing", location: "Fort Lauderdale, FL", state: "Florida", score: 98, verified: true, initials: "AC", badges: ["Licensed", "Insured", "Impact Certified"], projects: 215 },
+  { name: "Summit HVAC Solutions", trade: "HVAC", location: "Orlando, FL", state: "Florida", score: 89, verified: true, initials: "SH", badges: ["Licensed", "Insured"], projects: 64 },
+  { name: "Titan Concrete Corp", trade: "Concrete", location: "Jacksonville, FL", state: "Florida", score: 93, verified: true, initials: "TC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 178 },
+  { name: "Apex Roofing Systems", trade: "Roofing", location: "West Palm Beach, FL", state: "Florida", score: 87, verified: false, initials: "AR", badges: ["Licensed", "Insured"], projects: 56 },
+  { name: "Precision Framing LLC", trade: "Framing", location: "Naples, FL", state: "Florida", score: 84, verified: true, initials: "PF", badges: ["Licensed", "Insured"], projects: 102 },
+  { name: "ProCoat Painting Inc.", trade: "Painting", location: "Sarasota, FL", state: "Florida", score: 92, verified: true, initials: "PP", badges: ["Licensed", "Insured", "EPA Lead-Safe"], projects: 231 },
+  { name: "Coastal Drywall Specialists", trade: "Drywall", location: "Clearwater, FL", state: "Florida", score: 88, verified: true, initials: "CD", badges: ["Licensed", "Insured"], projects: 95 },
+  { name: "Sunshine Flooring Solutions", trade: "Flooring", location: "Daytona, FL", state: "Florida", score: 85, verified: false, initials: "SF", badges: ["Licensed", "Insured"], projects: 73 },
+
+  // TEXAS
+  { name: "Lone Star Electrical Group", trade: "Electrical", location: "Houston, TX", state: "Texas", score: 94, verified: true, initials: "LS", badges: ["Licensed", "Insured", "OSHA 30"], projects: 267 },
+  { name: "Texas Pride Plumbing", trade: "Plumbing", location: "Dallas, TX", state: "Texas", score: 90, verified: true, initials: "TP", badges: ["Licensed", "Insured", "Veteran-Owned"], projects: 134 },
+  { name: "Austin HVAC Pro", trade: "HVAC", location: "Austin, TX", state: "Texas", score: 92, verified: true, initials: "AP", badges: ["Licensed", "Insured"], projects: 108 },
+  { name: "Brazos Concrete Works", trade: "Concrete", location: "San Antonio, TX", state: "Texas", score: 89, verified: true, initials: "BC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 156 },
+  { name: "Bluebonnet Roofing Co.", trade: "Roofing", location: "Austin, TX", state: "Texas", score: 91, verified: true, initials: "BR", badges: ["Licensed", "Insured", "Union"], projects: 189 },
+  { name: "Fort Worth Frame & Steel", trade: "Steel / Iron", location: "Fort Worth, TX", state: "Texas", score: 95, verified: true, initials: "FF", badges: ["Licensed", "Insured", "DBE"], projects: 203 },
+  { name: "Texas Mechanical Systems", trade: "Mechanical", location: "Houston, TX", state: "Texas", score: 86, verified: false, initials: "TM", badges: ["Licensed", "Insured"], projects: 79 },
+  { name: "Amarillo Excavation LLC", trade: "Excavation", location: "Amarillo, TX", state: "Texas", score: 82, verified: true, initials: "AE", badges: ["Licensed", "Insured"], projects: 67 },
+
+  // CALIFORNIA
+  { name: "Pacific Electric Solutions", trade: "Electrical", location: "San Francisco, CA", state: "California", score: 97, verified: true, initials: "PE", badges: ["Licensed", "Insured", "Union", "MWBE"], projects: 298 },
+  { name: "Golden State Plumbing", trade: "Plumbing", location: "Los Angeles, CA", state: "California", score: 93, verified: true, initials: "GS", badges: ["Licensed", "Insured"], projects: 217 },
+  { name: "SoCal Glass Specialists", trade: "Glass & Glazing", location: "San Diego, CA", state: "California", score: 91, verified: true, initials: "SG", badges: ["Licensed", "Insured"], projects: 145 },
+  { name: "Bay Area HVAC Masters", trade: "HVAC", location: "Oakland, CA", state: "California", score: 88, verified: true, initials: "BH", badges: ["Licensed", "Insured"], projects: 92 },
+  { name: "Sierra Concrete Contractors", trade: "Concrete", location: "Sacramento, CA", state: "California", score: 87, verified: false, initials: "SC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 124 },
+  { name: "California Custom Painting", trade: "Painting", location: "San Jose, CA", state: "California", score: 89, verified: true, initials: "CC", badges: ["Licensed", "Insured", "EPA Lead-Safe"], projects: 176 },
+  { name: "Inland Empire Roofing", trade: "Roofing", location: "Riverside, CA", state: "California", score: 85, verified: true, initials: "IR", badges: ["Licensed", "Insured"], projects: 98 },
+  { name: "Tech City Drywall", trade: "Drywall", location: "San Jose, CA", state: "California", score: 84, verified: true, initials: "TD", badges: ["Licensed", "Insured"], projects: 71 },
+
+  // NEW YORK
+  { name: "Empire State Electric", trade: "Electrical", location: "New York, NY", state: "New York", score: 99, verified: true, initials: "ES", badges: ["Licensed", "Insured", "Union"], projects: 350 },
+  { name: "Manhattan Plumbing Solutions", trade: "Plumbing", location: "New York, NY", state: "New York", score: 95, verified: true, initials: "MP", badges: ["Licensed", "Insured", "MBE"], projects: 289 },
+  { name: "Buffalo HVAC Professionals", trade: "HVAC", location: "Buffalo, NY", state: "New York", score: 87, verified: true, initials: "BP", badges: ["Licensed", "Insured"], projects: 81 },
+  { name: "Rochester Concrete Specialists", trade: "Concrete", location: "Rochester, NY", state: "New York", score: 90, verified: true, initials: "RC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 143 },
+  { name: "Hudson Valley Roofing", trade: "Roofing", location: "Poughkeepsie, NY", state: "New York", score: 88, verified: false, initials: "HV", badges: ["Licensed", "Insured"], projects: 69 },
+  { name: "Bronx Steel Works", trade: "Steel / Iron", location: "Bronx, NY", state: "New York", score: 92, verified: true, initials: "BS", badges: ["Licensed", "Insured", "Union"], projects: 197 },
+
+  // GEORGIA
+  { name: "Atlanta Electric Innovations", trade: "Electrical", location: "Atlanta, GA", state: "Georgia", score: 94, verified: true, initials: "AE", badges: ["Licensed", "Insured", "Veteran-Owned"], projects: 212 },
+  { name: "Peach State Plumbing", trade: "Plumbing", location: "Atlanta, GA", state: "Georgia", score: 91, verified: true, initials: "PS", badges: ["Licensed", "Insured"], projects: 128 },
+  { name: "Georgia HVAC Solutions", trade: "HVAC", location: "Savannah, GA", state: "Georgia", score: 86, verified: true, initials: "GH", badges: ["Licensed", "Insured"], projects: 76 },
+  { name: "Atlanta Concrete Pros", trade: "Concrete", location: "Atlanta, GA", state: "Georgia", score: 89, verified: true, initials: "AC", badges: ["Licensed", "Insured", "ACI Certified", "DBE"], projects: 167 },
+  { name: "Sunshine State Painting", trade: "Painting", location: "Augusta, GA", state: "Georgia", score: 83, verified: false, initials: "SP", badges: ["Licensed", "Insured"], projects: 54 },
+
+  // ILLINOIS
+  { name: "Chicago Electric Masters", trade: "Electrical", location: "Chicago, IL", state: "Illinois", score: 96, verified: true, initials: "CE", badges: ["Licensed", "Insured", "Union"], projects: 276 },
+  { name: "Windy City Plumbing", trade: "Plumbing", location: "Chicago, IL", state: "Illinois", score: 93, verified: true, initials: "WC", badges: ["Licensed", "Insured", "MBE"], projects: 201 },
+  { name: "Illinois HVAC Experts", trade: "HVAC", location: "Springfield, IL", state: "Illinois", score: 87, verified: true, initials: "IE", badges: ["Licensed", "Insured"], projects: 94 },
+  { name: "Midwest Concrete Alliance", trade: "Concrete", location: "Chicago, IL", state: "Illinois", score: 91, verified: true, initials: "MC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 198 },
+
+  // OHIO
+  { name: "Buckeye Electric Services", trade: "Electrical", location: "Columbus, OH", state: "Ohio", score: 92, verified: true, initials: "BE", badges: ["Licensed", "Insured", "OSHA 30"], projects: 165 },
+  { name: "Cincinnati Plumbing Co.", trade: "Plumbing", location: "Cincinnati, OH", state: "Ohio", score: 89, verified: true, initials: "CP", badges: ["Licensed", "Insured"], projects: 112 },
+  { name: "Ohio HVAC Group", trade: "HVAC", location: "Cleveland, OH", state: "Ohio", score: 85, verified: false, initials: "OG", badges: ["Licensed", "Insured"], projects: 68 },
+  { name: "Columbus Roofing Specialists", trade: "Roofing", location: "Columbus, OH", state: "Ohio", score: 88, verified: true, initials: "CR", badges: ["Licensed", "Insured"], projects: 134 },
+
+  // ARIZONA
+  { name: "Phoenix Electric Pro", trade: "Electrical", location: "Phoenix, AZ", state: "Arizona", score: 93, verified: true, initials: "PE", badges: ["Licensed", "Insured", "HUBZone"], projects: 187 },
+  { name: "Desert Plumbing Solutions", trade: "Plumbing", location: "Scottsdale, AZ", state: "Arizona", score: 90, verified: true, initials: "DP", badges: ["Licensed", "Insured"], projects: 109 },
+  { name: "Arizona HVAC Cooling", trade: "HVAC", location: "Tempe, AZ", state: "Arizona", score: 86, verified: true, initials: "AC", badges: ["Licensed", "Insured"], projects: 82 },
+  { name: "Sonoran Concrete Contractors", trade: "Concrete", location: "Phoenix, AZ", state: "Arizona", score: 88, verified: false, initials: "SC", badges: ["Licensed", "Insured"], projects: 115 },
+
+  // COLORADO
+  { name: "Mile High Electric", trade: "Electrical", location: "Denver, CO", state: "Colorado", score: 94, verified: true, initials: "MH", badges: ["Licensed", "Insured", "Veteran-Owned"], projects: 156 },
+  { name: "Rocky Mountain Plumbing", trade: "Plumbing", location: "Boulder, CO", state: "Colorado", score: 91, verified: true, initials: "RM", badges: ["Licensed", "Insured"], projects: 127 },
+  { name: "Colorado HVAC Tech", trade: "HVAC", location: "Fort Collins, CO", state: "Colorado", score: 87, verified: true, initials: "CH", badges: ["Licensed", "Insured"], projects: 93 },
+  { name: "Summit Roofing Works", trade: "Roofing", location: "Denver, CO", state: "Colorado", score: 89, verified: true, initials: "SR", badges: ["Licensed", "Insured"], projects: 142 },
+
+  // NORTH CAROLINA
+  { name: "Tar Heel Electric Co.", trade: "Electrical", location: "Charlotte, NC", state: "North Carolina", score: 91, verified: true, initials: "TE", badges: ["Licensed", "Insured"], projects: 143 },
+  { name: "Carolina Plumbing Services", trade: "Plumbing", location: "Raleigh, NC", state: "North Carolina", score: 88, verified: true, initials: "CP", badges: ["Licensed", "Insured"], projects: 97 },
+  { name: "Piedmont HVAC Solutions", trade: "HVAC", location: "Greensboro, NC", state: "North Carolina", score: 86, verified: false, initials: "PH", badges: ["Licensed", "Insured"], projects: 74 },
+  { name: "Blue Ridge Concrete Pros", trade: "Concrete", location: "Asheville, NC", state: "North Carolina", score: 84, verified: true, initials: "BR", badges: ["Licensed", "Insured", "ACI Certified"], projects: 89 },
+  { name: "Outer Banks Roofing", trade: "Roofing", location: "Wilmington, NC", state: "North Carolina", score: 87, verified: true, initials: "OB", badges: ["Licensed", "Insured"], projects: 61 },
 ];
 
-// ============ RENDER FUNCTIONS ============
-function renderSubs(data) {
+let currentPage = 0;
+const itemsPerPage = 12;
+let filteredSubs = [...allSubs];
+
+// ============ FILTER AND RENDER ============
+function filterAndRender() {
+  const search = document.getElementById('sub-search').value.toLowerCase();
+  const trade = document.getElementById('trade-filter').value;
+  const location = document.getElementById('location-filter').value;
+  const sort = document.getElementById('sort-filter').value;
+
+  // Filter
+  filteredSubs = allSubs.filter(s => {
+    const matchSearch = !search ||
+      s.name.toLowerCase().includes(search) ||
+      s.trade.toLowerCase().includes(search) ||
+      s.location.toLowerCase().includes(search) ||
+      s.badges.some(b => b.toLowerCase().includes(search));
+    const matchTrade = !trade || s.trade === trade;
+    const matchLocation = !location || s.state === location;
+    return matchSearch && matchTrade && matchLocation;
+  });
+
+  // Sort
+  if (sort === 'score') {
+    filteredSubs.sort((a, b) => b.score - a.score);
+  } else if (sort === 'projects') {
+    filteredSubs.sort((a, b) => b.projects - a.projects);
+  } else if (sort === 'name') {
+    filteredSubs.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  currentPage = 0;
+  renderPage();
+}
+
+// ============ RENDER PAGE ============
+function renderPage() {
+  const start = currentPage * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageData = filteredSubs.slice(start, end);
+
   const grid = document.getElementById('sub-grid');
-  grid.innerHTML = data.map(s => `
+  grid.innerHTML = pageData.map(s => `
     <div class="sub-card">
       <div class="sub-header">
         <div class="sub-avatar" style="background:${s.score > 90 ? 'var(--navy)' : 'var(--gray-600)'}">${s.initials}</div>
@@ -193,18 +349,66 @@ function renderSubs(data) {
       </div>
     </div>
   `).join('');
+
+  // Show/hide "Show More" button
+  const totalPages = Math.ceil(filteredSubs.length / itemsPerPage);
+  document.getElementById('show-more-btn').style.display = currentPage < totalPages - 1 ? 'inline-block' : 'none';
 }
 
-// ============ FILTER FUNCTION ============
-function filterSubs() {
-  const search = document.getElementById('sub-search').value.toLowerCase();
-  const trade = document.getElementById('trade-filter').value;
-  const filtered = subs.filter(s => {
-    const matchSearch = !search || s.name.toLowerCase().includes(search) || s.trade.toLowerCase().includes(search) || s.location.toLowerCase().includes(search);
-    const matchTrade = !trade || s.trade === trade;
-    return matchSearch && matchTrade;
-  });
-  renderSubs(filtered);
+// ============ SHOW MORE ============
+function showMore() {
+  currentPage++;
+  const start = currentPage * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageData = filteredSubs.slice(start, end);
+  const grid = document.getElementById('sub-grid');
+
+  grid.innerHTML += pageData.map(s => `
+    <div class="sub-card">
+      <div class="sub-header">
+        <div class="sub-avatar" style="background:${s.score > 90 ? 'var(--navy)' : 'var(--gray-600)'}">${s.initials}</div>
+        <div class="sub-info">
+          <div class="sub-name">${s.name} ${s.verified ? '<span class="verified-badge">✓</span>' : ''}</div>
+          <div class="sub-trade">${s.trade}</div>
+          <div class="sub-location"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${s.location}</div>
+        </div>
+      </div>
+      <div class="sub-meta">
+        ${s.badges.map(b => `<span class="badge badge-blue">${b}</span>`).join('')}
+        <span class="badge badge-gray">${s.projects} Projects</span>
+      </div>
+      <div class="sub-score">
+        <span class="score-label">Readiness Score</span>
+        <div class="score-bar"><div class="score-fill ${s.score >= 90 ? 'score-fill-high' : 'score-fill-mid'}" style="width:${s.score}%"></div></div>
+        <span class="score-value">${s.score}/100</span>
+      </div>
+    </div>
+  `).join('');
+
+  const totalPages = Math.ceil(filteredSubs.length / itemsPerPage);
+  document.getElementById('show-more-btn').style.display = currentPage < totalPages - 1 ? 'inline-block' : 'none';
+}
+
+// ============ CTA EMAIL SUBMISSION ============
+function submitCta() {
+  const email = document.getElementById('cta-email').value.trim();
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  // Hide input group and show success
+  document.querySelector('.cta-input-group').style.display = 'none';
+  document.getElementById('cta-message').style.display = 'none';
+  document.getElementById('cta-success').style.display = 'block';
+
+  // Reset after 3 seconds
+  setTimeout(() => {
+    document.querySelector('.cta-input-group').style.display = 'flex';
+    document.getElementById('cta-message').style.display = 'block';
+    document.getElementById('cta-success').style.display = 'none';
+    document.getElementById('cta-email').value = '';
+  }, 3000);
 }
 
 // ============ MODAL ============
@@ -228,7 +432,7 @@ function toggleMobile() {
 }
 
 // ============ INIT ============
-renderSubs(subs);
+filterAndRender();
 </script>
 </body>
 </html>
