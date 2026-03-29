@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIA Pay Application Generator - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .sign-out-btn:hover { background-color: #7f1d1d; border-color: #dc2626; color: #fca5a5; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; overflow-y: auto; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+        .aia-badge { display: inline-block; background: #0f1729; color: #f59e0b; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; margin-left: 8px; }
+
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .form-input, .form-select { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s; background: #fff; }
+        .form-input:focus, .form-select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .form-input::placeholder { color: #94a3b8; }
+
+        /* Schedule of Values Table */
+        .sov-table-wrap { overflow-x: auto; margin-top: 12px; }
+        .sov-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
+        .sov-table th { background: #f8fafc; padding: 10px 8px; text-align: left; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+        .sov-table td { padding: 8px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        .sov-table tr:hover { background: #f8fafc; }
+        .sov-table input { width: 100%; padding: 6px 8px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px; font-family: inherit; }
+        .sov-table input:focus { outline: none; border-color: #2563eb; }
+        .sov-table input[type="number"] { text-align: right; }
+        .sov-table .calc-cell { background: #f8fafc; text-align: right; font-weight: 500; padding-right: 12px; color: #334155; }
+        .sov-table .row-num { width: 40px; text-align: center; color: #94a3b8; font-weight: 600; }
+        .sov-total-row td { border-top: 2px solid #1e293b; font-weight: 700; background: #f1f5f9; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-success { background: #16a34a; color: #fff; }
+        .btn-success:hover { background: #15803d; }
+        .btn-amber { background: #f59e0b; color: #0f1729; }
+        .btn-amber:hover { background: #d97706; }
+        .btn-group { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+
+        .remove-row { background: none; border: none; color: #dc2626; cursor: pointer; font-size: 16px; padding: 2px 6px; border-radius: 4px; }
+        .remove-row:hover { background: #fee2e2; }
+
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .summary-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+        .summary-label { font-size: 13px; color: #64748b; }
+        .summary-value { font-size: 14px; font-weight: 600; }
+        .summary-total { font-size: 18px; font-weight: 800; color: #2563eb; border-top: 2px solid #1e293b; padding-top: 12px; margin-top: 8px; }
+
+        .help-text { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+        .section-divider { height: 1px; background: #e2e8f0; margin: 24px 0; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+            .form-grid, .form-grid-3, .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail"></span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link">&#x1f4dd; Bid Assistant</a></li>
+                <li class="nav-item"><a href="compliance.html" class="nav-link">&#x1f6e1; Compliance</a></li>
+                <li class="nav-item"><a href="aia-pay-app.html" class="nav-link active">&#x1f4c4; AIA Pay App</a></li>
+                <li class="nav-item"><a href="../ai-tools.html" class="nav-link">&#x1f916; AI Tools</a></li>
+                <li class="nav-item"><a href="../gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="../project-board.html" class="nav-link">&#x1f4cb; Projects</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
+                <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div>
+                    <div class="page-title">AIA Pay Application Generator <span class="aia-badge">G702 / G703</span></div>
+                    <div class="page-subtitle">Generate official AIA-format Application and Certificate for Payment documents</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-outline" onclick="saveDraft()">Save Draft</button>
+                    <button class="btn btn-outline" onclick="loadDraft()">Load Draft</button>
+                </div>
+            </div>
+
+            <!-- Project Information (G702 Header) -->
+            <div class="card">
+                <div class="card-title">Project Information</div>
+                <div class="card-subtitle">AIA Document G702 — Application and Certificate for Payment</div>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label class="form-label">Project Name</label>
+                        <input type="text" class="form-input" id="project-name" placeholder="e.g. Riverside Medical Center - Phase 2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project Number</label>
+                        <input type="text" class="form-input" id="project-number" placeholder="e.g. 2026-0042">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contract Date</label>
+                        <input type="date" class="form-input" id="contract-date">
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Project Location</label>
+                        <input type="text" class="form-input" id="project-location" placeholder="Full address">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parties -->
+            <div class="card">
+                <div class="card-title">Parties</div>
+                <div class="card-subtitle">Contractor (you), Owner, and Architect information</div>
+                <div class="form-grid-3">
+                    <div>
+                        <div class="form-label" style="margin-bottom:12px;font-size:13px;color:#2563eb;">TO (Owner / GC)</div>
+                        <div class="form-group" style="margin-bottom:12px;">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" class="form-input" id="owner-name" placeholder="GC or Owner company">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-input" id="owner-address" placeholder="Address">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-label" style="margin-bottom:12px;font-size:13px;color:#16a34a;">FROM (Contractor — You)</div>
+                        <div class="form-group" style="margin-bottom:12px;">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" class="form-input" id="contractor-name" placeholder="Your company name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-input" id="contractor-address" placeholder="Your address">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-label" style="margin-bottom:12px;font-size:13px;color:#64748b;">ARCHITECT (if applicable)</div>
+                        <div class="form-group" style="margin-bottom:12px;">
+                            <label class="form-label">Firm Name</label>
+                            <input type="text" class="form-input" id="architect-name" placeholder="Architect firm (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-input" id="architect-address" placeholder="Address (optional)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Info -->
+            <div class="card">
+                <div class="card-title">Application Details</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Application Number</label>
+                        <input type="number" class="form-input" id="app-number" placeholder="e.g. 3" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Period To (Date)</label>
+                        <input type="date" class="form-input" id="period-to">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contract For (Trade/Scope)</label>
+                        <input type="text" class="form-input" id="contract-for" placeholder="e.g. Glass & Glazing">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Original Contract Sum</label>
+                        <input type="number" class="form-input" id="original-contract" placeholder="0.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Change Orders (Net)</label>
+                        <input type="number" class="form-input" id="change-orders" placeholder="0.00" step="0.01" value="0">
+                        <div class="help-text">Additions minus deductions</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Retainage %</label>
+                        <input type="number" class="form-input" id="retainage-pct" placeholder="10" step="0.5" value="10">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule of Values (G703) -->
+            <div class="card">
+                <div class="card-title">Schedule of Values <span class="aia-badge">G703</span></div>
+                <div class="card-subtitle">AIA Document G703 — Continuation Sheet. Enter each line item of work.</div>
+                <div class="sov-table-wrap">
+                    <table class="sov-table" id="sov-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">#</th>
+                                <th style="width:220px;">Description of Work</th>
+                                <th style="width:120px;">Scheduled Value</th>
+                                <th style="width:120px;">Previous Applications</th>
+                                <th style="width:120px;">This Period</th>
+                                <th style="width:100px;">Materials Stored</th>
+                                <th style="width:100px;">Total Completed</th>
+                                <th style="width:60px;">%</th>
+                                <th style="width:110px;">Balance to Finish</th>
+                                <th style="width:40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="sov-body"></tbody>
+                        <tfoot>
+                            <tr class="sov-total-row">
+                                <td></td>
+                                <td><strong>TOTALS</strong></td>
+                                <td class="calc-cell" id="total-scheduled">$0.00</td>
+                                <td class="calc-cell" id="total-previous">$0.00</td>
+                                <td class="calc-cell" id="total-this-period">$0.00</td>
+                                <td class="calc-cell" id="total-stored">$0.00</td>
+                                <td class="calc-cell" id="total-completed">$0.00</td>
+                                <td class="calc-cell" id="total-pct">0%</td>
+                                <td class="calc-cell" id="total-balance">$0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="addSOVRow()">+ Add Line Item</button>
+                    <button class="btn btn-outline" onclick="addCommonItems()">+ Add Common Items</button>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="card">
+                <div class="card-title">Application Summary</div>
+                <div class="card-subtitle">Calculated from your Schedule of Values</div>
+                <div class="summary-grid">
+                    <div>
+                        <div class="summary-item">
+                            <span class="summary-label">1. Original Contract Sum</span>
+                            <span class="summary-value" id="sum-original">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">2. Net Change by Change Orders</span>
+                            <span class="summary-value" id="sum-changes">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">3. Contract Sum to Date (1 + 2)</span>
+                            <span class="summary-value" id="sum-contract-to-date">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">4. Total Completed & Stored to Date</span>
+                            <span class="summary-value" id="sum-total-completed">$0.00</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="summary-item">
+                            <span class="summary-label">5. Retainage</span>
+                            <span class="summary-value" id="sum-retainage">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">6. Total Earned Less Retainage (4 - 5)</span>
+                            <span class="summary-value" id="sum-earned-less-ret">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">7. Less Previous Certificates for Payment</span>
+                            <span class="summary-value" id="sum-prev-certs">$0.00</span>
+                        </div>
+                        <div class="summary-item summary-total">
+                            <span class="summary-label" style="font-size:15px;font-weight:700;color:#1e293b;">8. CURRENT PAYMENT DUE</span>
+                            <span class="summary-value" style="font-size:20px;" id="sum-current-due">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group" style="margin-top:24px;">
+                    <button class="btn btn-success" onclick="generatePDF()">&#x1f4c4; Generate AIA G702/G703 PDF</button>
+                    <button class="btn btn-amber" onclick="generatePDF('g702')">G702 Only</button>
+                    <button class="btn btn-amber" onclick="generatePDF('g703')">G703 Only</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let sbClient = null;
+        let currentUser = null;
+        let rowCount = 0;
+
+        async function init() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sbClient = window.supabase.createClient(url, key);
+            }
+            if (sbClient) {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                currentUser = session.user;
+            } else {
+                const demo = JSON.parse(localStorage.getItem('sb-demo-user') || 'null');
+                if (!demo) { window.location.href = 'login.html'; return; }
+                currentUser = demo;
+            }
+
+            const meta = currentUser.user_metadata || {};
+            document.getElementById('sidebar-name').textContent = meta.company_name || currentUser.email;
+            document.getElementById('sidebar-detail').textContent = meta.trade || '';
+            if (['connor@acglass.com'].includes(currentUser.email)) {
+                document.getElementById('admin-link').style.display = '';
+            }
+
+            // Pre-fill contractor info from profile
+            document.getElementById('contractor-name').value = meta.company_name || '';
+            document.getElementById('contract-for').value = meta.trade || '';
+
+            // Load profile for more data
+            if (sbClient) {
+                try {
+                    const { data } = await sbClient.from('profiles').select('*').eq('id', currentUser.id).single();
+                    if (data) {
+                        if (data.company_name) document.getElementById('contractor-name').value = data.company_name;
+                        if (data.trade) document.getElementById('contract-for').value = data.trade;
+                        const addr = [data.city, data.state].filter(Boolean).join(', ');
+                        if (addr) document.getElementById('contractor-address').value = addr;
+                    }
+                } catch (e) {}
+            }
+
+            // Start with 5 empty rows
+            for (let i = 0; i < 5; i++) addSOVRow();
+
+            // Listen for input changes to recalculate
+            document.getElementById('sov-table').addEventListener('input', recalculate);
+            document.getElementById('original-contract').addEventListener('input', recalculate);
+            document.getElementById('change-orders').addEventListener('input', recalculate);
+            document.getElementById('retainage-pct').addEventListener('input', recalculate);
+        }
+
+        function addSOVRow(desc, scheduled, prev, current, stored) {
+            rowCount++;
+            const tbody = document.getElementById('sov-body');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="row-num">${rowCount}</td>
+                <td><input type="text" placeholder="Description of work" class="sov-desc" value="${desc || ''}"></td>
+                <td><input type="number" step="0.01" placeholder="0.00" class="sov-scheduled" value="${scheduled || ''}"></td>
+                <td><input type="number" step="0.01" placeholder="0.00" class="sov-prev" value="${prev || ''}"></td>
+                <td><input type="number" step="0.01" placeholder="0.00" class="sov-current" value="${current || ''}"></td>
+                <td><input type="number" step="0.01" placeholder="0.00" class="sov-stored" value="${stored || ''}"></td>
+                <td class="calc-cell sov-total-cell">$0.00</td>
+                <td class="calc-cell sov-pct-cell">0%</td>
+                <td class="calc-cell sov-balance-cell">$0.00</td>
+                <td><button class="remove-row" onclick="removeRow(this)" title="Remove">&times;</button></td>
+            `;
+            tbody.appendChild(tr);
+            recalculate();
+        }
+
+        function removeRow(btn) {
+            const tbody = document.getElementById('sov-body');
+            if (tbody.rows.length > 1) {
+                btn.closest('tr').remove();
+                renumberRows();
+                recalculate();
+            }
+        }
+
+        function renumberRows() {
+            const rows = document.getElementById('sov-body').rows;
+            rowCount = rows.length;
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].cells[0].textContent = i + 1;
+            }
+        }
+
+        function addCommonItems() {
+            const trade = document.getElementById('contract-for').value.toLowerCase();
+            let items = [];
+
+            if (trade.includes('glass') || trade.includes('glaz')) {
+                items = [
+                    ['Mobilization & General Conditions', '', '', '', ''],
+                    ['Curtain Wall System', '', '', '', ''],
+                    ['Storefront Framing & Glazing', '', '', '', ''],
+                    ['Interior Glass & Mirrors', '', '', '', ''],
+                    ['Hardware & Accessories', '', '', '', ''],
+                    ['Sealants & Waterproofing', '', '', '', ''],
+                    ['Punch List & Close-out', '', '', '', '']
+                ];
+            } else if (trade.includes('electric')) {
+                items = [
+                    ['Mobilization & Temp Power', '', '', '', ''],
+                    ['Rough-In & Conduit', '', '', '', ''],
+                    ['Wire & Cable Pull', '', '', '', ''],
+                    ['Panel Boards & Switchgear', '', '', '', ''],
+                    ['Lighting Fixtures', '', '', '', ''],
+                    ['Fire Alarm System', '', '', '', ''],
+                    ['Devices & Trim', '', '', '', ''],
+                    ['Testing & Commissioning', '', '', '', '']
+                ];
+            } else if (trade.includes('plumb')) {
+                items = [
+                    ['Mobilization', '', '', '', ''],
+                    ['Underground Rough-In', '', '', '', ''],
+                    ['Above-Grade Rough-In', '', '', '', ''],
+                    ['Fixtures & Trim', '', '', '', ''],
+                    ['Water Heaters & Equipment', '', '', '', ''],
+                    ['Gas Piping', '', '', '', ''],
+                    ['Testing & Balancing', '', '', '', '']
+                ];
+            } else if (trade.includes('hvac') || trade.includes('mechanical')) {
+                items = [
+                    ['Mobilization', '', '', '', ''],
+                    ['Ductwork Fabrication & Install', '', '', '', ''],
+                    ['Piping Systems', '', '', '', ''],
+                    ['Equipment (AHUs, RTUs)', '', '', '', ''],
+                    ['Controls & BMS', '', '', '', ''],
+                    ['Insulation', '', '', '', ''],
+                    ['Testing, Adjusting & Balancing', '', '', '', ''],
+                    ['Commissioning', '', '', '', '']
+                ];
+            } else if (trade.includes('concrete')) {
+                items = [
+                    ['Mobilization & Layout', '', '', '', ''],
+                    ['Foundations & Footings', '', '', '', ''],
+                    ['Slab on Grade', '', '', '', ''],
+                    ['Elevated Slabs', '', '', '', ''],
+                    ['Walls & Columns', '', '', '', ''],
+                    ['Finishing & Curing', '', '', '', ''],
+                    ['Punch List', '', '', '', '']
+                ];
+            } else {
+                items = [
+                    ['Mobilization & General Conditions', '', '', '', ''],
+                    ['Material Procurement', '', '', '', ''],
+                    ['Phase 1 - Rough-In', '', '', '', ''],
+                    ['Phase 2 - Install', '', '', '', ''],
+                    ['Phase 3 - Trim & Finish', '', '', '', ''],
+                    ['Punch List & Close-out', '', '', '', '']
+                ];
+            }
+
+            // Clear existing empty rows
+            const tbody = document.getElementById('sov-body');
+            const existingRows = Array.from(tbody.rows);
+            const hasData = existingRows.some(r => {
+                const desc = r.querySelector('.sov-desc');
+                return desc && desc.value.trim() !== '';
+            });
+
+            if (!hasData) {
+                tbody.innerHTML = '';
+                rowCount = 0;
+            }
+
+            items.forEach(item => addSOVRow(...item));
+            if (window.toast) toast.info('Added common line items for ' + (document.getElementById('contract-for').value || 'general'));
+        }
+
+        function recalculate() {
+            const rows = document.getElementById('sov-body').rows;
+            let totalScheduled = 0, totalPrev = 0, totalCurrent = 0, totalStored = 0, totalCompleted = 0;
+
+            for (let i = 0; i < rows.length; i++) {
+                const scheduled = parseFloat(rows[i].querySelector('.sov-scheduled').value) || 0;
+                const prev = parseFloat(rows[i].querySelector('.sov-prev').value) || 0;
+                const current = parseFloat(rows[i].querySelector('.sov-current').value) || 0;
+                const stored = parseFloat(rows[i].querySelector('.sov-stored').value) || 0;
+                const completed = prev + current + stored;
+                const pct = scheduled > 0 ? Math.round((completed / scheduled) * 100) : 0;
+                const balance = scheduled - completed;
+
+                rows[i].querySelector('.sov-total-cell').textContent = fmt(completed);
+                rows[i].querySelector('.sov-pct-cell').textContent = pct + '%';
+                rows[i].querySelector('.sov-balance-cell').textContent = fmt(balance);
+
+                totalScheduled += scheduled;
+                totalPrev += prev;
+                totalCurrent += current;
+                totalStored += stored;
+                totalCompleted += completed;
+            }
+
+            const totalBalance = totalScheduled - totalCompleted;
+            const totalPct = totalScheduled > 0 ? Math.round((totalCompleted / totalScheduled) * 100) : 0;
+
+            document.getElementById('total-scheduled').textContent = fmt(totalScheduled);
+            document.getElementById('total-previous').textContent = fmt(totalPrev);
+            document.getElementById('total-this-period').textContent = fmt(totalCurrent);
+            document.getElementById('total-stored').textContent = fmt(totalStored);
+            document.getElementById('total-completed').textContent = fmt(totalCompleted);
+            document.getElementById('total-pct').textContent = totalPct + '%';
+            document.getElementById('total-balance').textContent = fmt(totalBalance);
+
+            // G702 Summary
+            const originalContract = parseFloat(document.getElementById('original-contract').value) || 0;
+            const changeOrders = parseFloat(document.getElementById('change-orders').value) || 0;
+            const retainagePct = parseFloat(document.getElementById('retainage-pct').value) || 10;
+            const contractToDate = originalContract + changeOrders;
+            const retainage = totalCompleted * (retainagePct / 100);
+            const earnedLessRet = totalCompleted - retainage;
+            const prevRetainage = totalPrev * (retainagePct / 100);
+            const prevCerts = totalPrev - prevRetainage;
+            const currentDue = earnedLessRet - prevCerts;
+
+            document.getElementById('sum-original').textContent = fmt(originalContract);
+            document.getElementById('sum-changes').textContent = fmt(changeOrders);
+            document.getElementById('sum-contract-to-date').textContent = fmt(contractToDate);
+            document.getElementById('sum-total-completed').textContent = fmt(totalCompleted);
+            document.getElementById('sum-retainage').textContent = fmt(retainage);
+            document.getElementById('sum-earned-less-ret').textContent = fmt(earnedLessRet);
+            document.getElementById('sum-prev-certs').textContent = fmt(prevCerts);
+            document.getElementById('sum-current-due').textContent = fmt(currentDue);
+        }
+
+        function fmt(n) {
+            return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function saveDraft() {
+            const data = gatherFormData();
+            localStorage.setItem('aia_draft', JSON.stringify(data));
+            if (window.toast) toast.success('Draft saved!');
+        }
+
+        function loadDraft() {
+            const saved = localStorage.getItem('aia_draft');
+            if (!saved) {
+                if (window.toast) toast.warning('No saved draft found.');
+                return;
+            }
+            const data = JSON.parse(saved);
+            document.getElementById('project-name').value = data.projectName || '';
+            document.getElementById('project-number').value = data.projectNumber || '';
+            document.getElementById('contract-date').value = data.contractDate || '';
+            document.getElementById('project-location').value = data.projectLocation || '';
+            document.getElementById('owner-name').value = data.ownerName || '';
+            document.getElementById('owner-address').value = data.ownerAddress || '';
+            document.getElementById('contractor-name').value = data.contractorName || '';
+            document.getElementById('contractor-address').value = data.contractorAddress || '';
+            document.getElementById('architect-name').value = data.architectName || '';
+            document.getElementById('architect-address').value = data.architectAddress || '';
+            document.getElementById('app-number').value = data.appNumber || '';
+            document.getElementById('period-to').value = data.periodTo || '';
+            document.getElementById('contract-for').value = data.contractFor || '';
+            document.getElementById('original-contract').value = data.originalContract || '';
+            document.getElementById('change-orders').value = data.changeOrders || 0;
+            document.getElementById('retainage-pct').value = data.retainagePct || 10;
+
+            // Load SOV rows
+            const tbody = document.getElementById('sov-body');
+            tbody.innerHTML = '';
+            rowCount = 0;
+            if (data.sovRows && data.sovRows.length > 0) {
+                data.sovRows.forEach(r => addSOVRow(r.desc, r.scheduled, r.prev, r.current, r.stored));
+            } else {
+                for (let i = 0; i < 5; i++) addSOVRow();
+            }
+            recalculate();
+            if (window.toast) toast.success('Draft loaded!');
+        }
+
+        function gatherFormData() {
+            const rows = document.getElementById('sov-body').rows;
+            const sovRows = [];
+            for (let i = 0; i < rows.length; i++) {
+                sovRows.push({
+                    desc: rows[i].querySelector('.sov-desc').value,
+                    scheduled: rows[i].querySelector('.sov-scheduled').value,
+                    prev: rows[i].querySelector('.sov-prev').value,
+                    current: rows[i].querySelector('.sov-current').value,
+                    stored: rows[i].querySelector('.sov-stored').value
+                });
+            }
+            return {
+                projectName: document.getElementById('project-name').value,
+                projectNumber: document.getElementById('project-number').value,
+                contractDate: document.getElementById('contract-date').value,
+                projectLocation: document.getElementById('project-location').value,
+                ownerName: document.getElementById('owner-name').value,
+                ownerAddress: document.getElementById('owner-address').value,
+                contractorName: document.getElementById('contractor-name').value,
+                contractorAddress: document.getElementById('contractor-address').value,
+                architectName: document.getElementById('architect-name').value,
+                architectAddress: document.getElementById('architect-address').value,
+                appNumber: document.getElementById('app-number').value,
+                periodTo: document.getElementById('period-to').value,
+                contractFor: document.getElementById('contract-for').value,
+                originalContract: document.getElementById('original-contract').value,
+                changeOrders: document.getElementById('change-orders').value,
+                retainagePct: document.getElementById('retainage-pct').value,
+                sovRows: sovRows
+            };
+        }
+
+        function generatePDF(which) {
+            const { jsPDF } = window.jspdf;
+            const d = gatherFormData();
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' });
+            const W = doc.internal.pageSize.getWidth();
+            const H = doc.internal.pageSize.getHeight();
+
+            const retPct = parseFloat(d.retainagePct) || 10;
+            const originalContract = parseFloat(d.originalContract) || 0;
+            const changeOrders = parseFloat(d.changeOrders) || 0;
+            const contractToDate = originalContract + changeOrders;
+
+            // Calculate SOV totals
+            let totScheduled = 0, totPrev = 0, totCurrent = 0, totStored = 0, totCompleted = 0;
+            d.sovRows.forEach(r => {
+                const s = parseFloat(r.scheduled) || 0;
+                const p = parseFloat(r.prev) || 0;
+                const c = parseFloat(r.current) || 0;
+                const st = parseFloat(r.stored) || 0;
+                totScheduled += s;
+                totPrev += p;
+                totCurrent += c;
+                totStored += st;
+                totCompleted += (p + c + st);
+            });
+
+            const retainage = totCompleted * (retPct / 100);
+            const earnedLessRet = totCompleted - retainage;
+            const prevRetainage = totPrev * (retPct / 100);
+            const prevCerts = totPrev - prevRetainage;
+            const currentDue = earnedLessRet - prevCerts;
+
+            if (which !== 'g703') {
+                // ==================== G702 PAGE ====================
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(14);
+                doc.text('APPLICATION AND CERTIFICATE FOR PAYMENT', W / 2, 40, { align: 'center' });
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+                doc.text('AIA Document G702', W / 2, 54, { align: 'center' });
+
+                // Header boxes
+                const lCol = 40;
+                const rCol = W / 2 + 20;
+                let y = 72;
+
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'bold');
+                doc.text('TO OWNER:', lCol, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.ownerName || '________________', lCol + 65, y);
+                doc.text(d.ownerAddress || '', lCol + 65, y + 12);
+
+                doc.setFont('helvetica', 'bold');
+                doc.text('PROJECT:', rCol, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.projectName || '________________', rCol + 55, y);
+                doc.text(d.projectLocation || '', rCol + 55, y + 12);
+
+                y += 32;
+                doc.setFont('helvetica', 'bold');
+                doc.text('FROM CONTRACTOR:', lCol, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.contractorName || '________________', lCol + 100, y);
+                doc.text(d.contractorAddress || '', lCol + 100, y + 12);
+
+                doc.setFont('helvetica', 'bold');
+                doc.text('CONTRACT FOR:', rCol, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.contractFor || '________________', rCol + 85, y);
+
+                y += 32;
+                doc.setFont('helvetica', 'bold');
+                doc.text('ARCHITECT:', lCol, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.architectName || 'N/A', lCol + 65, y);
+
+                doc.setFont('helvetica', 'bold');
+                doc.text('APPLICATION NO:', rCol, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(String(d.appNumber || '___'), rCol + 95, y);
+
+                doc.setFont('helvetica', 'bold');
+                doc.text('PERIOD TO:', rCol + 180, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.periodTo ? new Date(d.periodTo + 'T12:00:00').toLocaleDateString() : '___', rCol + 240, y);
+
+                y += 12;
+                doc.setFont('helvetica', 'bold');
+                doc.text('PROJECT NO:', rCol, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.projectNumber || '___', rCol + 75, y);
+
+                doc.setFont('helvetica', 'bold');
+                doc.text('CONTRACT DATE:', rCol + 180, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(d.contractDate ? new Date(d.contractDate + 'T12:00:00').toLocaleDateString() : '___', rCol + 270, y);
+
+                // Divider
+                y += 18;
+                doc.setDrawColor(0);
+                doc.setLineWidth(1.5);
+                doc.line(lCol, y, W - 40, y);
+
+                // Summary section
+                y += 18;
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'bold');
+                doc.text("CONTRACTOR'S APPLICATION FOR PAYMENT", lCol, y);
+
+                y += 16;
+                const summaryItems = [
+                    ['1. ORIGINAL CONTRACT SUM', fmtPdf(originalContract)],
+                    ['2. Net change by Change Orders', fmtPdf(changeOrders)],
+                    ['3. CONTRACT SUM TO DATE (Line 1 + 2)', fmtPdf(contractToDate)],
+                    ['4. TOTAL COMPLETED & STORED TO DATE', fmtPdf(totCompleted)],
+                    ['   (Column G on G703)', ''],
+                    ['5. RETAINAGE:', ''],
+                    ['   a. ' + retPct + '% of Completed Work', fmtPdf(retainage)],
+                    ['6. TOTAL EARNED LESS RETAINAGE', fmtPdf(earnedLessRet)],
+                    ['   (Line 4 Less Line 5 Total)', ''],
+                    ['7. LESS PREVIOUS CERTIFICATES FOR PAYMENT', fmtPdf(prevCerts)],
+                    ['   (Line 6 from prior Certificate)', ''],
+                    ['8. CURRENT PAYMENT DUE', fmtPdf(currentDue)],
+                    ['9. BALANCE TO FINISH, INCLUDING RETAINAGE', fmtPdf(contractToDate - totCompleted + retainage)]
+                ];
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                summaryItems.forEach(item => {
+                    if (item[0].startsWith('8.')) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(10);
+                    }
+                    doc.text(item[0], lCol + 10, y);
+                    if (item[1]) doc.text(item[1], lCol + 320, y, { align: 'right' });
+                    if (item[0].startsWith('8.')) {
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(8);
+                    }
+                    y += 14;
+                });
+
+                // Signature lines
+                y += 20;
+                doc.setLineWidth(0.5);
+                doc.line(lCol, y, lCol + 200, y);
+                doc.line(rCol, y, rCol + 200, y);
+                y += 12;
+                doc.setFontSize(7);
+                doc.text('Contractor Signature', lCol, y);
+                doc.text('Date', lCol + 160, y);
+                doc.text('Architect Signature', rCol, y);
+                doc.text('Date', rCol + 160, y);
+
+                y += 30;
+                doc.line(lCol, y, lCol + 200, y);
+                doc.line(rCol, y, rCol + 200, y);
+                y += 12;
+                doc.text('Owner Signature', lCol, y);
+                doc.text('Date', lCol + 160, y);
+                doc.text('Amount Approved', rCol, y);
+
+                // Footer
+                doc.setFontSize(6);
+                doc.setTextColor(150);
+                doc.text('Generated by Subcontractors.ai — AIA G702 Format', W / 2, H - 20, { align: 'center' });
+                doc.setTextColor(0);
+            }
+
+            if (which !== 'g702') {
+                // ==================== G703 PAGE ====================
+                if (which !== 'g703') doc.addPage('letter', 'landscape');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.text('CONTINUATION SHEET', W / 2, 35, { align: 'center' });
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.text('AIA Document G703', W / 2, 48, { align: 'center' });
+
+                // Header info
+                doc.setFontSize(7);
+                doc.text('Application No: ' + (d.appNumber || '___'), 40, 62);
+                doc.text('Application Date: ' + (d.periodTo ? new Date(d.periodTo + 'T12:00:00').toLocaleDateString() : '___'), 180, 62);
+                doc.text('Project: ' + (d.projectName || '___'), 350, 62);
+                doc.text('Period To: ' + (d.periodTo ? new Date(d.periodTo + 'T12:00:00').toLocaleDateString() : '___'), 580, 62);
+
+                // Build table data
+                const tableData = [];
+                d.sovRows.forEach((r, i) => {
+                    if (!r.desc && !r.scheduled) return;
+                    const s = parseFloat(r.scheduled) || 0;
+                    const p = parseFloat(r.prev) || 0;
+                    const c = parseFloat(r.current) || 0;
+                    const st = parseFloat(r.stored) || 0;
+                    const total = p + c + st;
+                    const pct = s > 0 ? Math.round((total / s) * 100) : 0;
+                    const balance = s - total;
+                    tableData.push([
+                        String(i + 1),
+                        r.desc || '',
+                        fmtPdf(s),
+                        fmtPdf(p),
+                        fmtPdf(c),
+                        fmtPdf(st),
+                        fmtPdf(total),
+                        pct + '%',
+                        fmtPdf(balance),
+                        fmtPdf(s > 0 ? s * (retPct / 100) * (total / s) : 0)
+                    ]);
+                });
+
+                // Totals row
+                const totBalance = totScheduled - totCompleted;
+                tableData.push([
+                    '',
+                    'TOTALS',
+                    fmtPdf(totScheduled),
+                    fmtPdf(totPrev),
+                    fmtPdf(totCurrent),
+                    fmtPdf(totStored),
+                    fmtPdf(totCompleted),
+                    totScheduled > 0 ? Math.round((totCompleted / totScheduled) * 100) + '%' : '0%',
+                    fmtPdf(totBalance),
+                    fmtPdf(retainage)
+                ]);
+
+                doc.autoTable({
+                    head: [['#', 'Description of Work', 'Scheduled\nValue', 'From Previous\nApplication', 'This Period', 'Materials\nPresently Stored', 'Total\nCompleted', '%\n(G/C)', 'Balance\nTo Finish', 'Retainage']],
+                    body: tableData,
+                    startY: 72,
+                    margin: { left: 30, right: 30 },
+                    styles: { fontSize: 7, cellPadding: 4, lineColor: [0, 0, 0], lineWidth: 0.25 },
+                    headStyles: { fillColor: [15, 23, 41], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center', fontSize: 6.5 },
+                    columnStyles: {
+                        0: { halign: 'center', cellWidth: 25 },
+                        1: { cellWidth: 145 },
+                        2: { halign: 'right', cellWidth: 70 },
+                        3: { halign: 'right', cellWidth: 70 },
+                        4: { halign: 'right', cellWidth: 65 },
+                        5: { halign: 'right', cellWidth: 65 },
+                        6: { halign: 'right', cellWidth: 65 },
+                        7: { halign: 'center', cellWidth: 35 },
+                        8: { halign: 'right', cellWidth: 70 },
+                        9: { halign: 'right', cellWidth: 60 }
+                    },
+                    didParseCell: function(data) {
+                        // Bold the totals row
+                        if (data.row.index === tableData.length - 1) {
+                            data.cell.styles.fontStyle = 'bold';
+                            data.cell.styles.fillColor = [241, 245, 249];
+                        }
+                    }
+                });
+
+                // Footer
+                doc.setFontSize(6);
+                doc.setTextColor(150);
+                doc.text('Generated by Subcontractors.ai — AIA G703 Continuation Sheet', W / 2, H - 20, { align: 'center' });
+                doc.setTextColor(0);
+            }
+
+            // Save
+            const filename = 'AIA-PayApp-' + (d.appNumber || '1') + '-' + (d.projectName || 'Project').replace(/[^a-zA-Z0-9]/g, '-').slice(0, 30) + '.pdf';
+            doc.save(filename);
+            if (window.toast) toast.success('AIA Pay Application PDF generated!');
+        }
+
+        function fmtPdf(n) {
+            return '$' + parseFloat(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        async function handleSignOut() {
+            if (sbClient) await sbClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+    <script src="toast.js"></script>
+</body>
+</html>
