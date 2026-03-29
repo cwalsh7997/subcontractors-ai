@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subcontractors.ai — The Platform Built for Subs</title>
+<meta name="description" content="AI-powered business platform built exclusively for construction subcontractors. Get found, get paid, get protected.">
+<meta property="og:title" content="Subcontractors.ai — The Platform Built for Subs">
+<meta property="og:description" content="AI-powered business platform built exclusively for construction subcontractors. Get found, get paid, get protected.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a2e; line-height: 1.6; background: #fff; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* ============ BRAND TOKENS ============ */
+:root {
+  --navy: #0f1729;
+  --navy-light: #1b2a4a;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --blue-pale: #dbeafe;
+  --blue-bg: #eff6ff;
+  --orange: #f59e0b;
+  --orange-light: #fbbf24;
+  --green: #10b981;
+  --green-light: #d1fae5;
+  --red: #ef4444;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
+/* ============ UTILITIES ============ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.container-sm { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section-alt { background: var(--gray-50); }
+.text-center { text-align: center; }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.text-gray { color: var(--gray-500); }
+.font-bold { font-weight: 700; }
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mt-4 { margin-top: 32px; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mb-4 { margin-bottom: 32px; }
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: 8px; }
+.gap-2 { gap: 16px; }
+.gap-3 { gap: 24px; }
+
+/* ============ BUTTONS ============ */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-secondary { background: #fff; color: var(--navy); border: 2px solid var(--gray-200); }
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+.btn-orange { background: var(--orange); color: var(--navy); }
+.btn-orange:hover { background: #d97706; }
+.btn-ghost { background: transparent; color: var(--gray-600); padding: 8px 16px; }
+.btn-ghost:hover { color: var(--blue); background: var(--blue-bg); }
+.btn-sm { padding: 8px 16px; font-size: 0.85rem; }
+.btn-lg { padding: 16px 32px; font-size: 1.1rem; }
+
+/* ============ TAGS / BADGES ============ */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.badge-blue { background: var(--blue-pale); color: var(--blue); }
+.badge-green { background: var(--green-light); color: #065f46; }
+.badge-orange { background: #fef3c7; color: #92400e; }
+.badge-gray { background: var(--gray-100); color: var(--gray-600); }
+.badge-red { background: #fee2e2; color: #991b1b; }
+
+/* ============ NAVIGATION ============ */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gray-200); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: 1200px; margin: 0 auto; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy); }
+.nav-logo svg { width: 32px; height: 32px; }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-link { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.2s; }
+.nav-link:hover, .nav-link.active { color: var(--blue); background: var(--blue-bg); }
+.nav-cta { display: flex; align-items: center; gap: 12px; }
+.mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+.mobile-menu-btn svg { width: 24px; height: 24px; color: var(--gray-700); }
+
+/* ============ HERO ============ */
+.hero { padding: 140px 0 80px; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 50%, #1a3352 100%); color: #fff; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.hero-content { position: relative; z-index: 1; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 20px; background: rgba(37,99,235,0.2); border: 1px solid rgba(37,99,235,0.3); font-size: 0.85rem; font-weight: 500; color: #93c5fd; margin-bottom: 24px; }
+.hero h1 { font-size: 3.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.02em; }
+.hero h1 span { color: var(--orange); }
+.hero-sub { font-size: 1.2rem; color: #94a3b8; line-height: 1.7; margin-bottom: 32px; }
+.hero-ctas { display: flex; gap: 16px; margin-bottom: 40px; }
+.hero-stats { display: flex; gap: 40px; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-size: 1.8rem; font-weight: 800; color: var(--orange); }
+.hero-stat-label { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Hero App Preview */
+.hero-preview { background: #fff; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+.preview-topbar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
+.preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+.preview-dot-red { background: #ef4444; }
+.preview-dot-yellow { background: #f59e0b; }
+.preview-dot-green { background: #10b981; }
+.preview-url { flex: 1; text-align: center; font-size: 0.75rem; color: var(--gray-400); }
+.preview-body { padding: 20px; color: var(--gray-800); }
+.preview-greeting { font-size: 0.9rem; color: var(--gray-500); margin-bottom: 4px; }
+.preview-title { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+.preview-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.preview-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px; }
+.preview-card-label { font-size: 0.7rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.preview-card-value { font-size: 1.4rem; font-weight: 800; color: var(--navy); }
+.preview-card-sub { font-size: 0.75rem; color: var(--green); font-weight: 600; }
+.preview-alert { display: flex; align-items: flex-start; gap: 12px; background: var(--blue-bg); border: 1px solid var(--blue-pale); border-radius: var(--radius-sm); padding: 12px; }
+.preview-alert-icon { width: 32px; height: 32px; background: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; font-size: 0.85rem; }
+.preview-alert-text { font-size: 0.8rem; color: var(--gray-700); }
+.preview-alert-title { font-weight: 700; margin-bottom: 2px; }
+
+/* ============ LOGOS BAR ============ */
+.logos-bar { padding: 40px 0; border-bottom: 1px solid var(--gray-200); background: #fff; }
+.logos-bar p { text-align: center; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-400); margin-bottom: 20px; }
+.logos-row { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; opacity: 0.4; }
+.logos-row span { font-size: 1.1rem; font-weight: 700; color: var(--gray-500); }
+
+/* ============ FEATURES ============ */
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 32px; transition: all 0.3s; }
+.feature-card:hover { border-color: var(--blue); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px; }
+.feature-icon-blue { background: var(--blue-pale); }
+.feature-icon-green { background: var(--green-light); }
+.feature-icon-orange { background: #fef3c7; }
+.feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--navy); }
+.feature-card p { font-size: 0.9rem; color: var(--gray-500); line-height: 1.6; }
+
+/* ============ SECTION HEADERS ============ */
+.section-header { text-align: center; max-width: 600px; margin: 0 auto 48px; }
+.section-label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+.section-label-blue { background: var(--blue-pale); color: var(--blue); }
+.section-label-green { background: var(--green-light); color: #065f46; }
+.section-label-orange { background: #fef3c7; color: #92400e; }
+.section-header h2 { font-size: 2.2rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; letter-spacing: -0.02em; }
+.section-header p { font-size: 1.05rem; color: var(--gray-500); }
+
+/* ============ APP TABS ============ */
+.app-section { padding: 80px 0; background: var(--gray-50); }
+.app-tabs { display: flex; gap: 4px; background: var(--gray-100); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 32px; max-width: 700px; margin-left: auto; margin-right: auto; }
+.app-tab { flex: 1; padding: 12px 16px; text-align: center; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; color: var(--gray-500); background: transparent; border: none; font-family: inherit; }
+.app-tab.active { background: #fff; color: var(--navy); box-shadow: var(--shadow-sm); }
+.app-tab:hover:not(.active) { color: var(--gray-700); }
+.app-panel { display: none; }
+.app-panel.active { display: block; }
+
+/* ============ DIRECTORY (Sub Profiles) ============ */
+.directory-search { display: flex; gap: 12px; margin-bottom: 24px; }
+.search-input { flex: 1; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; }
+.search-input:focus { outline: none; border-color: var(--blue); }
+.search-select { padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: inherit; background: #fff; cursor: pointer; min-width: 180px; }
+.sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.sub-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 24px; transition: all 0.2s; }
+.sub-card:hover { border-color: var(--blue-light); box-shadow: var(--shadow-md); }
+.sub-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.sub-avatar { width: 48px; height: 48px; border-radius: 12px; background: var(--navy); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; flex-shrink: 0; }
+.sub-info { flex: 1; margin-left: 14px; }
+.sub-name { font-weight: 700; font-size: 1.05rem; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+.verified-badge { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: var(--blue); border-radius: 50%; color: #fff; font-size: 0.6rem; }
+.sub-trade { font-size: 0.85rem; color: var(--gray-500); }
+.sub-location { font-size: 0.8rem; color: var(--gray-400); display: flex; align-items: center; gap: 4px; }
+.sub-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.sub-score { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--gray-50); border-radius: var(--radius-sm); }
+.score-bar { flex: 1; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden; }
+.score-fill { height: 100%; border-radius: 4px; }
+.score-fill-high { background: var(--green); }
+.score-fill-mid { background: var(--orange); }
+.score-label { font-size: 0.75rem; color: var(--gray-500); white-space: nowrap; }
+.score-value { font-weight: 800; font-size: 0.9rem; color: var(--navy); white-space: nowrap; }
+
+/* ============ PROJECT BOARD ============ */
+.project-filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.filter-chip { padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; background: #fff; border: 1px solid var(--gray-200); cursor: pointer; transition: all 0.2s; }
+.filter-chip:hover, .filter-chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+.project-list { display: flex; flex-direction: column; gap: 12px; }
+.project-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 24px; transition: all 0.2s; }
+.project-card:hover { border-color: var(--blue-light); box-shadow: var(--shadow-md); }
+.project-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.project-title { font-weight: 700; font-size: 1.1rem; color: var(--navy); margin-bottom: 4px; }
+.project-gc { font-size: 0.85rem; color: var(--gray-500); }
+.project-budget { text-align: right; }
+.project-budget-value { font-weight: 800; font-size: 1.2rem; color: var(--green); }
+.project-budget-label { font-size: 0.75rem; color: var(--gray-400); }
+.project-details { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 12px; }
+.project-detail { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--gray-500); }
+.project-detail svg { width: 16px; height: 16px; color: var(--gray-400); }
+.project-trades { display: flex; gap: 6px; flex-wrap: wrap; }
+.project-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+/* ============ GC RATINGS ============ */
+.gc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.gc-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 24px; }
+.gc-card:hover { border-color: var(--blue-light); box-shadow: var(--shadow-md); }
+.gc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.gc-name { font-weight: 700; font-size: 1.1rem; color: var(--navy); }
+.gc-type { font-size: 0.85rem; color: var(--gray-500); }
+.gc-overall { text-align: right; }
+.gc-score-big { font-size: 2rem; font-weight: 900; color: var(--navy); line-height: 1; }
+.gc-score-label { font-size: 0.7rem; color: var(--gray-400); text-transform: uppercase; }
+.gc-ratings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.gc-rating-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--gray-50); border-radius: 6px; font-size: 0.82rem; }
+.gc-rating-label { color: var(--gray-500); }
+.gc-rating-stars { color: var(--orange); letter-spacing: 1px; }
+.gc-review { padding: 12px; background: var(--blue-bg); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--gray-600); font-style: italic; }
+.gc-review-author { font-style: normal; font-weight: 600; color: var(--gray-700); margin-top: 6px; font-size: 0.8rem; }
+
+/* ============ AI DEMO ============ */
+.ai-demo-container { max-width: 800px; margin: 0 auto; }
+.ai-upload-area { border: 2px dashed var(--gray-300); border-radius: var(--radius); padding: 48px; text-align: center; background: #fff; margin-bottom: 24px; transition: all 0.3s; cursor: pointer; }
+.ai-upload-area:hover { border-color: var(--blue); background: var(--blue-bg); }
+.ai-upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.ai-upload-title { font-weight: 700; font-size: 1.1rem; color: var(--navy); margin-bottom: 4px; }
+.ai-upload-sub { font-size: 0.9rem; color: var(--gray-400); }
+.ai-result { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; display: none; }
+.ai-result.show { display: block; }
+.ai-result-header { padding: 16px 24px; background: var(--navy); color: #fff; display: flex; align-items: center; gap: 12px; }
+.ai-result-header svg { width: 20px; height: 20px; }
+.ai-result-header span { font-weight: 700; }
+.ai-result-body { padding: 24px; }
+.ai-result-section { margin-bottom: 20px; }
+.ai-result-section h4 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue); margin-bottom: 8px; }
+.ai-result-items { display: flex; flex-direction: column; gap: 8px; }
+.ai-result-item { display: flex; align-items: flex-start; gap: 8px; padding: 10px 14px; background: var(--gray-50); border-radius: 6px; font-size: 0.9rem; color: var(--gray-700); }
+.ai-result-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-top: 7px; flex-shrink: 0; }
+.ai-cost-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.ai-cost-item { text-align: center; padding: 16px; background: var(--gray-50); border-radius: var(--radius-sm); }
+.ai-cost-label { font-size: 0.75rem; color: var(--gray-500); margin-bottom: 4px; }
+.ai-cost-value { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+
+/* ============ PRICING ============ */
+.pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.pricing-card { background: #fff; border: 2px solid var(--gray-200); border-radius: var(--radius); padding: 32px 24px; text-align: center; position: relative; transition: all 0.3s; }
+.pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.pricing-card.popular { border-color: var(--blue); }
+.pricing-popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--blue); color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+.pricing-name { font-weight: 700; font-size: 1.1rem; color: var(--navy); margin-bottom: 4px; }
+.pricing-desc { font-size: 0.85rem; color: var(--gray-400); margin-bottom: 20px; }
+.pricing-amount { font-size: 2.8rem; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
+.pricing-amount span { font-size: 1rem; font-weight: 500; color: var(--gray-400); }
+.pricing-period { font-size: 0.8rem; color: var(--gray-400); margin-bottom: 24px; }
+.pricing-features { list-style: none; text-align: left; margin-bottom: 24px; }
+.pricing-features li { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; font-size: 0.88rem; color: var(--gray-600); }
+.pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.pricing-features li.disabled { color: var(--gray-300); }
+.pricing-features li.disabled::before { content: '—'; color: var(--gray-300); }
+
+/* ============ CTA SECTION ============ */
+.cta-section { padding: 100px 0; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: #fff; text-align: center; }
+.cta-section h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.02em; }
+.cta-section p { font-size: 1.1rem; color: #94a3b8; max-width: 500px; margin: 0 auto 32px; }
+.cta-input-group { display: flex; gap: 12px; max-width: 480px; margin: 0 auto; }
+.cta-input { flex: 1; padding: 14px 20px; border: 2px solid rgba(255,255,255,0.2); border-radius: var(--radius-sm); background: rgba(255,255,255,0.1); color: #fff; font-size: 1rem; font-family: inherit; }
+.cta-input::placeholder { color: rgba(255,255,255,0.5); }
+.cta-input:focus { outline: none; border-color: var(--orange); }
+
+/* ============ FOOTER ============ */
+.footer { padding: 48px 0 24px; background: var(--gray-900); color: var(--gray-400); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-brand p { font-size: 0.9rem; margin-top: 12px; line-height: 1.6; }
+.footer h4 { color: #fff; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a { font-size: 0.9rem; color: var(--gray-400); transition: color 0.2s; }
+.footer-links a:hover { color: #fff; }
+.footer-bottom { padding-top: 24px; border-top: 1px solid var(--gray-700); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; }
+
+/* ============ MODAL ============ */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: #fff; border-radius: var(--radius-lg); padding: 40px; max-width: 480px; width: 90%; max-height: 90vh; overflow-y: auto; }
+.modal h2 { font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.modal p { color: var(--gray-500); margin-bottom: 24px; }
+.modal-input { width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: inherit; margin-bottom: 12px; }
+.modal-input:focus { outline: none; border-color: var(--blue); }
+.modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray-400); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-preview { display: none; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  .gc-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-cta .btn-secondary { display: none; }
+  .mobile-menu-btn { display: block; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero { padding: 120px 0 60px; }
+  .section { padding: 60px 0; }
+  .section-header h2 { font-size: 1.8rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  .sub-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+  .directory-search { flex-direction: column; }
+  .cta-input-group { flex-direction: column; }
+  .ai-cost-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link active" href="index.html">Home</a>
+      <a class="nav-link" href="find-subs.html">Find Subs</a>
+      <a class="nav-link" href="project-board.html">Project Board</a>
+      <a class="nav-link" href="gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="ai-tools.html">AI Tools</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="openModal()">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">Get Started Free</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-badge">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          AI-Powered Platform for Subcontractors
+        </div>
+        <h1>Finally, a Platform<br>Built for <span>Subs.</span></h1>
+        <p class="hero-sub">Get found by GCs. Win more bids. Track compliance. Protect your payments. AI-powered tools that help subcontractors run a better business.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-orange btn-lg" onclick="openModal()">Create Your Free Profile &rarr;</button>
+          <button class="btn btn-ghost" style="color:#94a3b8; border: 1px solid rgba(255,255,255,0.15);" onclick="document.getElementById('app-section').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">650K+</div>
+            <div class="hero-stat-label">U.S. Subcontractors</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">$1.8T</div>
+            <div class="hero-stat-label">Annual Market</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">0</div>
+            <div class="hero-stat-label">Platforms for Subs</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-preview">
+        <div class="preview-topbar">
+          <div class="preview-dot preview-dot-red"></div>
+          <div class="preview-dot preview-dot-yellow"></div>
+          <div class="preview-dot preview-dot-green"></div>
+          <div class="preview-url">subcontractors.ai/dashboard</div>
+        </div>
+        <div class="preview-body">
+          <div class="preview-greeting">Good morning, Connor</div>
+          <div class="preview-title">Your Dashboard</div>
+          <div class="preview-cards">
+            <div class="preview-card">
+              <div class="preview-card-label">Active Bids</div>
+              <div class="preview-card-value">7</div>
+              <div class="preview-card-sub">+2 this week</div>
+            </div>
+            <div class="preview-card">
+              <div class="preview-card-label">Readiness Score</div>
+              <div class="preview-card-value">94</div>
+              <div class="preview-card-sub">Top 5% in your trade</div>
+            </div>
+            <div class="preview-card">
+              <div class="preview-card-label">Project Matches</div>
+              <div class="preview-card-value">12</div>
+              <div class="preview-card-sub">3 new today</div>
+            </div>
+            <div class="preview-card">
+              <div class="preview-card-label">Compliance</div>
+              <div class="preview-card-value">100%</div>
+              <div class="preview-card-sub">All docs current</div>
+            </div>
+          </div>
+          <div class="preview-alert">
+            <div class="preview-alert-icon">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div class="preview-alert-text">
+              <div class="preview-alert-title">New Match: Miami Beach Luxury Tower</div>
+              AI found a glass & glazing scope that matches your profile. Bid due in 12 days.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUSTED BY ============ -->
+<div class="logos-bar">
+  <div class="container">
+    <p>Trusted by subcontractors in every trade</p>
+    <div class="logos-row">
+      <span>Electrical</span>
+      <span>Plumbing</span>
+      <span>HVAC</span>
+      <span>Concrete</span>
+      <span>Glass & Glazing</span>
+      <span>Roofing</span>
+      <span>Framing</span>
+      <span>Painting</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FEATURES ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label section-label-blue">Why Subcontractors.ai</div>
+      <h2>Everything You Need to Run Your Sub Business</h2>
+      <p>Built by a subcontractor who got tired of platforms that only care about GCs.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon feature-icon-blue">&#x1F50D;</div>
+        <h3>Get Found</h3>
+        <p>AI-optimized profiles that put you in front of GCs actively looking for your trade. Stop waiting for the phone to ring.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon feature-icon-green">&#x1F4B0;</div>
+        <h3>Get Paid</h3>
+        <p>Lien waiver tools, pay app templates, retainage tracking, and AI contract review that flags bad terms before you sign.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon feature-icon-orange">&#x1F6E1;</div>
+        <h3>Get Protected</h3>
+        <p>Compliance dashboard tracks your insurance, licenses, and certifications. Never miss a renewal or lose a bid over expired docs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon feature-icon-blue">&#x1F916;</div>
+        <h3>AI Bid Assistant</h3>
+        <p>Upload plans and specs. AI extracts your trade's scope, identifies key quantities, and helps you build a competitive bid in minutes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon feature-icon-green">&#x2B50;</div>
+        <h3>Rate Your GCs</h3>
+        <p>The Glassdoor for contractors. See which GCs pay on time, handle change orders fairly, and treat subs with respect.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon feature-icon-orange">&#x1F4CA;</div>
+        <h3>Readiness Score</h3>
+        <p>Your public trust score based on licensing, insurance, safety record, and project history. The higher your score, the more work you win.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APP SECTION (Tabbed) ============ -->
+<section class="app-section" id="app-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label section-label-green">Live Platform Preview</div>
+      <h2>See It In Action</h2>
+      <p>Explore the platform features that are changing how subs do business.</p>
+    </div>
+    <div class="app-tabs">
+      <button class="app-tab active" onclick="showPanel('directory')">Find Subs</button>
+      <button class="app-tab" onclick="showPanel('projects')">Project Board</button>
+      <button class="app-tab" onclick="showPanel('ratings')">GC Ratings</button>
+      <button class="app-tab" onclick="showPanel('ai-tools')">AI Tools</button>
+    </div>
+
+    <!-- DIRECTORY PANEL -->
+    <div class="app-panel active" id="panel-directory">
+      <div class="directory-search">
+        <input type="text" class="search-input" placeholder="Search by company name, trade, or location..." id="sub-search" oninput="filterSubs()">
+        <select class="search-select" id="trade-filter" onchange="filterSubs()">
+          <option value="">All Trades</option>
+          <option>Electrical</option>
+          <option>Plumbing</option>
+          <option>HVAC</option>
+          <option>Glass & Glazing</option>
+          <option>Concrete</option>
+          <option>Roofing</option>
+          <option>Painting</option>
+          <option>Framing</option>
+        </select>
+      </div>
+      <div class="sub-grid" id="sub-grid"></div>
+    </div>
+
+    <!-- PROJECTS PANEL -->
+    <div class="app-panel" id="panel-projects">
+      <div class="project-filters">
+        <button class="filter-chip active" onclick="filterProjects(this, 'all')">All Projects</button>
+        <button class="filter-chip" onclick="filterProjects(this, 'commercial')">Commercial</button>
+        <button class="filter-chip" onclick="filterProjects(this, 'residential')">Residential</button>
+        <button class="filter-chip" onclick="filterProjects(this, 'industrial')">Industrial</button>
+        <button class="filter-chip" onclick="filterProjects(this, 'municipal')">Municipal</button>
+      </div>
+      <div class="project-list" id="project-list"></div>
+    </div>
+
+    <!-- GC RATINGS PANEL -->
+    <div class="app-panel" id="panel-ratings">
+      <div class="directory-search">
+        <input type="text" class="search-input" placeholder="Search general contractors..." id="gc-search" oninput="filterGCs()">
+        <select class="search-select" id="gc-sort">
+          <option>Highest Rated</option>
+          <option>Most Reviews</option>
+          <option>Best Payment</option>
+        </select>
+      </div>
+      <div class="gc-grid" id="gc-grid"></div>
+    </div>
+
+    <!-- AI TOOLS PANEL -->
+    <div class="app-panel" id="panel-ai-tools">
+      <div class="ai-demo-container">
+        <div class="ai-upload-area" id="ai-upload" onclick="runAiDemo()">
+          <div class="ai-upload-icon">&#x1F4C4;</div>
+          <div class="ai-upload-title">Drop your plans & specs here</div>
+          <div class="ai-upload-sub">PDF, DWG, or image files — AI will extract your trade's scope</div>
+          <div class="mt-2"><span class="badge badge-blue">Try the demo with sample plans</span></div>
+        </div>
+        <div class="ai-result" id="ai-result">
+          <div class="ai-result-header">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span>AI Bid Analysis Complete</span>
+            <span style="margin-left:auto; font-weight:400; font-size:0.8rem; opacity:0.7;">Analyzed in 8.3 seconds</span>
+          </div>
+          <div class="ai-result-body">
+            <div class="ai-result-section">
+              <h4>Project Identified</h4>
+              <div style="padding:12px;background:var(--gray-50);border-radius:8px;">
+                <div style="font-weight:700;color:var(--navy);font-size:1.05rem;">Oceanside Mixed-Use Development — Phase 2</div>
+                <div style="font-size:0.85rem;color:var(--gray-500);">Pompano Beach, FL &bull; 145,000 SF &bull; 8-story residential over retail</div>
+              </div>
+            </div>
+            <div class="ai-result-section">
+              <h4>Scope Extracted — Glass & Glazing</h4>
+              <div class="ai-result-items">
+                <div class="ai-result-item"><div class="dot"></div>Curtain wall system — aluminum framed, floors 2-8 (approx. 22,000 SF)</div>
+                <div class="ai-result-item"><div class="dot"></div>Storefront glazing — ground floor retail (approx. 4,800 SF)</div>
+                <div class="ai-result-item"><div class="dot"></div>Interior glass partitions — lobby and amenity spaces (approx. 3,200 SF)</div>
+                <div class="ai-result-item"><div class="dot"></div>Sliding glass doors — balconies, units 201-812 (approx. 180 units)</div>
+                <div class="ai-result-item"><div class="dot"></div>Hurricane impact glazing required — Miami-Dade NOA compliance</div>
+              </div>
+            </div>
+            <div class="ai-result-section">
+              <h4>Estimated Cost Range</h4>
+              <div class="ai-cost-grid">
+                <div class="ai-cost-item">
+                  <div class="ai-cost-label">Low Estimate</div>
+                  <div class="ai-cost-value" style="color:var(--green);">$1.4M</div>
+                </div>
+                <div class="ai-cost-item">
+                  <div class="ai-cost-label">Mid Estimate</div>
+                  <div class="ai-cost-value">$1.8M</div>
+                </div>
+                <div class="ai-cost-item">
+                  <div class="ai-cost-label">High Estimate</div>
+                  <div class="ai-cost-value" style="color:var(--orange);">$2.2M</div>
+                </div>
+              </div>
+            </div>
+            <div class="ai-result-section">
+              <h4>AI Recommendations</h4>
+              <div class="ai-result-items">
+                <div class="ai-result-item"><div class="dot" style="background:var(--orange);"></div><strong>Flag:</strong>&nbsp;Spec calls for Kawneer system but alternates may be accepted — confirm with GC to potentially save 12-15%</div>
+                <div class="ai-result-item"><div class="dot" style="background:var(--green);"></div><strong>Opportunity:</strong>&nbsp;Interior glass partitions are value-engineerable — frameless vs. framed saves $40K+</div>
+                <div class="ai-result-item"><div class="dot" style="background:var(--red);"></div><strong>Risk:</strong>&nbsp;Hurricane impact requirement adds 25-30% to glazing costs — ensure this is reflected in your bid</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:24px;">
+              <button class="btn btn-primary" onclick="openModal()">Generate Full Proposal</button>
+              <button class="btn btn-secondary">Download Scope Summary</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label section-label-orange">Simple Pricing</div>
+      <h2>Start Free. Upgrade When You're Ready.</h2>
+      <p>No contracts, no setup fees. Cancel anytime.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Free</div>
+        <div class="pricing-desc">Get listed, get found</div>
+        <div class="pricing-amount">$0<span>/mo</span></div>
+        <div class="pricing-period">Free forever</div>
+        <ul class="pricing-features">
+          <li>Basic sub profile</li>
+          <li>Trade & location listing</li>
+          <li>3 project alerts/month</li>
+          <li>Community forum access</li>
+          <li class="disabled">AI Bid Assistant</li>
+          <li class="disabled">Compliance dashboard</li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Get Started</button>
+      </div>
+      <div class="pricing-card popular">
+        <div class="pricing-popular-badge">Most Popular</div>
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-desc">Win more bids</div>
+        <div class="pricing-amount">$49<span>/mo</span></div>
+        <div class="pricing-period">Billed monthly</div>
+        <ul class="pricing-features">
+          <li>Everything in Free</li>
+          <li>AI Bid Assistant</li>
+          <li>Unlimited project alerts</li>
+          <li>Compliance dashboard</li>
+          <li>Payment protection tools</li>
+          <li>Verified badge</li>
+        </ul>
+        <button class="btn btn-primary" style="width:100%;" onclick="openModal()">Start Pro Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Business</div>
+        <div class="pricing-desc">Scale your operation</div>
+        <div class="pricing-amount">$149<span>/mo</span></div>
+        <div class="pricing-period">Billed monthly</div>
+        <ul class="pricing-features">
+          <li>Everything in Pro</li>
+          <li>AI Proposal Writer</li>
+          <li>Team management (5 seats)</li>
+          <li>Advanced analytics</li>
+          <li>Priority listing</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Start Business Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-desc">Multi-location subs</div>
+        <div class="pricing-amount">$399<span>/mo</span></div>
+        <div class="pricing-period">Billed monthly</div>
+        <ul class="pricing-features">
+          <li>Everything in Business</li>
+          <li>Unlimited team seats</li>
+          <li>Multi-location support</li>
+          <li>API access</li>
+          <li>Custom integrations</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Stop Being an Afterthought.</h2>
+    <p>Join the first platform that puts subcontractors first. Create your free profile in under 3 minutes.</p>
+    <div class="cta-input-group">
+      <input type="email" class="cta-input" placeholder="Enter your work email">
+      <button class="btn btn-orange" onclick="openModal()">Get Started Free</button>
+    </div>
+    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">No credit card required. Free plan available forever.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+        <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="find-subs.html">Find Subs</a></li>
+          <li><a href="project-board.html">Project Board</a></li>
+          <li><a href="gc-ratings.html">GC Ratings</a></li>
+          <li><a href="ai-tools.html">AI Tools</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#">Lien Waiver Templates</a></li>
+          <li><a href="#">Pay App Templates</a></li>
+          <li><a href="#">Insurance Guide</a></li>
+          <li><a href="#">Bonding Guide</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About / Our Story</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+      <span>Built with &#x26A1; by a sub, for subs.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SIGNUP MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Create Your Free Profile</h2>
+    <p>Join thousands of subcontractors who are taking control of their business.</p>
+    <input type="text" class="modal-input" placeholder="Company Name">
+    <input type="email" class="modal-input" placeholder="Email Address">
+    <select class="modal-input" style="appearance:auto;">
+      <option value="">Select Your Trade</option>
+      <option>Electrical</option>
+      <option>Plumbing</option>
+      <option>HVAC</option>
+      <option>Glass & Glazing</option>
+      <option>Concrete</option>
+      <option>Roofing</option>
+      <option>Painting</option>
+      <option>Framing</option>
+      <option>Excavation</option>
+      <option>Drywall</option>
+      <option>Flooring</option>
+      <option>Fire Protection</option>
+      <option>Steel / Iron</option>
+      <option>Other</option>
+    </select>
+    <input type="text" class="modal-input" placeholder="City, State">
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
+  </div>
+</div>
+
+<script>
+// ============ MOCK DATA ============
+const subs = [
+  { name: "Sunshine Electric Co.", trade: "Electrical", location: "Miami, FL", score: 96, verified: true, initials: "SE", badges: ["Licensed", "Insured", "Union"], projects: 142 },
+  { name: "Gulf Coast Plumbing", trade: "Plumbing", location: "Tampa, FL", score: 91, verified: true, initials: "GC", badges: ["Licensed", "Insured", "MWBE"], projects: 87 },
+  { name: "American Commercial Glass", trade: "Glass & Glazing", location: "Fort Lauderdale, FL", score: 98, verified: true, initials: "AC", badges: ["Licensed", "Insured", "Impact Certified"], projects: 215 },
+  { name: "Summit HVAC Solutions", trade: "HVAC", location: "Orlando, FL", score: 89, verified: true, initials: "SH", badges: ["Licensed", "Insured"], projects: 64 },
+  { name: "Titan Concrete Corp", trade: "Concrete", location: "Jacksonville, FL", score: 93, verified: true, initials: "TC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 178 },
+  { name: "Apex Roofing Systems", trade: "Roofing", location: "West Palm Beach, FL", score: 87, verified: false, initials: "AR", badges: ["Licensed", "Insured"], projects: 56 },
+  { name: "Precision Framing LLC", trade: "Framing", location: "Naples, FL", score: 84, verified: true, initials: "PF", badges: ["Licensed", "Insured"], projects: 102 },
+  { name: "ProCoat Painting Inc.", trade: "Painting", location: "Sarasota, FL", score: 92, verified: true, initials: "PP", badges: ["Licensed", "Insured", "Lead-Safe"], projects: 231 },
+];
+
+const projects = [
+  { title: "Brickell Heights Tower — Phase 3", gc: "Suffolk Construction", type: "commercial", budget: "$2.4M - $3.1M", location: "Miami, FL", due: "14 days", trades: ["Glass & Glazing", "HVAC", "Electrical"], sf: "320,000 SF", status: "Bidding" },
+  { title: "Lakewood Ranch Town Center", gc: "Brasfield & Gorrie", type: "commercial", budget: "$850K - $1.2M", location: "Bradenton, FL", due: "21 days", trades: ["Concrete", "Framing", "Roofing"], sf: "95,000 SF", status: "Bidding" },
+  { title: "Palm Harbor Waterfront Residences", gc: "PCL Construction", type: "residential", budget: "$1.8M - $2.5M", location: "Clearwater, FL", due: "7 days", trades: ["Plumbing", "Electrical", "Painting"], sf: "180,000 SF", status: "Urgent" },
+  { title: "Port Everglades Logistics Hub", gc: "DPR Construction", type: "industrial", budget: "$4.2M - $5.8M", location: "Fort Lauderdale, FL", due: "30 days", trades: ["Concrete", "Steel / Iron", "Electrical"], sf: "450,000 SF", status: "New" },
+  { title: "Orange County Public Library Renovation", gc: "Hensel Phelps", type: "municipal", budget: "$320K - $480K", location: "Orlando, FL", due: "10 days", trades: ["Painting", "Framing", "HVAC", "Glass & Glazing"], sf: "28,000 SF", status: "Bidding" },
+  { title: "Aventura Medical Plaza", gc: "Turner Construction", type: "commercial", budget: "$3.6M - $4.8M", location: "Aventura, FL", due: "18 days", trades: ["Electrical", "Plumbing", "HVAC", "Glass & Glazing"], sf: "210,000 SF", status: "New" },
+];
+
+const gcs = [
+  { name: "Suffolk Construction", type: "Commercial GC — National", score: 4.6, reviews: 142, payment: 4.8, changes: 4.2, communication: 4.7, safety: 4.9, review: "Pays on time, every time. Best GC I've worked with in South Florida. Change orders are fair and processed fast.", reviewer: "Electrical Sub, Miami" },
+  { name: "Turner Construction", type: "Commercial GC — National", score: 4.4, reviews: 231, payment: 4.1, changes: 4.3, communication: 4.6, safety: 4.8, review: "Massive projects, good safety culture. Payment can be slow on retainage release, but they always pay.", reviewer: "HVAC Sub, Orlando" },
+  { name: "Brasfield & Gorrie", type: "Commercial GC — Southeast", score: 4.5, reviews: 89, payment: 4.7, changes: 4.4, communication: 4.3, safety: 4.6, review: "Great to work with. Fair on change orders, and their PMs actually pick up the phone. Rare these days.", reviewer: "Concrete Sub, Jacksonville" },
+  { name: "DPR Construction", type: "Commercial/Industrial GC", score: 4.3, reviews: 67, payment: 4.0, changes: 4.5, communication: 4.4, safety: 4.9, review: "Top-tier safety program. They push schedules hard but the work environment is professional. Payment is average speed.", reviewer: "Plumbing Sub, Tampa" },
+];
+
+// ============ RENDER FUNCTIONS ============
+function renderSubs(data) {
+  const grid = document.getElementById('sub-grid');
+  grid.innerHTML = data.map(s => `
+    <div class="sub-card">
+      <div class="sub-header">
+        <div class="sub-avatar" style="background:${s.score > 90 ? 'var(--navy)' : 'var(--gray-600)'}">${s.initials}</div>
+        <div class="sub-info">
+          <div class="sub-name">${s.name} ${s.verified ? '<span class="verified-badge">&#10003;</span>' : ''}</div>
+          <div class="sub-trade">${s.trade}</div>
+          <div class="sub-location"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${s.location}</div>
+        </div>
+      </div>
+      <div class="sub-meta">
+        ${s.badges.map(b => `<span class="badge badge-blue">${b}</span>`).join('')}
+        <span class="badge badge-gray">${s.projects} Projects</span>
+      </div>
+      <div class="sub-score">
+        <span class="score-label">Readiness Score</span>
+        <div class="score-bar"><div class="score-fill ${s.score >= 90 ? 'score-fill-high' : 'score-fill-mid'}" style="width:${s.score}%"></div></div>
+        <span class="score-value">${s.score}/100</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderProjects(data) {
+  const list = document.getElementById('project-list');
+  list.innerHTML = data.map(p => `
+    <div class="project-card" data-type="${p.type}">
+      <div class="project-top">
+        <div>
+          <div class="project-title">${p.title} ${p.status === 'Urgent' ? '<span class="badge badge-red">Urgent</span>' : p.status === 'New' ? '<span class="badge badge-green">New</span>' : ''}</div>
+          <div class="project-gc">${p.gc}</div>
+        </div>
+        <div class="project-budget">
+          <div class="project-budget-value">${p.budget}</div>
+          <div class="project-budget-label">Estimated Range</div>
+        </div>
+      </div>
+      <div class="project-details">
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>${p.location}</div>
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>${p.sf}</div>
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Bid due in ${p.due}</div>
+      </div>
+      <div class="project-trades">${p.trades.map(t => `<span class="badge badge-blue">${t}</span>`).join('')}</div>
+      <div class="project-actions">
+        <button class="btn btn-primary btn-sm" onclick="openModal()">View & Bid</button>
+        <button class="btn btn-secondary btn-sm">Save Project</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderGCs(data) {
+  const grid = document.getElementById('gc-grid');
+  grid.innerHTML = data.map(g => {
+    const stars = n => '★'.repeat(Math.floor(n)) + (n % 1 >= 0.5 ? '½' : '') + '☆'.repeat(5 - Math.ceil(n));
+    return `
+    <div class="gc-card">
+      <div class="gc-top">
+        <div>
+          <div class="gc-name">${g.name}</div>
+          <div class="gc-type">${g.type}</div>
+        </div>
+        <div class="gc-overall">
+          <div class="gc-score-big">${g.score}</div>
+          <div class="gc-score-label">${g.reviews} reviews</div>
+        </div>
+      </div>
+      <div class="gc-ratings-grid">
+        <div class="gc-rating-item"><span class="gc-rating-label">Payment Speed</span><span class="gc-rating-stars">${stars(g.payment)}</span></div>
+        <div class="gc-rating-item"><span class="gc-rating-label">Change Orders</span><span class="gc-rating-stars">${stars(g.changes)}</span></div>
+        <div class="gc-rating-item"><span class="gc-rating-label">Communication</span><span class="gc-rating-stars">${stars(g.communication)}</span></div>
+        <div class="gc-rating-item"><span class="gc-rating-label">Safety</span><span class="gc-rating-stars">${stars(g.safety)}</span></div>
+      </div>
+      <div class="gc-review">
+        "${g.review}"
+        <div class="gc-review-author">— ${g.reviewer}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============ INTERACTIONS ============
+function showPanel(id) {
+  document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.app-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.querySelectorAll('.app-tab').forEach(t => {
+    if (t.textContent.toLowerCase().includes(id === 'directory' ? 'find' : id === 'projects' ? 'project' : id === 'ratings' ? 'gc' : 'ai')) t.classList.add('active');
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    if (l.textContent.toLowerCase().includes(id === 'directory' ? 'find' : id === 'projects' ? 'project' : id === 'ratings' ? 'gc' : 'ai')) l.classList.add('active');
+  });
+  const section = document.getElementById('app-section');
+  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function filterSubs() {
+  const search = document.getElementById('sub-search').value.toLowerCase();
+  const trade = document.getElementById('trade-filter').value;
+  const filtered = subs.filter(s => {
+    const matchSearch = !search || s.name.toLowerCase().includes(search) || s.trade.toLowerCase().includes(search) || s.location.toLowerCase().includes(search);
+    const matchTrade = !trade || s.trade === trade;
+    return matchSearch && matchTrade;
+  });
+  renderSubs(filtered);
+}
+
+function filterProjects(btn, type) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = type === 'all' ? projects : projects.filter(p => p.type === type);
+  renderProjects(filtered);
+}
+
+function filterGCs() {
+  const search = document.getElementById('gc-search').value.toLowerCase();
+  const filtered = gcs.filter(g => g.name.toLowerCase().includes(search) || g.type.toLowerCase().includes(search));
+  renderGCs(filtered);
+}
+
+function runAiDemo() {
+  const upload = document.getElementById('ai-upload');
+  const result = document.getElementById('ai-result');
+  upload.innerHTML = '<div style="padding:20px;"><div class="ai-upload-icon">&#x2699;&#xFE0F;</div><div class="ai-upload-title">Analyzing plans...</div><div style="margin-top:12px;height:6px;background:var(--gray-200);border-radius:3px;overflow:hidden;max-width:300px;margin-left:auto;margin-right:auto;"><div style="height:100%;background:var(--blue);border-radius:3px;animation:progress 2s ease-in-out forwards;" id="progress-bar"></div></div></div>';
+  setTimeout(() => {
+    upload.style.display = 'none';
+    result.classList.add('show');
+  }, 2500);
+}
+
+function openModal() { document.getElementById('modal').classList.add('show'); }
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+function toggleMobile() {
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.position = 'absolute';
+  links.style.top = '64px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = '#fff';
+  links.style.flexDirection = 'column';
+  links.style.padding = '16px';
+  links.style.borderBottom = '1px solid var(--gray-200)';
+  links.style.boxShadow = 'var(--shadow-lg)';
+}
+
+// ============ INIT ============
+renderSubs(subs);
+renderProjects(projects);
+renderGCs(gcs);
+
+// Progress bar animation
+const style = document.createElement('style');
+style.textContent = '@keyframes progress { 0% { width: 0%; } 100% { width: 100%; } }';
+document.head.appendChild(style);
+</script>
+</body>
+</html>

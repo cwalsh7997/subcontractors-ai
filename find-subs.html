@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Subcontractors — Subcontractors.ai</title>
+<meta name="description" content="Browse and connect with verified subcontractors across all trades. Search by location, trade, and readiness score on Subcontractors.ai.">
+<meta property="og:title" content="Find Subcontractors — Subcontractors.ai">
+<meta property="og:description" content="Browse and connect with verified subcontractors across all trades. Search by location, trade, and readiness score on Subcontractors.ai.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link active" href="find-subs.html">Find Subs</a>
+      <a class="nav-link" href="project-board.html">Project Board</a>
+      <a class="nav-link" href="gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="ai-tools.html">AI Tools</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="openModal()">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">Get Started Free</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+  <div class="container">
+    <h1>Find Subcontractors</h1>
+    <p>Connect with verified, licensed subcontractors in every trade. Search by location, trade, or readiness score to find your perfect sub match.</p>
+  </div>
+</section>
+
+<!-- ============ DIRECTORY ============ -->
+<section class="section">
+  <div class="container">
+    <div class="directory-search">
+      <input type="text" class="search-input" placeholder="Search by company name, trade, or location..." id="sub-search" oninput="filterSubs()">
+      <select class="search-select" id="trade-filter" onchange="filterSubs()">
+        <option value="">All Trades</option>
+        <option>Electrical</option>
+        <option>Plumbing</option>
+        <option>HVAC</option>
+        <option>Glass & Glazing</option>
+        <option>Concrete</option>
+        <option>Roofing</option>
+        <option>Painting</option>
+        <option>Framing</option>
+      </select>
+    </div>
+    <div class="sub-grid" id="sub-grid"></div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Win More Bids?</h2>
+    <p>Get listed on Subcontractors.ai and start connecting with GCs looking for your trade.</p>
+    <div class="cta-input-group">
+      <input type="email" class="cta-input" placeholder="Enter your work email">
+      <button class="btn btn-orange" onclick="openModal()">Get Started Free</button>
+    </div>
+    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">No credit card required. Free plan available forever.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+        <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="find-subs.html">Find Subs</a></li>
+          <li><a href="project-board.html">Project Board</a></li>
+          <li><a href="gc-ratings.html">GC Ratings</a></li>
+          <li><a href="ai-tools.html">AI Tools</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#">Lien Waiver Templates</a></li>
+          <li><a href="#">Pay App Templates</a></li>
+          <li><a href="#">Insurance Guide</a></li>
+          <li><a href="#">Bonding Guide</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About / Our Story</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+      <span>Built with ⚡ by a sub, for subs.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SIGNUP MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Create Your Free Profile</h2>
+    <p>Join thousands of subcontractors who are taking control of their business.</p>
+    <input type="text" class="modal-input" placeholder="Company Name">
+    <input type="email" class="modal-input" placeholder="Email Address">
+    <select class="modal-input" style="appearance:auto;">
+      <option value="">Select Your Trade</option>
+      <option>Electrical</option>
+      <option>Plumbing</option>
+      <option>HVAC</option>
+      <option>Glass & Glazing</option>
+      <option>Concrete</option>
+      <option>Roofing</option>
+      <option>Painting</option>
+      <option>Framing</option>
+      <option>Excavation</option>
+      <option>Drywall</option>
+      <option>Flooring</option>
+      <option>Fire Protection</option>
+      <option>Steel / Iron</option>
+      <option>Other</option>
+    </select>
+    <input type="text" class="modal-input" placeholder="City, State">
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
+  </div>
+</div>
+
+<script>
+// ============ MOCK DATA ============
+const subs = [
+  { name: "Sunshine Electric Co.", trade: "Electrical", location: "Miami, FL", score: 96, verified: true, initials: "SE", badges: ["Licensed", "Insured", "Union"], projects: 142 },
+  { name: "Gulf Coast Plumbing", trade: "Plumbing", location: "Tampa, FL", score: 91, verified: true, initials: "GC", badges: ["Licensed", "Insured", "MWBE"], projects: 87 },
+  { name: "American Commercial Glass", trade: "Glass & Glazing", location: "Fort Lauderdale, FL", score: 98, verified: true, initials: "AC", badges: ["Licensed", "Insured", "Impact Certified"], projects: 215 },
+  { name: "Summit HVAC Solutions", trade: "HVAC", location: "Orlando, FL", score: 89, verified: true, initials: "SH", badges: ["Licensed", "Insured"], projects: 64 },
+  { name: "Titan Concrete Corp", trade: "Concrete", location: "Jacksonville, FL", score: 93, verified: true, initials: "TC", badges: ["Licensed", "Insured", "ACI Certified"], projects: 178 },
+  { name: "Apex Roofing Systems", trade: "Roofing", location: "West Palm Beach, FL", score: 87, verified: false, initials: "AR", badges: ["Licensed", "Insured"], projects: 56 },
+  { name: "Precision Framing LLC", trade: "Framing", location: "Naples, FL", score: 84, verified: true, initials: "PF", badges: ["Licensed", "Insured"], projects: 102 },
+  { name: "ProCoat Painting Inc.", trade: "Painting", location: "Sarasota, FL", score: 92, verified: true, initials: "PP", badges: ["Licensed", "Insured", "Lead-Safe"], projects: 231 },
+];
+
+// ============ RENDER FUNCTIONS ============
+function renderSubs(data) {
+  const grid = document.getElementById('sub-grid');
+  grid.innerHTML = data.map(s => `
+    <div class="sub-card">
+      <div class="sub-header">
+        <div class="sub-avatar" style="background:${s.score > 90 ? 'var(--navy)' : 'var(--gray-600)'}">${s.initials}</div>
+        <div class="sub-info">
+          <div class="sub-name">${s.name} ${s.verified ? '<span class="verified-badge">✓</span>' : ''}</div>
+          <div class="sub-trade">${s.trade}</div>
+          <div class="sub-location"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${s.location}</div>
+        </div>
+      </div>
+      <div class="sub-meta">
+        ${s.badges.map(b => `<span class="badge badge-blue">${b}</span>`).join('')}
+        <span class="badge badge-gray">${s.projects} Projects</span>
+      </div>
+      <div class="sub-score">
+        <span class="score-label">Readiness Score</span>
+        <div class="score-bar"><div class="score-fill ${s.score >= 90 ? 'score-fill-high' : 'score-fill-mid'}" style="width:${s.score}%"></div></div>
+        <span class="score-value">${s.score}/100</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============ FILTER FUNCTION ============
+function filterSubs() {
+  const search = document.getElementById('sub-search').value.toLowerCase();
+  const trade = document.getElementById('trade-filter').value;
+  const filtered = subs.filter(s => {
+    const matchSearch = !search || s.name.toLowerCase().includes(search) || s.trade.toLowerCase().includes(search) || s.location.toLowerCase().includes(search);
+    const matchTrade = !trade || s.trade === trade;
+    return matchSearch && matchTrade;
+  });
+  renderSubs(filtered);
+}
+
+// ============ MODAL ============
+function openModal() { document.getElementById('modal').classList.add('show'); }
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// ============ MOBILE MENU ============
+function toggleMobile() {
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.position = 'absolute';
+  links.style.top = '64px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = '#fff';
+  links.style.flexDirection = 'column';
+  links.style.padding = '16px';
+  links.style.borderBottom = '1px solid var(--gray-200)';
+  links.style.boxShadow = 'var(--shadow-lg)';
+}
+
+// ============ INIT ============
+renderSubs(subs);
+</script>
+</body>
+</html>

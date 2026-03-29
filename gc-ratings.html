@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GC Ratings — Subcontractors.ai</title>
+<meta name="description" content="Rate and review general contractors. See which GCs pay on time, handle changes fairly, and treat subs with respect. Glassdoor for contractors.">
+<meta property="og:title" content="GC Ratings — Subcontractors.ai">
+<meta property="og:description" content="Rate and review general contractors. See which GCs pay on time, handle changes fairly, and treat subs with respect. Glassdoor for contractors.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="find-subs.html">Find Subs</a>
+      <a class="nav-link" href="project-board.html">Project Board</a>
+      <a class="nav-link active" href="gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="ai-tools.html">AI Tools</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="openModal()">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">Get Started Free</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+  <div class="container">
+    <h1>GC Ratings</h1>
+    <p>The Glassdoor for contractors. See which general contractors pay on time, handle change orders fairly, and treat subcontractors with respect.</p>
+  </div>
+</section>
+
+<!-- ============ RATE GC SECTION ============ -->
+<section class="section">
+  <div class="container">
+    <div class="rate-gc-section">
+      <h3>Have You Worked with a General Contractor?</h3>
+      <p>Share your experience and help other subcontractors make informed decisions. Your honest reviews keep the industry fair.</p>
+      <button class="btn btn-primary btn-lg" onclick="openModal()">Rate a GC Today &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GC RATINGS ============ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="directory-search">
+      <input type="text" class="search-input" placeholder="Search general contractors..." id="gc-search" oninput="filterGCs()">
+      <select class="search-select" id="gc-sort" onchange="filterGCs()">
+        <option value="highest">Highest Rated</option>
+        <option value="most">Most Reviews</option>
+        <option value="payment">Best Payment</option>
+      </select>
+    </div>
+    <div class="gc-grid" id="gc-grid"></div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Your Feedback Shapes the Industry</h2>
+    <p>Honest contractor ratings help subs avoid bad GCs and find the ones worth working for. Rate your experience today.</p>
+    <div class="cta-input-group">
+      <input type="email" class="cta-input" placeholder="Enter your work email">
+      <button class="btn btn-orange" onclick="openModal()">Rate a GC Free</button>
+    </div>
+    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">No account required. Anonymous ratings available.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+        <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="find-subs.html">Find Subs</a></li>
+          <li><a href="project-board.html">Project Board</a></li>
+          <li><a href="gc-ratings.html">GC Ratings</a></li>
+          <li><a href="ai-tools.html">AI Tools</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#">Lien Waiver Templates</a></li>
+          <li><a href="#">Pay App Templates</a></li>
+          <li><a href="#">Insurance Guide</a></li>
+          <li><a href="#">Bonding Guide</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About / Our Story</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+      <span>Built with ⚡ by a sub, for subs.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SIGNUP MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Rate a General Contractor</h2>
+    <p>Share your honest experience. Help other subs work with the best GCs.</p>
+    <input type="text" class="modal-input" placeholder="GC Company Name">
+    <input type="email" class="modal-input" placeholder="Your Email (optional)">
+    <select class="modal-input" style="appearance:auto;">
+      <option value="">How many stars?</option>
+      <option>5 Stars ★★★★★</option>
+      <option>4 Stars ★★★★☆</option>
+      <option>3 Stars ★★★☆☆</option>
+      <option>2 Stars ★★☆☆☆</option>
+      <option>1 Star ★☆☆☆☆</option>
+    </select>
+    <textarea class="modal-input" style="resize:vertical;min-height:100px;" placeholder="Share your experience (payment speed, change orders, communication, safety, etc.)"></textarea>
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Submit Review &rarr;</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Anonymous reviews welcome. Your name will never be published.</p>
+  </div>
+</div>
+
+<script>
+// ============ MOCK DATA ============
+const gcs = [
+  { name: "Suffolk Construction", type: "Commercial GC — National", score: 4.6, reviews: 142, payment: 4.8, changes: 4.2, communication: 4.7, safety: 4.9, review: "Pays on time, every time. Best GC I've worked with in South Florida. Change orders are fair and processed fast.", reviewer: "Electrical Sub, Miami" },
+  { name: "Turner Construction", type: "Commercial GC — National", score: 4.4, reviews: 231, payment: 4.1, changes: 4.3, communication: 4.6, safety: 4.8, review: "Massive projects, good safety culture. Payment can be slow on retainage release, but they always pay.", reviewer: "HVAC Sub, Orlando" },
+  { name: "Brasfield & Gorrie", type: "Commercial GC — Southeast", score: 4.5, reviews: 89, payment: 4.7, changes: 4.4, communication: 4.3, safety: 4.6, review: "Great to work with. Fair on change orders, and their PMs actually pick up the phone. Rare these days.", reviewer: "Concrete Sub, Jacksonville" },
+  { name: "DPR Construction", type: "Commercial/Industrial GC", score: 4.3, reviews: 67, payment: 4.0, changes: 4.5, communication: 4.4, safety: 4.9, review: "Top-tier safety program. They push schedules hard but the work environment is professional. Payment is average speed.", reviewer: "Plumbing Sub, Tampa" },
+];
+
+// ============ RENDER FUNCTIONS ============
+function renderGCs(data) {
+  const grid = document.getElementById('gc-grid');
+  grid.innerHTML = data.map(g => {
+    const stars = n => '★'.repeat(Math.floor(n)) + (n % 1 >= 0.5 ? '½' : '') + '☆'.repeat(5 - Math.ceil(n));
+    return `
+    <div class="gc-card">
+      <div class="gc-top">
+        <div>
+          <div class="gc-name">${g.name}</div>
+          <div class="gc-type">${g.type}</div>
+        </div>
+        <div class="gc-overall">
+          <div class="gc-score-big">${g.score}</div>
+          <div class="gc-score-label">${g.reviews} reviews</div>
+        </div>
+      </div>
+      <div class="gc-ratings-grid">
+        <div class="gc-rating-item"><span class="gc-rating-label">Payment Speed</span><span class="gc-rating-stars">${stars(g.payment)}</span></div>
+        <div class="gc-rating-item"><span class="gc-rating-label">Change Orders</span><span class="gc-rating-stars">${stars(g.changes)}</span></div>
+        <div class="gc-rating-item"><span class="gc-rating-label">Communication</span><span class="gc-rating-stars">${stars(g.communication)}</span></div>
+        <div class="gc-rating-item"><span class="gc-rating-label">Safety</span><span class="gc-rating-stars">${stars(g.safety)}</span></div>
+      </div>
+      <div class="gc-review">
+        "${g.review}"
+        <div class="gc-review-author">— ${g.reviewer}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============ FILTER FUNCTION ============
+function filterGCs() {
+  const search = document.getElementById('gc-search').value.toLowerCase();
+  const sort = document.getElementById('gc-sort').value;
+
+  let filtered = gcs.filter(g => g.name.toLowerCase().includes(search) || g.type.toLowerCase().includes(search));
+
+  if (sort === 'most') {
+    filtered.sort((a, b) => b.reviews - a.reviews);
+  } else if (sort === 'payment') {
+    filtered.sort((a, b) => b.payment - a.payment);
+  } else {
+    filtered.sort((a, b) => b.score - a.score);
+  }
+
+  renderGCs(filtered);
+}
+
+// ============ MODAL ============
+function openModal() { document.getElementById('modal').classList.add('show'); }
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// ============ MOBILE MENU ============
+function toggleMobile() {
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.position = 'absolute';
+  links.style.top = '64px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = '#fff';
+  links.style.flexDirection = 'column';
+  links.style.padding = '16px';
+  links.style.borderBottom = '1px solid var(--gray-200)';
+  links.style.boxShadow = 'var(--shadow-lg)';
+}
+
+// ============ INIT ============
+renderGCs(gcs);
+</script>
+</body>
+</html>

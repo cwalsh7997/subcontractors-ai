@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Board — Subcontractors.ai</title>
+<meta name="description" content="Browse active construction projects. Filter by type, location, and budget. Find and bid on projects that match your trade.">
+<meta property="og:title" content="Project Board — Subcontractors.ai">
+<meta property="og:description" content="Browse active construction projects. Filter by type, location, and budget. Find and bid on projects that match your trade.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="find-subs.html">Find Subs</a>
+      <a class="nav-link active" href="project-board.html">Project Board</a>
+      <a class="nav-link" href="gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="ai-tools.html">AI Tools</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="openModal()">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">Get Started Free</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+  <div class="container">
+    <h1>Project Board</h1>
+    <p>Active construction projects seeking qualified subcontractors. Filter by project type and find the jobs that match your expertise and location.</p>
+  </div>
+</section>
+
+<!-- ============ PROJECT BOARD ============ -->
+<section class="section">
+  <div class="container">
+    <div class="project-filters">
+      <button class="filter-chip active" onclick="filterProjects(this, 'all')">All Projects</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'commercial')">Commercial</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'residential')">Residential</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'industrial')">Industrial</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'municipal')">Municipal</button>
+    </div>
+    <div class="project-list" id="project-list"></div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Unlock Unlimited Project Alerts</h2>
+    <p>Upgrade to Pro and get real-time notifications for projects in your trade and location. Win more bids with the AI Bid Assistant.</p>
+    <div class="cta-input-group">
+      <input type="email" class="cta-input" placeholder="Enter your work email">
+      <button class="btn btn-orange" onclick="openModal()">Upgrade to Pro</button>
+    </div>
+    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">$49/month, cancel anytime.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+        <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="find-subs.html">Find Subs</a></li>
+          <li><a href="project-board.html">Project Board</a></li>
+          <li><a href="gc-ratings.html">GC Ratings</a></li>
+          <li><a href="ai-tools.html">AI Tools</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#">Lien Waiver Templates</a></li>
+          <li><a href="#">Pay App Templates</a></li>
+          <li><a href="#">Insurance Guide</a></li>
+          <li><a href="#">Bonding Guide</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About / Our Story</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+      <span>Built with ⚡ by a sub, for subs.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SIGNUP MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Create Your Free Profile</h2>
+    <p>Join thousands of subcontractors who are taking control of their business.</p>
+    <input type="text" class="modal-input" placeholder="Company Name">
+    <input type="email" class="modal-input" placeholder="Email Address">
+    <select class="modal-input" style="appearance:auto;">
+      <option value="">Select Your Trade</option>
+      <option>Electrical</option>
+      <option>Plumbing</option>
+      <option>HVAC</option>
+      <option>Glass & Glazing</option>
+      <option>Concrete</option>
+      <option>Roofing</option>
+      <option>Painting</option>
+      <option>Framing</option>
+      <option>Excavation</option>
+      <option>Drywall</option>
+      <option>Flooring</option>
+      <option>Fire Protection</option>
+      <option>Steel / Iron</option>
+      <option>Other</option>
+    </select>
+    <input type="text" class="modal-input" placeholder="City, State">
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
+  </div>
+</div>
+
+<script>
+// ============ MOCK DATA ============
+const projects = [
+  { title: "Brickell Heights Tower — Phase 3", gc: "Suffolk Construction", type: "commercial", budget: "$2.4M - $3.1M", location: "Miami, FL", due: "14 days", trades: ["Glass & Glazing", "HVAC", "Electrical"], sf: "320,000 SF", status: "Bidding" },
+  { title: "Lakewood Ranch Town Center", gc: "Brasfield & Gorrie", type: "commercial", budget: "$850K - $1.2M", location: "Bradenton, FL", due: "21 days", trades: ["Concrete", "Framing", "Roofing"], sf: "95,000 SF", status: "Bidding" },
+  { title: "Palm Harbor Waterfront Residences", gc: "PCL Construction", type: "residential", budget: "$1.8M - $2.5M", location: "Clearwater, FL", due: "7 days", trades: ["Plumbing", "Electrical", "Painting"], sf: "180,000 SF", status: "Urgent" },
+  { title: "Port Everglades Logistics Hub", gc: "DPR Construction", type: "industrial", budget: "$4.2M - $5.8M", location: "Fort Lauderdale, FL", due: "30 days", trades: ["Concrete", "Steel / Iron", "Electrical"], sf: "450,000 SF", status: "New" },
+  { title: "Orange County Public Library Renovation", gc: "Hensel Phelps", type: "municipal", budget: "$320K - $480K", location: "Orlando, FL", due: "10 days", trades: ["Painting", "Framing", "HVAC", "Glass & Glazing"], sf: "28,000 SF", status: "Bidding" },
+  { title: "Aventura Medical Plaza", gc: "Turner Construction", type: "commercial", budget: "$3.6M - $4.8M", location: "Aventura, FL", due: "18 days", trades: ["Electrical", "Plumbing", "HVAC", "Glass & Glazing"], sf: "210,000 SF", status: "New" },
+];
+
+// ============ RENDER FUNCTIONS ============
+function renderProjects(data) {
+  const list = document.getElementById('project-list');
+  list.innerHTML = data.map(p => `
+    <div class="project-card" data-type="${p.type}">
+      <div class="project-top">
+        <div>
+          <div class="project-title">${p.title} ${p.status === 'Urgent' ? '<span class="badge badge-red">Urgent</span>' : p.status === 'New' ? '<span class="badge badge-green">New</span>' : ''}</div>
+          <div class="project-gc">${p.gc}</div>
+        </div>
+        <div class="project-budget">
+          <div class="project-budget-value">${p.budget}</div>
+          <div class="project-budget-label">Estimated Range</div>
+        </div>
+      </div>
+      <div class="project-details">
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>${p.location}</div>
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>${p.sf}</div>
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Bid due in ${p.due}</div>
+      </div>
+      <div class="project-trades">${p.trades.map(t => `<span class="badge badge-blue">${t}</span>`).join('')}</div>
+      <div class="project-actions">
+        <button class="btn btn-primary btn-sm" onclick="openModal()">View & Bid</button>
+        <button class="btn btn-secondary btn-sm">Save Project</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============ FILTER FUNCTION ============
+function filterProjects(btn, type) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = type === 'all' ? projects : projects.filter(p => p.type === type);
+  renderProjects(filtered);
+}
+
+// ============ MODAL ============
+function openModal() { document.getElementById('modal').classList.add('show'); }
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// ============ MOBILE MENU ============
+function toggleMobile() {
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.position = 'absolute';
+  links.style.top = '64px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = '#fff';
+  links.style.flexDirection = 'column';
+  links.style.padding = '16px';
+  links.style.borderBottom = '1px solid var(--gray-200)';
+  links.style.boxShadow = 'var(--shadow-lg)';
+}
+
+// ============ INIT ============
+renderProjects(projects);
+</script>
+</body>
+</html>

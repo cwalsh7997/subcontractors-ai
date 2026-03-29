@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — Subcontractors.ai</title>
+<meta name="description" content="This page doesn't exist yet — but we're building fast.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a2e; line-height: 1.6; background: #fff; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* ============ BRAND TOKENS ============ */
+:root {
+  --navy: #0f1729;
+  --navy-light: #1b2a4a;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --blue-pale: #dbeafe;
+  --blue-bg: #eff6ff;
+  --orange: #f59e0b;
+  --orange-light: #fbbf24;
+  --green: #10b981;
+  --green-light: #d1fae5;
+  --red: #ef4444;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
+/* ============ UTILITIES ============ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.container-sm { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+.text-center { text-align: center; }
+.mt-2 { margin-top: 16px; }
+.mt-4 { margin-top: 32px; }
+.mb-3 { margin-bottom: 24px; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 16px; }
+.gap-3 { gap: 24px; }
+
+/* ============ BUTTONS ============ */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-secondary { background: #fff; color: var(--navy); border: 2px solid var(--gray-200); }
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+.btn-lg { padding: 16px 32px; font-size: 1.1rem; }
+
+/* ============ NAVIGATION ============ */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gray-200); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: 1200px; margin: 0 auto; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy); }
+.nav-logo svg { width: 32px; height: 32px; }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-link { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.2s; }
+.nav-link:hover, .nav-link.active { color: var(--blue); background: var(--blue-bg); }
+.nav-cta { display: flex; align-items: center; gap: 12px; }
+
+/* ============ 404 SECTION ============ */
+.error-section { padding: 200px 0 120px; text-align: center; }
+.error-code { font-size: 6rem; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: 16px; }
+.error-title { font-size: 2.2rem; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
+.error-message { font-size: 1.1rem; color: var(--gray-500); margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+.error-ctas { display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap; }
+.error-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+.error-link { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--blue); font-weight: 500; border-radius: var(--radius-sm); background: var(--blue-bg); transition: all 0.2s; }
+.error-link:hover { background: var(--blue-pale); }
+
+/* ============ FOOTER ============ */
+footer { background: var(--navy); color: #fff; padding: 60px 0 20px; margin-top: 80px; }
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 40px; }
+.footer-section h4 { font-weight: 700; margin-bottom: 16px; font-size: 0.95rem; }
+.footer-links { display: flex; flex-direction: column; gap: 12px; }
+.footer-link { color: #cbd5e1; font-size: 0.9rem; transition: color 0.2s; }
+.footer-link:hover { color: #fff; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; color: #94a3b8; }
+
+@media (max-width: 768px) {
+  .error-code { font-size: 4rem; }
+  .error-title { font-size: 1.6rem; }
+  .error-message { font-size: 1rem; }
+  .error-ctas { flex-direction: column; }
+  .btn-lg { width: 100%; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="#0f1729"/>
+        <path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" fill="#f59e0b" opacity="0.8"/>
+        <path d="M16 8V24M8 12L24 20M24 12L8 20" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Subcontractors.ai
+    </div>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/find-subs.html" class="nav-link">Find Subs</a>
+      <a href="/project-board.html" class="nav-link">Projects</a>
+      <a href="/gc-ratings.html" class="nav-link">GC Ratings</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#signup" class="btn btn-primary btn-lg">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 404 Content -->
+<section class="error-section" style="margin-top: 80px;">
+  <div class="container-sm">
+    <div class="error-code">404</div>
+    <h1 class="error-title">This page doesn't exist yet — but we're building fast.</h1>
+    <p class="error-message">We're constantly adding new features and pages to help construction subcontractors. Check out what we do have available, or let us know what you'd like to see.</p>
+
+    <div class="error-ctas">
+      <a href="/" class="btn btn-primary btn-lg">Back to Home</a>
+      <a href="/find-subs.html" class="btn btn-secondary btn-lg">Browse Opportunities</a>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 40px;">
+      <p style="font-size: 0.95rem; color: var(--gray-600); margin-bottom: 20px;">Check out these popular pages:</p>
+      <div class="error-links">
+        <a href="/find-subs.html" class="error-link">Find Subcontractors</a>
+        <a href="/project-board.html" class="error-link">Project Board</a>
+        <a href="/gc-ratings.html" class="error-link">GC Ratings</a>
+        <a href="/ai-tools.html" class="error-link">AI Tools</a>
+        <a href="/pricing.html" class="error-link">Pricing</a>
+      </div>
+    </div>
+
+    <!-- Signup CTA -->
+    <div id="signup" style="background: var(--blue-bg); border: 2px solid var(--blue-pale); border-radius: var(--radius-lg); padding: 48px 32px; text-align: center;">
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 12px;">Ready to grow your business?</h2>
+      <p style="font-size: 1rem; color: var(--gray-600); margin-bottom: 24px;">Get found, get paid, get protected. Join subs taking control of their growth.</p>
+      <a href="/pricing.html" class="btn btn-primary btn-lg">Explore Plans</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-section">
+        <h4>Product</h4>
+        <div class="footer-links">
+          <a href="/find-subs.html" class="footer-link">Find Subs</a>
+          <a href="/project-board.html" class="footer-link">Project Board</a>
+          <a href="/gc-ratings.html" class="footer-link">GC Ratings</a>
+          <a href="/ai-tools.html" class="footer-link">AI Tools</a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Resources</h4>
+        <div class="footer-links">
+          <a href="/resources/lien-waiver-templates.html" class="footer-link">Lien Waiver Templates</a>
+          <a href="/resources/insurance-guide.html" class="footer-link">Insurance Guide</a>
+          <a href="/resources/bonding-guide.html" class="footer-link">Bonding Guide</a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <div class="footer-links">
+          <a href="/pricing.html" class="footer-link">Pricing</a>
+          <a href="#" class="footer-link">About Us</a>
+          <a href="#" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+          <a href="#" class="footer-link">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Subcontractors.ai. All rights reserved.</p>
+      <p>Built for the trades.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

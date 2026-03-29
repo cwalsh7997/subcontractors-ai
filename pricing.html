@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Subcontractors.ai</title>
+<meta name="description" content="Simple, transparent pricing for subcontractors. Free forever plan, or upgrade to Pro for AI tools, unlimited projects, and more.">
+<meta property="og:title" content="Pricing — Subcontractors.ai">
+<meta property="og:description" content="Simple, transparent pricing for subcontractors. No contracts, no setup fees. Start free, upgrade when you're ready.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="find-subs.html">Find Subs</a>
+      <a class="nav-link" href="project-board.html">Project Board</a>
+      <a class="nav-link" href="gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="ai-tools.html">AI Tools</a>
+      <a class="nav-link active" href="pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="openModal()">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">Get Started Free</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+  <div class="container">
+    <h1>Simple Pricing</h1>
+    <p>Start free. Upgrade when you're ready. No contracts, no setup fees, cancel anytime.</p>
+  </div>
+</section>
+
+<!-- ============ PRICING CARDS ============ -->
+<section class="section">
+  <div class="container">
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Free</div>
+        <div class="pricing-desc">Get listed, get found</div>
+        <div class="pricing-amount">$0<span>/mo</span></div>
+        <div class="pricing-period">Free forever</div>
+        <ul class="pricing-features">
+          <li>Basic sub profile</li>
+          <li>Trade & location listing</li>
+          <li>3 project alerts/month</li>
+          <li>Community forum access</li>
+          <li class="disabled">AI Bid Assistant</li>
+          <li class="disabled">Compliance dashboard</li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Get Started</button>
+      </div>
+      <div class="pricing-card popular">
+        <div class="pricing-popular-badge">Most Popular</div>
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-desc">Win more bids</div>
+        <div class="pricing-amount">$49<span>/mo</span></div>
+        <div class="pricing-period">Billed monthly</div>
+        <ul class="pricing-features">
+          <li>Everything in Free</li>
+          <li>AI Bid Assistant</li>
+          <li>Unlimited project alerts</li>
+          <li>Compliance dashboard</li>
+          <li>Payment protection tools</li>
+          <li>Verified badge</li>
+        </ul>
+        <button class="btn btn-primary" style="width:100%;" onclick="openModal()">Start Pro Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Business</div>
+        <div class="pricing-desc">Scale your operation</div>
+        <div class="pricing-amount">$149<span>/mo</span></div>
+        <div class="pricing-period">Billed monthly</div>
+        <ul class="pricing-features">
+          <li>Everything in Pro</li>
+          <li>AI Proposal Writer</li>
+          <li>Team management (5 seats)</li>
+          <li>Advanced analytics</li>
+          <li>Priority listing</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Start Business Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-desc">Multi-location subs</div>
+        <div class="pricing-amount">$399<span>/mo</span></div>
+        <div class="pricing-period">Billed monthly</div>
+        <ul class="pricing-features">
+          <li>Everything in Business</li>
+          <li>Unlimited team seats</li>
+          <li>Multi-location support</li>
+          <li>API access</li>
+          <li>Custom integrations</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+      <p>Have questions? We've got answers.</p>
+    </div>
+    <div class="faq-section">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Can I start on Free and upgrade to Pro later?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-content">
+            Yes, absolutely! Start with our free plan and upgrade to Pro anytime. Your profile, projects, and data carry over seamlessly. There's no penalty for upgrading — many subs start free to try the platform, then upgrade when they see the ROI from the AI tools.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>What's included in the AI Bid Assistant?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-content">
+            Upload your project plans, specs, and drawings (PDF, DWG, images). Our AI extracts the scope relevant to your trade, identifies quantities, flags key specifications, and provides estimated cost ranges. You get a structured breakdown that's ready to bid from. No more manual scope extraction or guessing.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Is there a long-term contract?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-content">
+            No contracts, ever. Cancel your subscription anytime with just a few clicks. We work on month-to-month billing, and we only make money if we provide you with value. Your success is our success.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>How does the compliance dashboard work?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-content">
+            Upload your insurance certificates, licenses, and certifications. The dashboard tracks renewal dates and automatically alerts you 30 days before anything expires. You'll never lose a bid because docs went out of date. Available on Pro and above.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Can I manage my team on Subcontractors.ai?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-content">
+            Yes! Business plan includes team management for up to 5 seats. Each team member gets their own login, and you control permissions (who can bid, who can rate GCs, who can see analytics, etc.). Enterprise plan gives you unlimited seats.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>How does GC Ratings work? Are reviews anonymous?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-content">
+            GC Ratings lets you rate and review general contractors you've worked with. Think Glassdoor for contractors. You can rate payment speed, change order fairness, communication, safety, and more. Anonymous reviews are welcome — your company name is never published. We verify reviewers are real subs but keep identities private.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Build a Better Business?</h2>
+    <p>Join thousands of subcontractors who've upgraded their operations with Subcontractors.ai. Create your free profile in under 3 minutes.</p>
+    <div class="cta-input-group">
+      <input type="email" class="cta-input" placeholder="Enter your work email">
+      <button class="btn btn-orange" onclick="openModal()">Get Started Free</button>
+    </div>
+    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">No credit card required. Upgrade anytime.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+        <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="find-subs.html">Find Subs</a></li>
+          <li><a href="project-board.html">Project Board</a></li>
+          <li><a href="gc-ratings.html">GC Ratings</a></li>
+          <li><a href="ai-tools.html">AI Tools</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#">Lien Waiver Templates</a></li>
+          <li><a href="#">Pay App Templates</a></li>
+          <li><a href="#">Insurance Guide</a></li>
+          <li><a href="#">Bonding Guide</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About / Our Story</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+      <span>Built with ⚡ by a sub, for subs.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SIGNUP MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Create Your Free Profile</h2>
+    <p>Join thousands of subcontractors who are taking control of their business.</p>
+    <input type="text" class="modal-input" placeholder="Company Name">
+    <input type="email" class="modal-input" placeholder="Email Address">
+    <select class="modal-input" style="appearance:auto;">
+      <option value="">Select Your Trade</option>
+      <option>Electrical</option>
+      <option>Plumbing</option>
+      <option>HVAC</option>
+      <option>Glass & Glazing</option>
+      <option>Concrete</option>
+      <option>Roofing</option>
+      <option>Painting</option>
+      <option>Framing</option>
+      <option>Excavation</option>
+      <option>Drywall</option>
+      <option>Flooring</option>
+      <option>Fire Protection</option>
+      <option>Steel / Iron</option>
+      <option>Other</option>
+    </select>
+    <input type="text" class="modal-input" placeholder="City, State">
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
+  </div>
+</div>
+
+<script>
+// ============ FAQ TOGGLE ============
+function toggleFaq(element) {
+  const question = element;
+  const answer = element.nextElementSibling;
+
+  // Close all other FAQs
+  document.querySelectorAll('.faq-question.active').forEach(q => {
+    if (q !== question) {
+      q.classList.remove('active');
+    }
+  });
+
+  // Toggle current FAQ
+  question.classList.toggle('active');
+
+  if (question.classList.contains('active')) {
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  } else {
+    answer.style.maxHeight = '0';
+  }
+}
+
+// ============ MODAL ============
+function openModal() { document.getElementById('modal').classList.add('show'); }
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// ============ MOBILE MENU ============
+function toggleMobile() {
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.position = 'absolute';
+  links.style.top = '64px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = '#fff';
+  links.style.flexDirection = 'column';
+  links.style.padding = '16px';
+  links.style.borderBottom = '1px solid var(--gray-200)';
+  links.style.boxShadow = 'var(--shadow-lg)';
+}
+</script>
+</body>
+</html>
