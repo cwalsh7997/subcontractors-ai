@@ -216,6 +216,8 @@
         let sbClient = null;
         let currentUser = null;
         let selectedType = 'conditional_progress';
+        let useSupabase = false;
+        let lienWaivers = [];
 
         const typeNames = {
             conditional_progress: 'CONDITIONAL WAIVER AND RELEASE ON PROGRESS PAYMENT',
@@ -223,6 +225,41 @@
             conditional_final: 'CONDITIONAL WAIVER AND RELEASE ON FINAL PAYMENT',
             unconditional_final: 'UNCONDITIONAL WAIVER AND RELEASE ON FINAL PAYMENT'
         };
+
+        async function loadLienWaivers() {
+            if (sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('lien_waivers')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    if (!error && data) {
+                        useSupabase = true;
+                        lienWaivers = data.map(lw => ({
+                            id: lw.id,
+                            project: lw.project,
+                            gcName: lw.gc_name,
+                            waiverType: lw.waiver_type,
+                            amount: lw.amount,
+                            dateSigned: lw.date_signed,
+                            status: lw.status,
+                            throughDate: lw.through_date,
+                            notes: lw.notes,
+                            created: lw.created_at
+                        }));
+                        return;
+                    }
+                } catch (e) { console.log('Supabase lien_waivers not available, using localStorage'); }
+            }
+            // Fallback to localStorage
+            try {
+                lienWaivers = JSON.parse(localStorage.getItem('lien_waivers') || '[]');
+            } catch (e) { lienWaivers = []; }
+        }
+
+        async function saveLienWaiversToStorage() {
+            localStorage.setItem('lien_waivers', JSON.stringify(lienWaivers));
+        }
 
         async function init() {
             const url = window.SUPABASE_URL;
@@ -251,6 +288,10 @@
                     if (data && data.company_name) document.getElementById('w-claimant').value = data.company_name;
                 } catch (e) {}
             }
+
+            // Load lien waivers from Supabase or localStorage
+            await loadLienWaivers();
+
             updatePreview();
         }
 
@@ -383,7 +424,7 @@
             `;
         }
 
-        function generateWaiverPDF() {
+        async function generateWaiverPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ unit: 'pt', format: 'letter' });
             const W = doc.internal.pageSize.getWidth();
@@ -493,6 +534,48 @@
             const typeShort = selectedType.replace('_', '-');
             const filename = 'Lien-Waiver-' + typeShort + '-' + (document.getElementById('w-project').value || 'Project').replace(/[^a-zA-Z0-9]/g, '-').slice(0, 25) + '.pdf';
             doc.save(filename);
+
+            // Save waiver record to Supabase or localStorage
+            const waiverData = {
+                project: document.getElementById('w-project').value,
+                gcName: document.getElementById('w-gc').value,
+                waiverType: selectedType,
+                amount: parseFloat(document.getElementById('w-amount').value) || 0,
+                dateSigned: new Date().toISOString().slice(0, 10),
+                status: 'pending',
+                throughDate: document.getElementById('w-through-date').value || null,
+                notes: document.getElementById('w-exceptions').value || ''
+            };
+
+            if (useSupabase && sbClient) {
+                try {
+                    const sbData = {
+                        user_id: currentUser.id,
+                        project: waiverData.project,
+                        gc_name: waiverData.gcName,
+                        waiver_type: waiverData.waiverType,
+                        amount: waiverData.amount,
+                        date_signed: waiverData.dateSigned,
+                        status: waiverData.status,
+                        through_date: waiverData.throughDate,
+                        notes: waiverData.notes
+                    };
+                    const { error } = await sbClient.from('lien_waivers').insert([sbData]);
+                    if (error) {
+                        console.log('Failed to save to Supabase:', error);
+                    } else {
+                        await loadLienWaivers();
+                    }
+                } catch (e) {
+                    console.log('Supabase save failed:', e);
+                }
+            } else {
+                waiverData.id = 'lw_' + Date.now();
+                waiverData.created = new Date().toISOString();
+                lienWaivers.push(waiverData);
+                saveLienWaiversToStorage();
+            }
+
             if (window.toast) toast.success('Lien waiver PDF generated!');
         }
 

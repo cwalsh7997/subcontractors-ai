@@ -269,6 +269,7 @@
         let currentUser = null;
         let incidents = [];
         let completedTalks = [];
+        let useSupabase = false;
 
         const toolboxTopics = [
             { id: 'fall-protection', icon: '&#x1f9d7;', title: 'Fall Protection', desc: 'Harnesses, guardrails, warning lines, and leading edge work. OSHA 1926 Subpart M.', category: 'High Risk', osha: '1926.501-503', duration: '15 min' },
@@ -325,15 +326,60 @@
             if (['connor@acglass.com'].includes(currentUser.email)) document.getElementById('admin-link').style.display = '';
 
             document.getElementById('inc-date').value = new Date().toISOString().slice(0, 10);
-            loadData();
+            await loadData();
             renderTopics();
             renderChecklist();
             renderIncidents();
             updateStats();
         }
 
-        function loadData() {
+        async function loadData() {
+            // Try to load incidents from Supabase
+            if (sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('safety_incidents')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    if (!error && data) {
+                        useSupabase = true;
+                        incidents = data.map(inc => ({
+                            id: inc.id,
+                            type: inc.type,
+                            date: inc.incident_date,
+                            project: inc.project,
+                            location: inc.location,
+                            description: inc.description,
+                            action: inc.corrective_action,
+                            severity: inc.severity,
+                            status: inc.status,
+                            reportedBy: inc.user_id,
+                            created: inc.created_at
+                        }));
+                        // Now load completed talks
+                        await loadCompletedTalks();
+                        return;
+                    }
+                } catch (e) { console.log('Supabase safety_incidents not available, using localStorage'); }
+            }
+            // Fallback to localStorage
             try { incidents = JSON.parse(localStorage.getItem('safety_incidents') || '[]'); } catch (e) { incidents = []; }
+            try { completedTalks = JSON.parse(localStorage.getItem('completed_talks') || '[]'); } catch (e) { completedTalks = []; }
+        }
+
+        async function loadCompletedTalks() {
+            if (sbClient && useSupabase) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('completed_talks')
+                        .select('talk_id');
+                    if (!error && data) {
+                        completedTalks = data.map(row => row.talk_id);
+                        return;
+                    }
+                } catch (e) { console.log('Supabase completed_talks not available, using localStorage'); }
+            }
+            // Fallback to localStorage
             try { completedTalks = JSON.parse(localStorage.getItem('completed_talks') || '[]'); } catch (e) { completedTalks = []; }
         }
 
@@ -363,9 +409,21 @@
             }).join('');
         }
 
-        function conductTalk(id) {
+        async function conductTalk(id) {
             if (!completedTalks.includes(id)) {
                 completedTalks.push(id);
+
+                if (useSupabase && sbClient) {
+                    try {
+                        const { error } = await sbClient.from('completed_talks').insert([{
+                            user_id: currentUser.id,
+                            talk_id: id,
+                            completed_at: new Date().toISOString()
+                        }]);
+                        if (error) { if (window.toast) toast.warning('Could not save to Supabase, saved locally'); }
+                    } catch (e) { if (window.toast) toast.warning('Could not save to Supabase, saved locally'); }
+                }
+
                 localStorage.setItem('completed_talks', JSON.stringify(completedTalks));
                 renderTopics();
                 updateStats();
@@ -450,7 +508,7 @@
             if (window.toast) toast.success('Checklist exported!');
         }
 
-        function submitIncident() {
+        async function submitIncident() {
             const type = document.getElementById('inc-type').value;
             const date = document.getElementById('inc-date').value;
             const description = document.getElementById('inc-description').value;
@@ -467,6 +525,22 @@
                 reportedBy: currentUser.email,
                 created: new Date().toISOString()
             };
+
+            if (useSupabase && sbClient) {
+                try {
+                    const { error } = await sbClient.from('safety_incidents').insert([{
+                        type: incident.type,
+                        incident_date: incident.date,
+                        project: incident.project,
+                        location: incident.location,
+                        description: incident.description,
+                        corrective_action: incident.action,
+                        user_id: currentUser.id,
+                        created_at: incident.created
+                    }]);
+                    if (error) { if (window.toast) toast.warning('Could not save to Supabase, saved locally'); }
+                } catch (e) { if (window.toast) toast.warning('Could not save to Supabase, saved locally'); }
+            }
 
             incidents.unshift(incident);
             localStorage.setItem('safety_incidents', JSON.stringify(incidents));
