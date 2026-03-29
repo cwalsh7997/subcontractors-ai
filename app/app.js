@@ -223,15 +223,40 @@ function getUserProfile() {
 // =============================================================================
 
 /**
- * Require authentication — redirect to login if not authenticated
- * @returns {boolean}
+ * Require authentication — initializes Supabase, checks session, redirects if needed
+ * @async
+ * @returns {Promise<object|null>} The current user object, or null (redirects to login)
  */
-function requireAuth() {
-  if (!isAuthenticated()) {
-    window.location.href = 'login.html';
-    return false;
+async function requireAuth() {
+  // Initialize Supabase client if not already done
+  if (!supabase && isConfigured() && window.supabase && window.supabase.createClient) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
-  return true;
+
+  if (supabase) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session && session.user) {
+        currentUser = session.user;
+        return currentUser;
+      }
+    } catch (e) {
+      console.error('Auth check error:', e);
+    }
+  }
+
+  // Check demo mode fallback
+  if (isDemoMode()) {
+    const demoUser = JSON.parse(localStorage.getItem('demo_user') || localStorage.getItem('sb-demo-user') || 'null');
+    if (demoUser) {
+      currentUser = demoUser;
+      return currentUser;
+    }
+  }
+
+  // No session found — redirect to login
+  window.location.href = 'login.html';
+  return null;
 }
 
 /**
