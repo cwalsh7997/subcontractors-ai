@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bid Assistant - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; }
+        .page-title { font-size: 28px; font-weight: 700; color: #0f1729; }
+        .page-sub { font-size: 14px; color: #64748b; margin-top: 4px; }
+        .top-bar { margin-bottom: 32px; }
+
+        /* Bid Tool Layout */
+        .bid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .card-header { padding: 20px 24px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+        .card-title { font-size: 16px; font-weight: 700; color: #0f1729; }
+        .card-body { padding: 24px; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-beta { background: #dbeafe; color: #2563eb; }
+        .badge-new { background: #dcfce7; color: #16a34a; }
+
+        /* Upload Area */
+        .upload-area { border: 2px dashed #d1d5db; border-radius: 12px; padding: 48px 24px; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafbfc; }
+        .upload-area:hover { border-color: #2563eb; background: #eff6ff; }
+        .upload-area.dragover { border-color: #2563eb; background: #dbeafe; }
+        .upload-icon { font-size: 48px; margin-bottom: 16px; }
+        .upload-title { font-size: 16px; font-weight: 600; color: #0f1729; margin-bottom: 8px; }
+        .upload-sub { font-size: 13px; color: #64748b; }
+        .upload-formats { font-size: 12px; color: #94a3b8; margin-top: 12px; }
+
+        /* Form */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: inherit; color: #1e293b; background: #f8fafc; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .form-textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .btn { padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; }
+        .btn-primary { background: #2563eb; color: #fff; width: 100%; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Results */
+        .result-section { display: none; }
+        .result-section.show { display: block; }
+        .result-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: linear-gradient(135deg, #0f1729, #1e3a5f); border-radius: 8px; color: #fff; margin-bottom: 20px; }
+        .result-header h3 { font-size: 15px; font-weight: 600; }
+        .result-header .time { font-size: 12px; color: #94a3b8; margin-left: auto; }
+
+        .scope-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .scope-item:last-child { border: none; }
+        .scope-dot { width: 8px; height: 8px; border-radius: 50%; background: #2563eb; margin-top: 6px; flex-shrink: 0; }
+        .scope-text { font-size: 14px; color: #334155; line-height: 1.5; }
+
+        .cost-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+        .cost-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; text-align: center; }
+        .cost-label { font-size: 12px; color: #64748b; margin-bottom: 4px; }
+        .cost-value { font-size: 22px; font-weight: 800; }
+        .cost-low { color: #16a34a; }
+        .cost-mid { color: #2563eb; }
+        .cost-high { color: #f59e0b; }
+
+        .risk-item { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; }
+        .risk-high { background: #fee2e2; }
+        .risk-medium { background: #fef3c7; }
+        .risk-low { background: #f0fdf4; }
+        .risk-badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .risk-badge-high { background: #dc2626; color: #fff; }
+        .risk-badge-medium { background: #f59e0b; color: #fff; }
+        .risk-badge-low { background: #16a34a; color: #fff; }
+        .risk-text { font-size: 13px; color: #334155; }
+
+        .timeline-item { display: flex; gap: 12px; padding: 8px 0; }
+        .timeline-week { font-size: 12px; font-weight: 700; color: #2563eb; min-width: 60px; }
+        .timeline-task { font-size: 13px; color: #334155; }
+
+        /* Loading */
+        .analyzing { display: none; text-align: center; padding: 48px; }
+        .analyzing.show { display: block; }
+        .spinner { width: 48px; height: 48px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .analyzing-text { font-size: 14px; color: #64748b; }
+        .analyzing-step { font-size: 13px; color: #2563eb; font-weight: 600; margin-top: 8px; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+            .bid-layout { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .cost-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail">Loading...</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link active">&#x1f916; AI Bid Assistant</a></li>
+                <li class="nav-item"><a href="../gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="../project-board.html" class="nav-link">&#x1f4cb; Projects</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div class="page-title">AI Bid Assistant <span class="badge badge-beta">Beta</span></div>
+                <div class="page-sub">Enter project details and let AI analyze the scope, estimate costs, and flag risks.</div>
+            </div>
+
+            <div class="bid-layout">
+                <!-- Left: Input -->
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Project Details</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Project Name</label>
+                                <input type="text" class="form-input" id="bid-project" placeholder="e.g. Riverside Office Tower Phase 2">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-input" id="bid-location" placeholder="City, State">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Your Trade</label>
+                                    <select class="form-select" id="bid-trade">
+                                        <option value="">Select trade</option>
+                                        <option>Electrical</option>
+                                        <option>Plumbing</option>
+                                        <option>HVAC</option>
+                                        <option>Glass & Glazing</option>
+                                        <option>Concrete</option>
+                                        <option>Roofing</option>
+                                        <option>Painting</option>
+                                        <option>Framing</option>
+                                        <option>Drywall</option>
+                                        <option>Flooring</option>
+                                        <option>Steel/Iron</option>
+                                        <option>Fire Protection</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Building Type</label>
+                                    <select class="form-select" id="bid-type">
+                                        <option value="">Select type</option>
+                                        <option>Commercial Office</option>
+                                        <option>Retail</option>
+                                        <option>Mixed-Use</option>
+                                        <option>Healthcare</option>
+                                        <option>Education</option>
+                                        <option>Industrial</option>
+                                        <option>Hospitality</option>
+                                        <option>Residential Multi-Family</option>
+                                        <option>Municipal / Government</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Square Footage</label>
+                                    <input type="number" class="form-input" id="bid-sqft" placeholder="e.g. 50000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">General Contractor</label>
+                                <input type="text" class="form-input" id="bid-gc" placeholder="GC company name (optional)">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Scope Notes / Special Requirements</label>
+                                <textarea class="form-textarea" id="bid-notes" placeholder="Describe any known scope items, specs, or special conditions..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bid Due Date</label>
+                                <input type="date" class="form-input" id="bid-due">
+                            </div>
+                            <button class="btn btn-primary" id="analyze-btn" onclick="analyzeBid()">
+                                &#x1f916; Analyze Project &amp; Generate Estimate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Results -->
+                <div>
+                    <div class="card" id="results-card">
+                        <div class="card-header">
+                            <div class="card-title">AI Analysis</div>
+                            <span class="badge badge-new" id="results-badge" style="display:none;">Complete</span>
+                        </div>
+                        <div class="card-body">
+                            <!-- Empty state -->
+                            <div id="empty-state" style="text-align:center;padding:48px 20px;color:#94a3b8;">
+                                <div style="font-size:48px;margin-bottom:16px;">&#x1f916;</div>
+                                <h3 style="color:#334155;margin-bottom:8px;">Ready to Analyze</h3>
+                                <p style="font-size:13px;">Fill in the project details and click "Analyze" to get AI-powered scope extraction, cost estimates, and risk flags.</p>
+                            </div>
+
+                            <!-- Loading -->
+                            <div class="analyzing" id="analyzing">
+                                <div class="spinner"></div>
+                                <div class="analyzing-text">Analyzing project scope...</div>
+                                <div class="analyzing-step" id="analyze-step">Extracting trade-specific scope items</div>
+                            </div>
+
+                            <!-- Results -->
+                            <div class="result-section" id="results">
+                                <div class="result-header">
+                                    <span>&#x26a1;</span>
+                                    <h3>AI Bid Analysis Complete</h3>
+                                    <span class="time" id="result-time"></span>
+                                </div>
+
+                                <h4 style="font-size:14px;font-weight:700;color:#0f1729;margin-bottom:12px;">Scope Items Identified</h4>
+                                <div id="scope-items"></div>
+
+                                <h4 style="font-size:14px;font-weight:700;color:#0f1729;margin:20px 0 12px;">Cost Estimate</h4>
+                                <div class="cost-grid" id="cost-grid"></div>
+
+                                <h4 style="font-size:14px;font-weight:700;color:#0f1729;margin:20px 0 12px;">Risk Flags</h4>
+                                <div id="risk-items"></div>
+
+                                <h4 style="font-size:14px;font-weight:700;color:#0f1729;margin:20px 0 12px;">Suggested Timeline</h4>
+                                <div id="timeline-items"></div>
+
+                                <div style="margin-top:24px;padding:16px;background:#eff6ff;border-radius:8px;border:1px solid #bfdbfe;">
+                                    <div style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:4px;">Next Steps</div>
+                                    <div style="font-size:13px;color:#1e40af;">Review the scope items above, adjust your markup, and submit your bid. Track the project in your <a href="payments.html" style="color:#1e40af;text-decoration:underline;">Payments</a> dashboard after award.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Init
+        (async function() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            let sb = null;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sb = window.supabase.createClient(url, key);
+                const { data: { session } } = await sb.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                const meta = session.user.user_metadata || {};
+                document.getElementById('sidebar-name').textContent = meta.company_name || session.user.email.split('@')[0];
+                document.getElementById('sidebar-detail').textContent = meta.trade || session.user.email;
+                if (['connor@acglass.com'].includes(session.user.email)) document.getElementById('admin-link').style.display = '';
+                // Pre-fill trade if available
+                if (meta.trade) {
+                    const sel = document.getElementById('bid-trade');
+                    for (let o of sel.options) { if (o.text === meta.trade) { o.selected = true; break; } }
+                }
+            }
+        })();
+
+        async function handleSignOut() {
+            if (typeof signOut === 'function') await signOut();
+            else window.location.href = 'login.html';
+        }
+
+        // Bid analysis simulation
+        async function analyzeBid() {
+            const project = document.getElementById('bid-project').value.trim();
+            const location = document.getElementById('bid-location').value.trim();
+            const trade = document.getElementById('bid-trade').value;
+            const type = document.getElementById('bid-type').value;
+            const sqft = parseInt(document.getElementById('bid-sqft').value) || 0;
+            const notes = document.getElementById('bid-notes').value.trim();
+
+            if (!project || !trade || !type) {
+                alert('Please fill in at least the project name, your trade, and building type.');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('analyzing').classList.add('show');
+            document.getElementById('analyze-btn').disabled = true;
+
+            const steps = [
+                'Extracting trade-specific scope items',
+                'Analyzing square footage and material requirements',
+                'Calculating labor and material costs',
+                'Running risk assessment',
+                'Generating timeline estimate',
+                'Compiling bid summary'
+            ];
+
+            for (let i = 0; i < steps.length; i++) {
+                document.getElementById('analyze-step').textContent = steps[i];
+                await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
+            }
+
+            // Generate results based on input
+            generateResults(project, location, trade, type, sqft, notes);
+
+            document.getElementById('analyzing').classList.remove('show');
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results-badge').style.display = '';
+            document.getElementById('analyze-btn').disabled = false;
+            document.getElementById('result-time').textContent = 'Analyzed in ' + (3 + Math.random() * 2).toFixed(1) + 's';
+        }
+
+        function generateResults(project, location, trade, type, sqft, notes) {
+            const sf = sqft || 25000;
+
+            // Trade-specific scope generation
+            const scopes = {
+                'Electrical': [
+                    'Main electrical service entrance and distribution — ' + Math.ceil(sf/100)*4 + 'A service',
+                    'Branch circuit wiring — estimated ' + Math.ceil(sf/200) + ' circuits',
+                    'LED lighting package — general, task, and emergency fixtures (' + Math.ceil(sf/50) + ' fixtures)',
+                    'Fire alarm system — addressable with ' + Math.ceil(sf/500) + ' devices',
+                    'Data/telecom rough-in — ' + Math.ceil(sf/300) + ' drops',
+                    'Generator connection and transfer switch',
+                    'Panel schedule and load calculations per NEC 2023'
+                ],
+                'Plumbing': [
+                    'Domestic water distribution — hot and cold to all fixtures',
+                    'Sanitary waste and vent system — ' + Math.ceil(sf/1000) + ' fixture units',
+                    'Fixture installation — ' + Math.ceil(sf/500) + ' plumbing fixtures',
+                    'Water heater system — estimated ' + Math.ceil(sf/5000) + ' commercial units',
+                    'Roof drain system — ' + Math.ceil(sf/2500) + ' roof drains',
+                    'Backflow prevention devices per local code',
+                    'Gas piping (if applicable)'
+                ],
+                'HVAC': [
+                    'Rooftop units — estimated ' + Math.ceil(sf/5000) + ' RTUs at ' + Math.ceil(sf/12) + ' total CFM',
+                    'Ductwork distribution — supply, return, and exhaust',
+                    'VAV boxes — ' + Math.ceil(sf/800) + ' zones',
+                    'Controls and building automation tie-in',
+                    'Refrigerant piping',
+                    'Kitchen exhaust and makeup air (if applicable)',
+                    'Start-up, testing, balancing, and commissioning'
+                ],
+                'Glass & Glazing': [
+                    'Curtain wall system — aluminum framed (' + Math.ceil(sf*0.15) + ' SF estimated)',
+                    'Storefront glazing — ground floor entries and retail (' + Math.ceil(sf*0.05) + ' SF)',
+                    'Interior glass partitions — offices and conference rooms (' + Math.ceil(sf*0.03) + ' SF)',
+                    'Entrance doors — aluminum and glass with hardware',
+                    'Window systems — operable and fixed units (' + Math.ceil(sf/200) + ' units)',
+                    location.toLowerCase().includes('fl') || location.toLowerCase().includes('florida') ? 'Hurricane impact glazing required — Miami-Dade NOA compliance' : 'Insulated glazing units per energy code',
+                    'Sealants, gaskets, and weatherproofing'
+                ],
+                'Concrete': [
+                    'Foundation system — spread footings and grade beams',
+                    'Slab on grade — ' + sf + ' SF at 4-6" thickness',
+                    'Elevated slabs — estimated ' + Math.ceil(sf/10000) + ' floors',
+                    'Formwork, rebar, and placement — ' + Math.ceil(sf*0.15) + ' CY estimated',
+                    'Concrete finishing — broom, trowel, and polished as specified',
+                    'Concrete pumping and placement logistics',
+                    'Curing, testing, and quality control'
+                ],
+                'Roofing': [
+                    'Roof system — ' + sf + ' SF (' + type + ')',
+                    'TPO/EPDM/modified bitumen membrane (per spec)',
+                    'Insulation — polyiso board, R-' + (location.toLowerCase().includes('fl') ? '20' : '30') + ' minimum',
+                    'Metal flashing and edge details — ' + Math.ceil(Math.sqrt(sf)*4) + ' LF perimeter',
+                    'Roof drains and overflow scuppers',
+                    'Penetration flashings — ' + Math.ceil(sf/2000) + ' estimated',
+                    'Warranty — 20-year NDL manufacturer\'s warranty'
+                ]
+            };
+
+            const defaultScope = [
+                trade + ' rough-in per plans and specifications — ' + sf + ' SF',
+                'Material procurement and delivery',
+                'Labor for installation per trade scope — estimated ' + Math.ceil(sf/500) + ' man-days',
+                'Coordination with GC and other trades',
+                'Testing, inspection, and code compliance',
+                'Cleanup and punch list',
+                'As-built documentation and warranty'
+            ];
+
+            const items = scopes[trade] || defaultScope;
+            document.getElementById('scope-items').innerHTML = items.map(s =>
+                '<div class="scope-item"><div class="scope-dot"></div><div class="scope-text">' + s + '</div></div>'
+            ).join('');
+
+            // Cost estimates based on trade and sqft
+            const rates = {
+                'Electrical': { low: 12, mid: 18, high: 25 },
+                'Plumbing': { low: 10, mid: 16, high: 22 },
+                'HVAC': { low: 15, mid: 22, high: 32 },
+                'Glass & Glazing': { low: 18, mid: 28, high: 42 },
+                'Concrete': { low: 8, mid: 14, high: 20 },
+                'Roofing': { low: 6, mid: 10, high: 16 },
+                'Painting': { low: 3, mid: 5, high: 8 },
+                'Framing': { low: 7, mid: 11, high: 16 },
+                'Drywall': { low: 5, mid: 8, high: 12 },
+                'Flooring': { low: 6, mid: 10, high: 15 },
+                'Steel/Iron': { low: 14, mid: 22, high: 32 },
+                'Fire Protection': { low: 4, mid: 7, high: 11 }
+            };
+            const r = rates[trade] || { low: 8, mid: 14, high: 22 };
+            const fmt = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0 });
+            document.getElementById('cost-grid').innerHTML =
+                '<div class="cost-card"><div class="cost-label">Low Estimate</div><div class="cost-value cost-low">' + fmt(Math.round(sf * r.low)) + '</div></div>' +
+                '<div class="cost-card"><div class="cost-label">Mid Estimate</div><div class="cost-value cost-mid">' + fmt(Math.round(sf * r.mid)) + '</div></div>' +
+                '<div class="cost-card"><div class="cost-label">High Estimate</div><div class="cost-value cost-high">' + fmt(Math.round(sf * r.high)) + '</div></div>';
+
+            // Risk flags
+            const risks = [];
+            if (!location) risks.push({ level: 'medium', text: 'No location specified — unable to check local code requirements and prevailing wage' });
+            if (location.toLowerCase().includes('fl') || location.toLowerCase().includes('miami') || location.toLowerCase().includes('tampa')) {
+                risks.push({ level: 'high', text: 'Florida project — verify hurricane/wind load requirements and Miami-Dade NOA compliance if applicable' });
+            }
+            if (sf > 100000) risks.push({ level: 'medium', text: 'Large project (' + sf.toLocaleString() + ' SF) — consider phased mobilization and material storage logistics' });
+            if (notes.toLowerCase().includes('prevailing') || notes.toLowerCase().includes('davis')) {
+                risks.push({ level: 'high', text: 'Prevailing wage / Davis-Bacon project — verify certified payroll requirements and wage rates' });
+            }
+            if (type === 'Healthcare') risks.push({ level: 'high', text: 'Healthcare facility — ICRA requirements, infection control, and OSHPD/AHCA compliance likely required' });
+            if (type === 'Education') risks.push({ level: 'medium', text: 'Education facility — work schedule may be limited to off-hours/summer. Background checks likely required.' });
+            risks.push({ level: 'low', text: 'Standard insurance requirements anticipated — verify GL limits and additional insured endorsements with GC' });
+            if (notes.toLowerCase().includes('leed') || notes.toLowerCase().includes('green')) {
+                risks.push({ level: 'medium', text: 'LEED/green building requirements detected — verify material sourcing, VOC limits, and documentation requirements' });
+            }
+
+            document.getElementById('risk-items').innerHTML = risks.map(r =>
+                '<div class="risk-item risk-' + r.level + '"><span class="risk-badge risk-badge-' + r.level + '">' + r.level + '</span><span class="risk-text">' + r.text + '</span></div>'
+            ).join('');
+
+            // Timeline
+            const weeks = Math.max(4, Math.ceil(sf / 8000));
+            const timeline = [
+                { week: 'Week 1', task: 'Submittal preparation and material procurement' },
+                { week: 'Week 2-3', task: 'Material fabrication and delivery coordination' },
+                { week: 'Week 4-' + Math.ceil(weeks*0.6), task: 'Rough-in / primary installation phase' },
+                { week: 'Week ' + Math.ceil(weeks*0.6) + '-' + Math.ceil(weeks*0.85), task: 'Finish work and trim-out' },
+                { week: 'Week ' + Math.ceil(weeks*0.85) + '-' + weeks, task: 'Testing, inspection, punch list, and closeout' }
+            ];
+
+            document.getElementById('timeline-items').innerHTML = timeline.map(t =>
+                '<div class="timeline-item"><span class="timeline-week">' + t.week + '</span><span class="timeline-task">' + t.task + '</span></div>'
+            ).join('');
+        }
+    </script>
+</body>
+</html>
