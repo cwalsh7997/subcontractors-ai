@@ -50,14 +50,15 @@
     </a>
     <div class="nav-links">
       <a class="nav-link" href="find-subs.html">Find Subs</a>
-      <a class="nav-link" href="project-board.html">Project Board</a>
+      <a class="nav-link" href="project-board.html">Projects</a>
       <a class="nav-link" href="gc-ratings.html">GC Ratings</a>
       <a class="nav-link" href="ai-tools.html">AI Tools</a>
       <a class="nav-link active" href="pricing.html">Pricing</a>
     </div>
     <div class="nav-cta">
-      <button class="btn btn-secondary btn-sm" onclick="window.location.href='app/login.html'">Log In</button>
-      <button class="btn btn-primary btn-sm" onclick="window.location.href='app/signup.html'">Get Started Free</button>
+      <a href="post-project.html" class="btn btn-sm" style="background:var(--orange);color:var(--navy);font-weight:600;">Post a Project</a>
+      <a href="app/login.html" class="btn btn-secondary btn-sm">Log In</a>
+      <a href="app/signup.html" class="btn btn-primary btn-sm">Get Started Free</a>
     </div>
     <button class="mobile-menu-btn" onclick="toggleMobile()">
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -70,6 +71,15 @@
   <div class="container">
     <h1>Simple Pricing</h1>
     <p>Start free. Upgrade when you're ready. No contracts, no setup fees, cancel anytime.</p>
+    <!-- Billing Toggle -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;">
+      <span id="toggle-monthly-label" style="font-size:14px;font-weight:600;color:#fff;">Monthly</span>
+      <button id="billing-toggle" onclick="toggleBilling()" style="position:relative;width:52px;height:28px;background:#475569;border-radius:14px;border:none;cursor:pointer;transition:background 0.2s;">
+        <span id="toggle-knob" style="position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:left 0.2s;"></span>
+      </button>
+      <span id="toggle-annual-label" style="font-size:14px;font-weight:500;color:#94a3b8;">Annual</span>
+      <span style="background:#16a34a;color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px;">Save 20%</span>
+    </div>
   </div>
 </section>
 
@@ -77,6 +87,7 @@
 <section class="section">
   <div class="container">
     <div class="pricing-grid">
+      <!-- FREE -->
       <div class="pricing-card">
         <div class="pricing-name">Free</div>
         <div class="pricing-desc">Get listed, get found</div>
@@ -92,12 +103,14 @@
         </ul>
         <button class="btn btn-secondary" style="width:100%;" onclick="window.location.href='app/signup.html'">Get Started</button>
       </div>
+
+      <!-- PRO -->
       <div class="pricing-card popular">
         <div class="pricing-popular-badge">Most Popular</div>
         <div class="pricing-name">Pro</div>
         <div class="pricing-desc">Win more bids</div>
-        <div class="pricing-amount">$49<span>/mo</span></div>
-        <div class="pricing-period">Billed monthly</div>
+        <div class="pricing-amount" id="pro-price">$49<span>/mo</span></div>
+        <div class="pricing-period" id="pro-period">Billed monthly</div>
         <ul class="pricing-features">
           <li>Everything in Free</li>
           <li>AI Bid Assistant</li>
@@ -106,13 +119,15 @@
           <li>Payment protection tools</li>
           <li>Verified badge</li>
         </ul>
-        <button class="btn btn-primary" style="width:100%;" onclick="openModal()">Start Pro Trial</button>
+        <button class="btn btn-primary" style="width:100%;" id="pro-btn" onclick="startCheckout('pro')">Start 14-Day Free Trial</button>
       </div>
+
+      <!-- BUSINESS -->
       <div class="pricing-card">
         <div class="pricing-name">Business</div>
         <div class="pricing-desc">Scale your operation</div>
-        <div class="pricing-amount">$149<span>/mo</span></div>
-        <div class="pricing-period">Billed monthly</div>
+        <div class="pricing-amount" id="biz-price">$149<span>/mo</span></div>
+        <div class="pricing-period" id="biz-period">Billed monthly</div>
         <ul class="pricing-features">
           <li>Everything in Pro</li>
           <li>AI Proposal Writer</li>
@@ -121,13 +136,15 @@
           <li>Priority listing</li>
           <li>Priority support</li>
         </ul>
-        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Start Business Trial</button>
+        <button class="btn btn-secondary" style="width:100%;" id="biz-btn" onclick="startCheckout('business')">Start 14-Day Free Trial</button>
       </div>
+
+      <!-- ENTERPRISE -->
       <div class="pricing-card">
         <div class="pricing-name">Enterprise</div>
         <div class="pricing-desc">Multi-location subs</div>
-        <div class="pricing-amount">$399<span>/mo</span></div>
-        <div class="pricing-period">Billed monthly</div>
+        <div class="pricing-amount" id="ent-price">$399<span>/mo</span></div>
+        <div class="pricing-period" id="ent-period">Billed monthly</div>
         <ul class="pricing-features">
           <li>Everything in Business</li>
           <li>Unlimited team seats</li>
@@ -136,7 +153,7 @@
           <li>Custom integrations</li>
           <li>Dedicated account manager</li>
         </ul>
-        <button class="btn btn-secondary" style="width:100%;" onclick="openModal()">Contact Sales</button>
+        <button class="btn btn-secondary" style="width:100%;" id="ent-btn" onclick="startCheckout('enterprise')">Contact Sales</button>
       </div>
     </div>
   </div>
@@ -153,7 +170,7 @@
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
           <span>Can I start on Free and upgrade to Pro later?</span>
-          <span class="faq-toggle">▼</span>
+          <span class="faq-toggle">&#x25BC;</span>
         </div>
         <div class="faq-answer">
           <div class="faq-content">
@@ -165,7 +182,7 @@
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
           <span>What's included in the AI Bid Assistant?</span>
-          <span class="faq-toggle">▼</span>
+          <span class="faq-toggle">&#x25BC;</span>
         </div>
         <div class="faq-answer">
           <div class="faq-content">
@@ -177,7 +194,7 @@
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
           <span>Is there a long-term contract?</span>
-          <span class="faq-toggle">▼</span>
+          <span class="faq-toggle">&#x25BC;</span>
         </div>
         <div class="faq-answer">
           <div class="faq-content">
@@ -188,8 +205,20 @@
 
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
+          <span>What happens during the 14-day free trial?</span>
+          <span class="faq-toggle">&#x25BC;</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-content">
+            You get full access to every feature in your chosen plan for 14 days. No charge until the trial ends. Cancel anytime during the trial and you won't be billed. We'll send you a reminder before the trial expires so there are no surprises.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
           <span>How does the compliance dashboard work?</span>
-          <span class="faq-toggle">▼</span>
+          <span class="faq-toggle">&#x25BC;</span>
         </div>
         <div class="faq-answer">
           <div class="faq-content">
@@ -201,7 +230,7 @@
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
           <span>Can I manage my team on Subcontractors.ai?</span>
-          <span class="faq-toggle">▼</span>
+          <span class="faq-toggle">&#x25BC;</span>
         </div>
         <div class="faq-answer">
           <div class="faq-content">
@@ -213,7 +242,7 @@
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
           <span>How does GC Ratings work? Are reviews anonymous?</span>
-          <span class="faq-toggle">▼</span>
+          <span class="faq-toggle">&#x25BC;</span>
         </div>
         <div class="faq-answer">
           <div class="faq-content">
@@ -256,7 +285,7 @@
           <li><a href="pricing.html">Pricing</a></li>
         </ul>
       </div>
-            <div>
+      <div>
         <h4>Resources</h4>
         <ul class="footer-links">
           <li><a href="resources/lien-waiver-templates.html">Lien Waiver Templates</a></li>
@@ -278,69 +307,168 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
-      <span>Built with ⚡ by a sub, for subs.</span>
+      <span>Built with &#x26A1; by a sub, for subs.</span>
     </div>
   </div>
 </footer>
 
-<!-- ============ SIGNUP MODAL ============ -->
-<div class="modal-overlay" id="modal">
-  <div class="modal" style="position:relative;">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
-    <h2>Create Your Free Profile</h2>
-    <p>Join thousands of subcontractors who are taking control of their business.</p>
-    <input type="text" class="modal-input" placeholder="Company Name">
-    <input type="email" class="modal-input" placeholder="Email Address">
-    <select class="modal-input" style="appearance:auto;">
-      <option value="">Select Your Trade</option>
-      <option>Electrical</option>
-      <option>Plumbing</option>
-      <option>HVAC</option>
-      <option>Glass & Glazing</option>
-      <option>Concrete</option>
-      <option>Roofing</option>
-      <option>Painting</option>
-      <option>Framing</option>
-      <option>Excavation</option>
-      <option>Drywall</option>
-      <option>Flooring</option>
-      <option>Fire Protection</option>
-      <option>Steel / Iron</option>
-      <option>Other</option>
-    </select>
-    <input type="text" class="modal-input" placeholder="City, State">
-    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="window.location.href='app/signup.html'">Create Free Profile &rarr;</button>
-    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
-  </div>
-</div>
+<!-- ============ CHECKOUT STATUS TOAST ============ -->
+<div id="checkout-toast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f1729;color:#fff;padding:14px 28px;border-radius:8px;font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.3);z-index:9999;"></div>
+
+<!-- Stripe Config -->
+<script src="app/stripe-config.js"></script>
 
 <script>
+// ============ BILLING TOGGLE ============
+let isAnnual = false;
+
+const prices = {
+  pro:        { monthly: 49,  annual: 39,  annualTotal: 470 },
+  business:   { monthly: 149, annual: 119, annualTotal: 1430 },
+  enterprise: { monthly: 399, annual: 319, annualTotal: 3830 }
+};
+
+function toggleBilling() {
+  isAnnual = !isAnnual;
+  const knob = document.getElementById('toggle-knob');
+  const toggle = document.getElementById('billing-toggle');
+  const mLabel = document.getElementById('toggle-monthly-label');
+  const aLabel = document.getElementById('toggle-annual-label');
+
+  if (isAnnual) {
+    knob.style.left = '27px';
+    toggle.style.background = '#2563eb';
+    mLabel.style.fontWeight = '500';
+    mLabel.style.color = '#94a3b8';
+    aLabel.style.fontWeight = '600';
+    aLabel.style.color = '#fff';
+  } else {
+    knob.style.left = '3px';
+    toggle.style.background = '#475569';
+    mLabel.style.fontWeight = '600';
+    mLabel.style.color = '#fff';
+    aLabel.style.fontWeight = '500';
+    aLabel.style.color = '#94a3b8';
+  }
+
+  // Update prices
+  updatePriceDisplay('pro', 'pro-price', 'pro-period');
+  updatePriceDisplay('business', 'biz-price', 'biz-period');
+  updatePriceDisplay('enterprise', 'ent-price', 'ent-period');
+}
+
+function updatePriceDisplay(plan, priceId, periodId) {
+  const p = prices[plan];
+  const priceEl = document.getElementById(priceId);
+  const periodEl = document.getElementById(periodId);
+
+  if (isAnnual) {
+    priceEl.innerHTML = '$' + p.annual + '<span>/mo</span>';
+    periodEl.textContent = '$' + p.annualTotal.toLocaleString() + ' billed annually';
+  } else {
+    priceEl.innerHTML = '$' + p.monthly + '<span>/mo</span>';
+    periodEl.textContent = 'Billed monthly';
+  }
+}
+
+// ============ STRIPE CHECKOUT ============
+async function startCheckout(plan) {
+  // Enterprise = contact sales
+  if (plan === 'enterprise') {
+    window.location.href = 'contact.html?subject=Enterprise%20Plan%20Inquiry';
+    return;
+  }
+
+  const config = window.STRIPE_CONFIG || {};
+  const cycle = isAnnual ? 'annual' : 'monthly';
+  const priceKey = plan + '_' + cycle;
+  const priceId = config.prices ? config.prices[priceKey] : '';
+
+  // Check if Stripe is configured
+  if (!priceId || !config.publishableKey || !config.publishableKey.startsWith('pk_')) {
+    // Stripe not set up yet — redirect to signup for now
+    showToast('Payments launching soon! Create your free account to get notified.', 'info');
+    setTimeout(() => {
+      window.location.href = 'app/signup.html?plan=' + plan;
+    }, 1500);
+    return;
+  }
+
+  // Show loading state on button
+  const btn = document.getElementById(plan === 'pro' ? 'pro-btn' : 'biz-btn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Redirecting to checkout...';
+  btn.disabled = true;
+
+  try {
+    // Get user email from Supabase session if logged in
+    let customerEmail = '';
+    try {
+      const url = window.SUPABASE_URL || (window.STRIPE_CONFIG || {}).supabaseUrl;
+      const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+      if (url && key && window.supabase && window.supabase.createClient) {
+        const sb = window.supabase.createClient(url, key);
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) customerEmail = session.user.email;
+      }
+    } catch(e) { /* ignore — email is optional */ }
+
+    // Call our serverless function
+    const resp = await fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        priceId: priceId,
+        planName: plan,
+        billingCycle: cycle,
+        customerEmail: customerEmail
+      })
+    });
+
+    const data = await resp.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error(data.error || 'Failed to create checkout session');
+    }
+  } catch (err) {
+    console.error('Checkout error:', err);
+    showToast('Something went wrong. Please try again or contact support.', 'error');
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
+// ============ TOAST ============
+function showToast(msg, type) {
+  const toast = document.getElementById('checkout-toast');
+  toast.textContent = msg;
+  toast.style.background = type === 'error' ? '#dc2626' : type === 'info' ? '#2563eb' : '#0f1729';
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 4000);
+}
+
+// ============ CHECK FOR CANCELED ============
+if (window.location.search.includes('canceled=true')) {
+  showToast('Checkout canceled. No charges were made.', 'info');
+  history.replaceState({}, '', 'pricing.html');
+}
+
 // ============ FAQ TOGGLE ============
 function toggleFaq(element) {
   const question = element;
   const answer = element.nextElementSibling;
-
-  // Close all other FAQs
   document.querySelectorAll('.faq-question.active').forEach(q => {
-    if (q !== question) {
-      q.classList.remove('active');
-    }
+    if (q !== question) { q.classList.remove('active'); }
   });
-
-  // Toggle current FAQ
   question.classList.toggle('active');
-
   if (question.classList.contains('active')) {
     answer.style.maxHeight = answer.scrollHeight + 'px';
   } else {
     answer.style.maxHeight = '0';
   }
 }
-
-// ============ MODAL ============
-function openModal() { document.getElementById('modal').classList.add('show'); }
-function closeModal() { document.getElementById('modal').classList.remove('show'); }
-document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
 // ============ MOBILE MENU ============
 function toggleMobile() {
@@ -355,47 +483,6 @@ function toggleMobile() {
   links.style.padding = '16px';
   links.style.borderBottom = '1px solid var(--gray-200)';
   links.style.boxShadow = 'var(--shadow-lg)';
-}
-
-// ============ SIGNUP FORM SUBMISSION ============
-function submitSignup(btn) {
-  const modal = document.getElementById('modal');
-  const inputs = modal.querySelectorAll('.modal-input');
-  const company = inputs[0].value;
-  const email = inputs[1].value;
-  const trade = inputs[2].value;
-  const location = inputs[3].value;
-
-  if (!email || !email.includes('@')) {
-    inputs[1].style.borderColor = '#ef4444';
-    inputs[1].focus();
-    return;
-  }
-
-  btn.textContent = 'Creating Profile...';
-  btn.disabled = true;
-
-  fetch('https://formsubmit.co/ajax/connor@acglass.com', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({
-      company: company,
-      email: email,
-      trade: trade,
-      location: location,
-      _subject: 'New Subcontractors.ai Signup - ' + (company || email),
-      source: 'signup-modal'
-    })
-  })
-  .then(r => r.json())
-  .then(data => {
-    const modalContent = modal.querySelector('.modal');
-    modalContent.innerHTML = '<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';
-  })
-  .catch(err => {
-    const modalContent = modal.querySelector('.modal');
-    modalContent.innerHTML = '<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';
-  });
 }
 </script>
 </body>

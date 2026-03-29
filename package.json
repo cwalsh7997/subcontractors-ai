@@ -1,0 +1,9 @@
+{
+  "name": "subcontractors-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Subcontractors.ai - AI-powered platform for construction subcontractors",
+  "dependencies": {
+    "stripe": "^14.0.0"
+  }
+}

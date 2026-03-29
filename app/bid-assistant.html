@@ -299,7 +299,6 @@
                 document.getElementById('sidebar-name').textContent = meta.company_name || session.user.email.split('@')[0];
                 document.getElementById('sidebar-detail').textContent = meta.trade || session.user.email;
                 if (['connor@acglass.com'].includes(session.user.email)) document.getElementById('admin-link').style.display = '';
-                // Pre-fill trade if available
                 if (meta.trade) {
                     const sel = document.getElementById('bid-trade');
                     for (let o of sel.options) { if (o.text === meta.trade) { o.selected = true; break; } }
@@ -312,17 +311,20 @@
             else window.location.href = 'login.html';
         }
 
-        // Bid analysis simulation
+        // ============ MAIN ANALYZE FUNCTION ============
         async function analyzeBid() {
             const project = document.getElementById('bid-project').value.trim();
             const location = document.getElementById('bid-location').value.trim();
             const trade = document.getElementById('bid-trade').value;
             const type = document.getElementById('bid-type').value;
             const sqft = parseInt(document.getElementById('bid-sqft').value) || 0;
+            const gc = document.getElementById('bid-gc').value.trim();
             const notes = document.getElementById('bid-notes').value.trim();
+            const dueDate = document.getElementById('bid-due').value;
 
             if (!project || !trade || !type) {
-                alert('Please fill in at least the project name, your trade, and building type.');
+                if (typeof showToast === 'function') showToast('Please fill in at least the project name, your trade, and building type.', 'warning');
+                else alert('Please fill in at least the project name, your trade, and building type.');
                 return;
             }
 
@@ -332,34 +334,115 @@
             document.getElementById('analyzing').classList.add('show');
             document.getElementById('analyze-btn').disabled = true;
 
-            const steps = [
-                'Extracting trade-specific scope items',
-                'Analyzing square footage and material requirements',
-                'Calculating labor and material costs',
-                'Running risk assessment',
-                'Generating timeline estimate',
-                'Compiling bid summary'
-            ];
+            const startTime = Date.now();
 
-            for (let i = 0; i < steps.length; i++) {
-                document.getElementById('analyze-step').textContent = steps[i];
-                await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
+            // Try real AI endpoint first, fall back to local simulation
+            let aiResult = null;
+            try {
+                document.getElementById('analyze-step').textContent = 'Connecting to AI engine...';
+                const resp = await fetch('/api/bid-assistant', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ project, location, trade, buildingType: type, sqft, gc, notes, dueDate })
+                });
+
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.success && data.analysis) {
+                        aiResult = data.analysis;
+                        document.getElementById('analyze-step').textContent = 'AI analysis complete!';
+                    }
+                }
+            } catch (e) {
+                console.log('AI endpoint unavailable, using local analysis:', e.message);
             }
 
-            // Generate results based on input
-            generateResults(project, location, trade, type, sqft, notes);
+            if (aiResult) {
+                renderAIResults(aiResult, startTime);
+            } else {
+                // Fallback: local simulation with loading steps
+                const steps = [
+                    'Extracting trade-specific scope items',
+                    'Analyzing square footage and material requirements',
+                    'Calculating labor and material costs',
+                    'Running risk assessment',
+                    'Generating timeline estimate',
+                    'Compiling bid summary'
+                ];
+                for (let i = 0; i < steps.length; i++) {
+                    document.getElementById('analyze-step').textContent = steps[i];
+                    await new Promise(r => setTimeout(r, 500 + Math.random() * 300));
+                }
+                generateLocalResults(project, location, trade, type, sqft, notes);
+            }
 
             document.getElementById('analyzing').classList.remove('show');
             document.getElementById('results').classList.add('show');
             document.getElementById('results-badge').style.display = '';
             document.getElementById('analyze-btn').disabled = false;
-            document.getElementById('result-time').textContent = 'Analyzed in ' + (3 + Math.random() * 2).toFixed(1) + 's';
+            const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+            document.getElementById('result-time').textContent = (aiResult ? 'AI analyzed in ' : 'Analyzed in ') + elapsed + 's';
         }
 
-        function generateResults(project, location, trade, type, sqft, notes) {
+        // ============ RENDER AI RESULTS ============
+        function renderAIResults(analysis, startTime) {
+            const fmt = n => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 0 });
+
+            // Scope items
+            const scopeItems = analysis.scopeItems || [];
+            document.getElementById('scope-items').innerHTML = scopeItems.map(s =>
+                '<div class="scope-item"><div class="scope-dot"></div><div class="scope-text">' + s + '</div></div>'
+            ).join('');
+
+            // Cost estimates
+            const cost = analysis.costEstimate || {};
+            let costHtml = '<div class="cost-card"><div class="cost-label">Low Estimate</div><div class="cost-value cost-low">' + fmt(cost.low || 0) + '</div></div>' +
+                '<div class="cost-card"><div class="cost-label">Mid Estimate</div><div class="cost-value cost-mid">' + fmt(cost.mid || 0) + '</div></div>' +
+                '<div class="cost-card"><div class="cost-label">High Estimate</div><div class="cost-value cost-high">' + fmt(cost.high || 0) + '</div></div>';
+            document.getElementById('cost-grid').innerHTML = costHtml;
+
+            // Cost breakdown (bonus from AI)
+            if (cost.breakdown && cost.breakdown.length > 0) {
+                let breakdownHtml = '<div style="margin-top:12px;">';
+                cost.breakdown.forEach(item => {
+                    breakdownHtml += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:13px;">' +
+                        '<span style="color:#334155;">' + item.item + '</span>' +
+                        '<span style="font-weight:600;color:#0f1729;">' + fmt(item.amount) + '</span></div>';
+                });
+                breakdownHtml += '</div>';
+                document.getElementById('cost-grid').insertAdjacentHTML('afterend', breakdownHtml);
+            }
+
+            // Risk flags
+            const risks = analysis.risks || [];
+            document.getElementById('risk-items').innerHTML = risks.map(r =>
+                '<div class="risk-item risk-' + r.level + '"><span class="risk-badge risk-badge-' + r.level + '">' + r.level + '</span><span class="risk-text">' + r.text + '</span></div>'
+            ).join('');
+
+            // Timeline
+            const timeline = analysis.timeline || [];
+            document.getElementById('timeline-items').innerHTML = timeline.map(t =>
+                '<div class="timeline-item"><span class="timeline-week" style="min-width:80px;">' + (t.duration || t.phase) + '</span><span class="timeline-task">' + (t.description || t.phase) + '</span></div>'
+            ).join('');
+
+            // Recommendations (AI bonus)
+            if (analysis.recommendations) {
+                const recsDiv = document.querySelector('#results .result-header');
+                if (recsDiv) {
+                    const existingRec = document.getElementById('ai-recommendations');
+                    if (existingRec) existingRec.remove();
+                    const recHtml = '<div id="ai-recommendations" style="margin-top:24px;padding:16px;background:linear-gradient(135deg,#eff6ff,#f0fdf4);border-radius:8px;border:1px solid #bfdbfe;">' +
+                        '<div style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:4px;">AI Recommendation</div>' +
+                        '<div style="font-size:13px;color:#334155;line-height:1.6;">' + analysis.recommendations + '</div></div>';
+                    document.getElementById('timeline-items').insertAdjacentHTML('afterend', recHtml);
+                }
+            }
+        }
+
+        // ============ LOCAL FALLBACK SIMULATION ============
+        function generateLocalResults(project, location, trade, type, sqft, notes) {
             const sf = sqft || 25000;
 
-            // Trade-specific scope generation
             const scopes = {
                 'Electrical': [
                     'Main electrical service entrance and distribution — ' + Math.ceil(sf/100)*4 + 'A service',
@@ -394,7 +477,7 @@
                     'Interior glass partitions — offices and conference rooms (' + Math.ceil(sf*0.03) + ' SF)',
                     'Entrance doors — aluminum and glass with hardware',
                     'Window systems — operable and fixed units (' + Math.ceil(sf/200) + ' units)',
-                    location.toLowerCase().includes('fl') || location.toLowerCase().includes('florida') ? 'Hurricane impact glazing required — Miami-Dade NOA compliance' : 'Insulated glazing units per energy code',
+                    'Insulated glazing units per energy code',
                     'Sealants, gaskets, and weatherproofing'
                 ],
                 'Concrete': [
@@ -409,7 +492,7 @@
                 'Roofing': [
                     'Roof system — ' + sf + ' SF (' + type + ')',
                     'TPO/EPDM/modified bitumen membrane (per spec)',
-                    'Insulation — polyiso board, R-' + (location.toLowerCase().includes('fl') ? '20' : '30') + ' minimum',
+                    'Insulation — polyiso board, R-30 minimum',
                     'Metal flashing and edge details — ' + Math.ceil(Math.sqrt(sf)*4) + ' LF perimeter',
                     'Roof drains and overflow scuppers',
                     'Penetration flashings — ' + Math.ceil(sf/2000) + ' estimated',
@@ -432,7 +515,6 @@
                 '<div class="scope-item"><div class="scope-dot"></div><div class="scope-text">' + s + '</div></div>'
             ).join('');
 
-            // Cost estimates based on trade and sqft
             const rates = {
                 'Electrical': { low: 12, mid: 18, high: 25 },
                 'Plumbing': { low: 10, mid: 16, high: 22 },
@@ -454,28 +536,24 @@
                 '<div class="cost-card"><div class="cost-label">Mid Estimate</div><div class="cost-value cost-mid">' + fmt(Math.round(sf * r.mid)) + '</div></div>' +
                 '<div class="cost-card"><div class="cost-label">High Estimate</div><div class="cost-value cost-high">' + fmt(Math.round(sf * r.high)) + '</div></div>';
 
-            // Risk flags
             const risks = [];
+            const loc = (location || '').toLowerCase();
             if (!location) risks.push({ level: 'medium', text: 'No location specified — unable to check local code requirements and prevailing wage' });
-            if (location.toLowerCase().includes('fl') || location.toLowerCase().includes('miami') || location.toLowerCase().includes('tampa')) {
+            if (loc.includes('fl') || loc.includes('miami') || loc.includes('tampa')) {
                 risks.push({ level: 'high', text: 'Florida project — verify hurricane/wind load requirements and Miami-Dade NOA compliance if applicable' });
             }
             if (sf > 100000) risks.push({ level: 'medium', text: 'Large project (' + sf.toLocaleString() + ' SF) — consider phased mobilization and material storage logistics' });
-            if (notes.toLowerCase().includes('prevailing') || notes.toLowerCase().includes('davis')) {
+            if ((notes || '').toLowerCase().includes('prevailing') || (notes || '').toLowerCase().includes('davis')) {
                 risks.push({ level: 'high', text: 'Prevailing wage / Davis-Bacon project — verify certified payroll requirements and wage rates' });
             }
             if (type === 'Healthcare') risks.push({ level: 'high', text: 'Healthcare facility — ICRA requirements, infection control, and OSHPD/AHCA compliance likely required' });
             if (type === 'Education') risks.push({ level: 'medium', text: 'Education facility — work schedule may be limited to off-hours/summer. Background checks likely required.' });
             risks.push({ level: 'low', text: 'Standard insurance requirements anticipated — verify GL limits and additional insured endorsements with GC' });
-            if (notes.toLowerCase().includes('leed') || notes.toLowerCase().includes('green')) {
-                risks.push({ level: 'medium', text: 'LEED/green building requirements detected — verify material sourcing, VOC limits, and documentation requirements' });
-            }
 
             document.getElementById('risk-items').innerHTML = risks.map(r =>
                 '<div class="risk-item risk-' + r.level + '"><span class="risk-badge risk-badge-' + r.level + '">' + r.level + '</span><span class="risk-text">' + r.text + '</span></div>'
             ).join('');
 
-            // Timeline
             const weeks = Math.max(4, Math.ceil(sf / 8000));
             const timeline = [
                 { week: 'Week 1', task: 'Submittal preparation and material procurement' },
@@ -484,7 +562,6 @@
                 { week: 'Week ' + Math.ceil(weeks*0.6) + '-' + Math.ceil(weeks*0.85), task: 'Finish work and trim-out' },
                 { week: 'Week ' + Math.ceil(weeks*0.85) + '-' + weeks, task: 'Testing, inspection, punch list, and closeout' }
             ];
-
             document.getElementById('timeline-items').innerHTML = timeline.map(t =>
                 '<div class="timeline-item"><span class="timeline-week">' + t.week + '</span><span class="timeline-task">' + t.task + '</span></div>'
             ).join('');

@@ -115,24 +115,16 @@
             </div>
 
             <!-- Subscription -->
-            <div class="card">
+            <div class="card" id="plan-card">
                 <div class="card-title">Your Plan</div>
                 <div class="card-subtitle">Manage your subscription and billing</div>
                 <div>
-                    <span class="plan-badge" id="plan-badge">Early Access — Free</span>
-                    <div class="plan-price">$0<span style="font-size:14px;font-weight:400;color:#64748b;">/month</span></div>
-                    <div class="plan-period">You're on the free early access plan. All features included during beta.</div>
-                    <ul class="plan-features">
-                        <li>Unlimited invoice tracking</li>
-                        <li>AI Bid Assistant</li>
-                        <li>Compliance monitoring</li>
-                        <li>Document storage</li>
-                        <li>GC ratings & reviews</li>
-                        <li>Priority support during beta</li>
-                    </ul>
-                    <div style="margin-top:16px;padding:12px 16px;background:#eff6ff;border-radius:8px;font-size:13px;color:#1d4ed8;">
-                        As an early access user, you'll be locked into the best pricing when paid plans launch.
-                    </div>
+                    <span class="plan-badge" id="plan-badge">Loading...</span>
+                    <div class="plan-price" id="plan-price">—</div>
+                    <div class="plan-period" id="plan-period">Loading subscription details...</div>
+                    <ul class="plan-features" id="plan-features"></ul>
+                    <div id="plan-cta" style="margin-top:16px;display:flex;gap:12px;"></div>
+                    <div id="plan-notice" style="margin-top:16px;padding:12px 16px;background:#eff6ff;border-radius:8px;font-size:13px;color:#1d4ed8;display:none;"></div>
                 </div>
             </div>
 
@@ -297,6 +289,74 @@
             }
 
             loadSettings();
+            loadSubscription();
+        }
+
+        async function loadSubscription() {
+            let profile = null;
+            if (sbClient && currentUser) {
+                try {
+                    const { data } = await sbClient.from('profiles').select('subscription_status, subscription_plan').eq('id', currentUser.id).single();
+                    profile = data;
+                } catch (e) { console.log('Could not load profile:', e); }
+            }
+
+            const status = profile?.subscription_status || 'free';
+            const plan = profile?.subscription_plan || 'free';
+
+            const planNames = { free: 'Free', starter: 'Free', pro: 'Pro', business: 'Business', enterprise: 'Enterprise' };
+            const planPrices = { free: '$0', starter: '$0', pro: '$49', business: '$149', enterprise: '$399' };
+            const statusLabels = { free: 'Free Plan', trial: '14-Day Trial', active: 'Active', past_due: 'Past Due', cancelled: 'Cancelled' };
+            const statusColors = { free: '#6b7280', trial: '#2563eb', active: '#16a34a', past_due: '#f59e0b', cancelled: '#dc2626' };
+
+            const badge = document.getElementById('plan-badge');
+            badge.textContent = (planNames[plan] || 'Free') + ' — ' + (statusLabels[status] || 'Free');
+            badge.style.background = status === 'active' ? 'linear-gradient(135deg, #16a34a, #059669)' :
+                                     status === 'trial' ? 'linear-gradient(135deg, #2563eb, #7c3aed)' :
+                                     status === 'past_due' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : '#6b7280';
+
+            document.getElementById('plan-price').innerHTML = planPrices[plan] || '$0';
+            document.getElementById('plan-price').innerHTML += '<span style="font-size:14px;font-weight:400;color:#64748b;">/month</span>';
+
+            const features = {
+                free: ['Basic sub profile', 'Trade & location listing', '3 project alerts/month', 'Community access'],
+                pro: ['AI Bid Assistant', 'Unlimited project alerts', 'Compliance dashboard', 'Payment protection tools', 'Verified badge'],
+                business: ['Everything in Pro', 'AI Proposal Writer', 'Team management (5 seats)', 'Advanced analytics', 'Priority support'],
+                enterprise: ['Everything in Business', 'Unlimited team seats', 'Multi-location support', 'API access', 'Dedicated account manager']
+            };
+
+            const featureList = document.getElementById('plan-features');
+            (features[plan] || features.free).forEach(f => {
+                const li = document.createElement('li');
+                li.textContent = f;
+                featureList.appendChild(li);
+            });
+
+            const ctaDiv = document.getElementById('plan-cta');
+            const noticeDiv = document.getElementById('plan-notice');
+
+            if (status === 'free' || plan === 'free' || plan === 'starter') {
+                document.getElementById('plan-period').textContent = 'All features included during beta. Upgrade anytime.';
+                ctaDiv.innerHTML = '<a href="../pricing.html" class="btn btn-primary" style="text-decoration:none;">Upgrade Plan</a>';
+                noticeDiv.style.display = 'block';
+                noticeDiv.textContent = 'As an early access user, you\'ll be locked into the best pricing when paid plans launch.';
+            } else if (status === 'trial') {
+                document.getElementById('plan-period').textContent = 'Your 14-day free trial is active. You won\'t be charged until it ends.';
+                ctaDiv.innerHTML = '<a href="../pricing.html" class="btn btn-outline" style="text-decoration:none;">Change Plan</a>';
+            } else if (status === 'active') {
+                document.getElementById('plan-period').textContent = 'Your subscription is active and billing monthly.';
+                ctaDiv.innerHTML = '<a href="../pricing.html" class="btn btn-outline" style="text-decoration:none;">Change Plan</a>';
+            } else if (status === 'past_due') {
+                document.getElementById('plan-period').textContent = 'Your last payment failed. Please update your payment method.';
+                ctaDiv.innerHTML = '<button class="btn btn-primary" onclick="if(window.showToast)showToast(\'Billing portal coming soon. Contact support.\',\'info\')">Update Payment</button>';
+                noticeDiv.style.display = 'block';
+                noticeDiv.style.background = '#fef3c7';
+                noticeDiv.style.color = '#92400e';
+                noticeDiv.textContent = 'Your account features may be restricted until payment is resolved.';
+            } else if (status === 'cancelled') {
+                document.getElementById('plan-period').textContent = 'Your subscription has been cancelled.';
+                ctaDiv.innerHTML = '<a href="../pricing.html" class="btn btn-primary" style="text-decoration:none;">Resubscribe</a>';
+            }
         }
 
         function loadSettings() {
