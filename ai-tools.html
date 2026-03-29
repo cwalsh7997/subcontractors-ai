@@ -3,18 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Tools — Subcontractors.ai</title>
-<meta name="description" content="AI-powered tools for subcontractors. AI Bid Assistant, contract review, proposal generation, and more. Spend less time on admin, more time bidding.">
-<meta property="og:title" content="AI Tools — Subcontractors.ai">
-<meta property="og:description" content="AI-powered tools for subcontractors. AI Bid Assistant, contract review, proposal generation, and more.">
+<title>AI Tools for Subcontractors | Bid, Review, Track | Subcontractors.ai</title>
+<meta name="description" content="AI-powered tools built for subcontractors. AI Bid Assistant, Contract Review, Payment Tracker, Compliance Monitor, and more. Save 10+ hours/week on admin.">
+<meta property="og:title" content="AI Tools for Subcontractors | Subcontractors.ai">
+<meta property="og:description" content="AI-powered tools built for subcontractors. Bid smarter, review contracts, track payments, and stay compliant.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://www.subcontractors.ai/ai-tools.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Tools for Subcontractors | Subcontractors.ai">
+<meta name="twitter:description" content="AI-powered tools built for subcontractors. Save 10+ hours/week on admin.">
+<link rel="canonical" href="https://www.subcontractors.ai/ai-tools.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+.tools-hero{padding:80px 0;background:linear-gradient(135deg,var(--navy) 0%,#1e3a5f 100%);color:#fff}
+.tools-hero h1{font-size:2.8rem;font-weight:900;margin-bottom:16px;letter-spacing:-0.02em}
+.tools-hero p{font-size:1.15rem;color:#94a3b8;max-width:640px;line-height:1.6}
+.tools-hero .stats-row{display:flex;gap:48px;margin-top:40px}
+.tools-hero .stat-value{font-size:2rem;font-weight:900;color:var(--orange)}
+.tools-hero .stat-label{font-size:0.85rem;color:#94a3b8;margin-top:4px}
+.tool-section{padding:80px 0}
+.tool-section:nth-child(even){background:var(--gray-50)}
+.tool-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:32px}
+.tool-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.tool-icon-blue{background:#dbeafe}.tool-icon-green{background:#dcfce7}.tool-icon-orange{background:#fed7aa}.tool-icon-purple{background:#e9d5ff}.tool-icon-red{background:#fecaca}.tool-icon-teal{background:#ccfbf1}
+.tool-header-text h2{font-size:1.8rem;font-weight:800;color:var(--navy);margin-bottom:4px}
+.tool-status{display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:600;padding:4px 12px;border-radius:20px}
+.tool-status-live{background:#dcfce7;color:#16a34a}.tool-status-beta{background:#dbeafe;color:#2563eb}.tool-status-soon{background:#f3f4f6;color:#6b7280}
+.tool-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.tool-description{font-size:1.05rem;color:#475569;line-height:1.7;margin-bottom:24px}
+.tool-features{list-style:none;padding:0;margin:0 0 32px}
+.tool-features li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;font-size:0.95rem;color:#334155}
+.tool-features li::before{content:"✓";color:#16a34a;font-weight:800;flex-shrink:0;margin-top:1px}
+.tool-demo{background:#fff;border:1px solid var(--gray-200);border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.tool-demo-header{padding:12px 16px;background:var(--navy);color:#fff;display:flex;align-items:center;gap:8px;font-size:0.85rem;font-weight:600}
+.tool-demo-header .dots{display:flex;gap:6px;margin-right:8px}
+.tool-demo-header .dot{width:10px;height:10px;border-radius:50%}
+.tool-demo-header .dot-red{background:#ef4444}.tool-demo-header .dot-yellow{background:#f59e0b}.tool-demo-header .dot-green{background:#22c55e}
+.tool-demo-body{padding:24px}
+.ai-upload-area{background:linear-gradient(135deg,#f0f4f8 0%,#e2e8f0 100%);border:2px dashed var(--gray-300);border-radius:12px;padding:40px 24px;text-align:center;cursor:pointer;transition:all 0.3s}
+.ai-upload-area:hover{border-color:var(--blue);background:#f8fafc}
+.ai-upload-icon{font-size:2.5rem;margin-bottom:12px}
+.ai-upload-title{font-weight:700;color:var(--navy);margin-bottom:4px}
+.ai-upload-sub{font-size:0.85rem;color:var(--gray-500)}
+.ai-result{display:none}.ai-result.show{display:block;animation:fadeIn 0.5s ease-out}
+.ai-result-header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#f0fdf4;border-radius:8px;color:#16a34a;font-weight:700;font-size:0.9rem;margin-bottom:20px}
+.ai-result-section{margin-bottom:20px}
+.ai-result-section h4{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--blue);margin-bottom:8px}
+.ai-result-items{display:flex;flex-direction:column;gap:6px}
+.ai-result-item{display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:#334155;padding:4px 0}
+.ai-result-item .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px}
+.ai-cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ai-cost-item{text-align:center;padding:12px;background:var(--gray-50);border-radius:8px}
+.ai-cost-label{font-size:0.75rem;color:var(--gray-500);margin-bottom:4px}
+.ai-cost-value{font-size:1.3rem;font-weight:800;color:var(--navy)}
+.contract-clause{padding:12px;margin:8px 0;border-radius:8px;position:relative;font-size:0.85rem;line-height:1.6;color:#334155}
+.contract-clause.flagged{background:#fef3c7;border-left:3px solid #f59e0b}
+.contract-clause.danger{background:#fecaca;border-left:3px solid #ef4444}
+.contract-clause.ok{background:#dcfce7;border-left:3px solid #22c55e}
+.clause-tag{position:absolute;right:8px;top:8px;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase}
+.clause-tag.warning{background:#f59e0b;color:#fff}.clause-tag.danger{background:#ef4444;color:#fff}.clause-tag.safe{background:#22c55e;color:#fff}
+.payment-row{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--gray-100);font-size:0.85rem}
+.payment-row:last-child{border-bottom:none}
+.payment-status{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.payment-status.paid{background:#22c55e}.payment-status.pending{background:#f59e0b}.payment-status.overdue{background:#ef4444}
+.payment-info{flex:1}.payment-project{font-weight:600;color:var(--navy)}.payment-gc{font-size:0.8rem;color:var(--gray-500)}
+.payment-amount{font-weight:700;color:var(--navy)}
+.payment-days{font-size:0.8rem;padding:2px 8px;border-radius:10px;font-weight:600}
+.payment-days.on-time{background:#dcfce7;color:#16a34a}.payment-days.warning{background:#fef3c7;color:#b45309}.payment-days.late{background:#fecaca;color:#dc2626}
+.compliance-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--gray-100);border-radius:8px;margin-bottom:8px}
+.compliance-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.compliance-info{flex:1}.compliance-name{font-weight:600;color:var(--navy);font-size:0.9rem}.compliance-detail{font-size:0.8rem;color:var(--gray-500)}
+.compliance-badge{font-size:0.75rem;font-weight:700;padding:4px 10px;border-radius:10px;white-space:nowrap}
+.compliance-badge.current{background:#dcfce7;color:#16a34a}.compliance-badge.expiring{background:#fef3c7;color:#b45309}.compliance-badge.expired{background:#fecaca;color:#dc2626}
+.all-tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.all-tool-card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:28px;transition:all 0.3s}
+.all-tool-card:hover{border-color:var(--blue);box-shadow:0 4px 12px rgba(0,0,0,0.06);transform:translateY(-2px)}
+.all-tool-card h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin:12px 0 8px}
+.all-tool-card p{font-size:0.9rem;color:var(--gray-600);line-height:1.5}
+.all-tool-card .tool-card-status{margin-top:16px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes progress{0%{width:0%}100%{width:100%}}
+@media(max-width:768px){.tools-hero h1{font-size:1.8rem}.tools-hero .stats-row{flex-direction:column;gap:20px}.tool-layout{grid-template-columns:1fr}.all-tools-grid{grid-template-columns:1fr}.ai-cost-grid{grid-template-columns:1fr}.payment-row{flex-wrap:wrap}.payment-amount{margin-left:20px}}
+</style>
 </head>
 <body>
-
-<!-- ============ NAVIGATION ============ -->
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
@@ -38,81 +112,79 @@
   </div>
 </nav>
 
-<!-- ============ PAGE HEADER ============ -->
-<section class="page-header">
+<section class="tools-hero">
   <div class="container">
-    <h1>AI-Powered Tools</h1>
-    <p>Spend less time on paperwork and admin. Our AI tools help you bid smarter, bid faster, and win more work.</p>
+    <div class="section-label section-label-blue" style="margin-bottom:16px;">AI-Powered Construction Tools</div>
+    <h1>Work Smarter.<br>Not Harder.</h1>
+    <p>AI tools built specifically for subcontractors. Extract scope from plans in minutes, catch bad contract language before you sign, and never miss a payment deadline again.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-value">10+ hrs</div><div class="stat-label">Saved per week on admin</div></div>
+      <div class="stat"><div class="stat-value">89%</div><div class="stat-label">Faster bid turnaround</div></div>
+      <div class="stat"><div class="stat-value">$47K</div><div class="stat-label">Avg. saved on risky contracts</div></div>
+    </div>
   </div>
 </section>
 
-<!-- ============ AI BID ASSISTANT ============ -->
-<section class="section">
+<!-- TOOL 1: AI BID ASSISTANT -->
+<section class="tool-section">
   <div class="container">
-    <div class="section-header">
-      <div class="section-label section-label-blue">AI Bid Assistant</div>
-      <h2>Turn Plans Into Bids in Minutes</h2>
-      <p>Upload your project plans and specs. AI extracts your trade's scope, identifies quantities, and helps you build competitive bids.</p>
+    <div class="tool-header">
+      <div class="tool-icon tool-icon-blue">📋</div>
+      <div class="tool-header-text"><h2>AI Bid Assistant</h2><span class="tool-status tool-status-live">● Live</span></div>
     </div>
-    <div class="ai-demo-container">
-      <div class="ai-upload-area" id="ai-upload" onclick="runAiDemo()">
-        <div class="ai-upload-icon">📄</div>
-        <div class="ai-upload-title">Drop your plans & specs here</div>
-        <div class="ai-upload-sub">PDF, DWG, or image files — AI will extract your trade's scope</div>
-        <div class="mt-2"><span class="badge badge-blue">Try the demo with sample plans</span></div>
+    <div class="tool-layout">
+      <div>
+        <p class="tool-description">Upload project plans and specs. AI reads the documents, extracts your trade's scope, identifies quantities, flags potential risks, and helps you build a competitive bid — in minutes, not days.</p>
+        <ul class="tool-features">
+          <li>Reads PDF plans, DWG files, and spec documents</li>
+          <li>Auto-extracts scope specific to your trade</li>
+          <li>Identifies material quantities and specifications</li>
+          <li>Provides cost estimates based on market data</li>
+          <li>Flags risks like hurricane impact requirements or unusual specs</li>
+          <li>Generates professional proposal documents</li>
+        </ul>
+        <button class="btn btn-primary" onclick="openModal()">Try AI Bid Assistant</button>
       </div>
-      <div class="ai-result" id="ai-result">
-        <div class="ai-result-header">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          <span>AI Bid Analysis Complete</span>
-          <span style="margin-left:auto; font-weight:400; font-size:0.8rem; opacity:0.7;">Analyzed in 8.3 seconds</span>
-        </div>
-        <div class="ai-result-body">
-          <div class="ai-result-section">
-            <h4>Project Identified</h4>
-            <div style="padding:12px;background:var(--gray-50);border-radius:8px;">
-              <div style="font-weight:700;color:var(--navy);font-size:1.05rem;">Oceanside Mixed-Use Development — Phase 2</div>
-              <div style="font-size:0.85rem;color:var(--gray-500);">Pompano Beach, FL • 145,000 SF • 8-story residential over retail</div>
-            </div>
+      <div class="tool-demo">
+        <div class="tool-demo-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>AI Bid Assistant</div>
+        <div class="tool-demo-body">
+          <div class="ai-upload-area" id="ai-upload" onclick="runAiDemo()">
+            <div class="ai-upload-icon">📄</div>
+            <div class="ai-upload-title">Drop your plans & specs here</div>
+            <div class="ai-upload-sub">PDF, DWG, or image files — AI will extract your trade's scope</div>
+            <div style="margin-top:12px;"><span style="display:inline-block;padding:4px 12px;background:var(--blue);color:#fff;border-radius:20px;font-size:0.8rem;font-weight:600;">Click to try demo</span></div>
           </div>
-          <div class="ai-result-section">
-            <h4>Scope Extracted — Glass & Glazing</h4>
-            <div class="ai-result-items">
-              <div class="ai-result-item"><div class="dot"></div>Curtain wall system — aluminum framed, floors 2-8 (approx. 22,000 SF)</div>
-              <div class="ai-result-item"><div class="dot"></div>Storefront glazing — ground floor retail (approx. 4,800 SF)</div>
-              <div class="ai-result-item"><div class="dot"></div>Interior glass partitions — lobby and amenity spaces (approx. 3,200 SF)</div>
-              <div class="ai-result-item"><div class="dot"></div>Sliding glass doors — balconies, units 201-812 (approx. 180 units)</div>
-              <div class="ai-result-item"><div class="dot"></div>Hurricane impact glazing required — Miami-Dade NOA compliance</div>
+          <div class="ai-result" id="ai-result">
+            <div class="ai-result-header">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              AI Analysis Complete
+              <span style="margin-left:auto;font-weight:400;font-size:0.75rem;opacity:0.7;">8.3 seconds</span>
             </div>
-          </div>
-          <div class="ai-result-section">
-            <h4>Estimated Cost Range</h4>
-            <div class="ai-cost-grid">
-              <div class="ai-cost-item">
-                <div class="ai-cost-label">Low Estimate</div>
-                <div class="ai-cost-value" style="color:var(--green);">$1.4M</div>
-              </div>
-              <div class="ai-cost-item">
-                <div class="ai-cost-label">Mid Estimate</div>
-                <div class="ai-cost-value">$1.8M</div>
-              </div>
-              <div class="ai-cost-item">
-                <div class="ai-cost-label">High Estimate</div>
-                <div class="ai-cost-value" style="color:var(--orange);">$2.2M</div>
+            <div class="ai-result-section">
+              <h4>Project Identified</h4>
+              <div style="padding:10px;background:var(--gray-50);border-radius:8px;">
+                <div style="font-weight:700;color:var(--navy);font-size:0.95rem;">Oceanside Mixed-Use — Phase 2</div>
+                <div style="font-size:0.8rem;color:var(--gray-500);">Pompano Beach, FL • 145,000 SF • 8-story</div>
               </div>
             </div>
-          </div>
-          <div class="ai-result-section">
-            <h4>AI Recommendations</h4>
-            <div class="ai-result-items">
-              <div class="ai-result-item"><div class="dot" style="background:var(--orange);"></div><strong>Flag:</strong> Spec calls for Kawneer system but alternates may be accepted — confirm with GC to potentially save 12-15%</div>
-              <div class="ai-result-item"><div class="dot" style="background:var(--green);"></div><strong>Opportunity:</strong> Interior glass partitions are value-engineerable — frameless vs. framed saves $40K+</div>
-              <div class="ai-result-item"><div class="dot" style="background:var(--red);"></div><strong>Risk:</strong> Hurricane impact requirement adds 25-30% to glazing costs — ensure this is reflected in your bid</div>
+            <div class="ai-result-section">
+              <h4>Scope — Glass & Glazing</h4>
+              <div class="ai-result-items">
+                <div class="ai-result-item"><div class="dot"></div>Curtain wall — floors 2-8 (~22,000 SF)</div>
+                <div class="ai-result-item"><div class="dot"></div>Storefront glazing — ground floor (~4,800 SF)</div>
+                <div class="ai-result-item"><div class="dot"></div>Interior glass partitions (~3,200 SF)</div>
+                <div class="ai-result-item"><div class="dot"></div>Sliding glass doors — 180 units</div>
+                <div class="ai-result-item"><div class="dot" style="background:var(--orange);"></div>Hurricane impact glazing required</div>
+              </div>
             </div>
-          </div>
-          <div style="display:flex;gap:12px;margin-top:24px;">
-            <button class="btn btn-primary" onclick="openModal()">Generate Full Proposal</button>
-            <button class="btn btn-secondary">Download Scope Summary</button>
+            <div class="ai-result-section">
+              <h4>Cost Estimate</h4>
+              <div class="ai-cost-grid">
+                <div class="ai-cost-item"><div class="ai-cost-label">Low</div><div class="ai-cost-value" style="color:#16a34a;">$1.4M</div></div>
+                <div class="ai-cost-item"><div class="ai-cost-label">Mid</div><div class="ai-cost-value">$1.8M</div></div>
+                <div class="ai-cost-item"><div class="ai-cost-label">High</div><div class="ai-cost-value" style="color:var(--orange);">$2.2M</div></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -120,61 +192,169 @@
   </div>
 </section>
 
-<!-- ============ FEATURES GRID ============ -->
-<section class="section section-alt">
+<!-- TOOL 2: CONTRACT REVIEW -->
+<section class="tool-section">
   <div class="container">
-    <div class="section-header">
-      <h2 style="font-size:1.8rem;margin-bottom:32px;">More AI Tools Coming Soon</h2>
+    <div class="tool-header">
+      <div class="tool-icon tool-icon-orange">⚖️</div>
+      <div class="tool-header-text"><h2>AI Contract Review</h2><span class="tool-status tool-status-beta">● Beta</span></div>
     </div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon feature-icon-blue">📋</div>
-        <h3>Contract Review</h3>
-        <p>Upload contracts and NDAs. AI flags risky terms, missing clauses, and bad payment language before you sign.</p>
+    <div class="tool-layout">
+      <div>
+        <p class="tool-description">Upload any subcontract, and AI flags risky clauses, missing protections, and bad payment terms — before you sign. Think of it as a second set of eyes that has read 10,000 construction contracts.</p>
+        <ul class="tool-features">
+          <li>Scans for pay-if-paid vs. pay-when-paid language</li>
+          <li>Flags unlimited indemnification and liability clauses</li>
+          <li>Checks retainage terms and release conditions</li>
+          <li>Identifies missing dispute resolution procedures</li>
+          <li>Compares against industry-standard contract terms</li>
+          <li>Generates a risk score with actionable recommendations</li>
+        </ul>
+        <button class="btn btn-primary" onclick="openModal()">Try Contract Review</button>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon feature-icon-green">📝</div>
-        <h3>Proposal Generator</h3>
-        <p>Create professional, detailed proposals in minutes. AI generates specs, schedules, and pricing from your project data.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon feature-icon-orange">🔍</div>
-        <h3>Spec Analysis</h3>
-        <p>AI reads specs and extracts every detail relevant to your trade. No more manual scope extraction and itemization.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon feature-icon-blue">💰</div>
-        <h3>Pricing Assistant</h3>
-        <p>Benchmark your costs against similar projects and market rates. Bid confidently with data-backed pricing.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon feature-icon-green">⚡</div>
-        <h3>Payment Tracking</h3>
-        <p>AI monitors your project payments, flags late invoices, and predicts payment delays before they happen.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon feature-icon-orange">📊</div>
-        <h3>Bid Analytics</h3>
-        <p>Track your win rate, bid amounts, and project profitability. AI shows where you're winning and where you're losing.</p>
+      <div class="tool-demo">
+        <div class="tool-demo-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>Contract Review — Risk Analysis</div>
+        <div class="tool-demo-body">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:#fef3c7;border-radius:8px;">
+            <span style="font-size:1.2rem;">⚠️</span>
+            <div>
+              <div style="font-weight:700;font-size:0.9rem;color:#92400e;">Risk Score: 6.2 / 10 — Review Recommended</div>
+              <div style="font-size:0.8rem;color:#b45309;">3 clauses flagged, 1 critical</div>
+            </div>
+          </div>
+          <div class="contract-clause danger">
+            <span class="clause-tag danger">Critical</span>
+            <strong>Section 7.3 — Payment Terms</strong><br>
+            "Subcontractor payment is contingent upon Contractor receiving payment from Owner..." <em>(Pay-if-paid clause detected)</em>
+          </div>
+          <div class="contract-clause flagged">
+            <span class="clause-tag warning">Warning</span>
+            <strong>Section 12.1 — Indemnification</strong><br>
+            "Subcontractor shall indemnify and hold harmless Contractor for any and all claims..." <em>(Broad indemnification — no negligence qualifier)</em>
+          </div>
+          <div class="contract-clause flagged">
+            <span class="clause-tag warning">Warning</span>
+            <strong>Section 9.4 — Retainage</strong><br>
+            "10% retainage held until final project completion..." <em>(No timeline for release after your scope is done)</em>
+          </div>
+          <div class="contract-clause ok">
+            <span class="clause-tag safe">OK</span>
+            <strong>Section 15.2 — Dispute Resolution</strong><br>
+            "Disputes shall first be resolved through mediation..." <em>(Standard mediation-then-arbitration clause)</em>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ CTA ============ -->
+<!-- TOOL 3: PAYMENT TRACKER -->
+<section class="tool-section">
+  <div class="container">
+    <div class="tool-header">
+      <div class="tool-icon tool-icon-green">💰</div>
+      <div class="tool-header-text"><h2>Payment Tracker</h2><span class="tool-status tool-status-beta">● Beta</span></div>
+    </div>
+    <div class="tool-layout">
+      <div>
+        <p class="tool-description">Track every dollar owed to you across all projects. AI monitors payment patterns, predicts delays based on GC history, and automatically alerts you when invoices slip past due dates.</p>
+        <ul class="tool-features">
+          <li>Dashboard view of all outstanding invoices</li>
+          <li>Automated payment deadline reminders</li>
+          <li>GC payment behavior analysis and scoring</li>
+          <li>Predictive alerts for potential late payments</li>
+          <li>Retainage tracking and release monitoring</li>
+          <li>Lien deadline countdown for every project</li>
+        </ul>
+        <button class="btn btn-primary" onclick="openModal()">Try Payment Tracker</button>
+      </div>
+      <div class="tool-demo">
+        <div class="tool-demo-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>Payment Dashboard — March 2026</div>
+        <div class="tool-demo-body">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+            <div style="text-align:center;padding:12px;background:#dcfce7;border-radius:8px;"><div style="font-size:0.75rem;color:#16a34a;font-weight:600;">RECEIVED</div><div style="font-size:1.3rem;font-weight:800;color:#16a34a;">$284K</div></div>
+            <div style="text-align:center;padding:12px;background:#fef3c7;border-radius:8px;"><div style="font-size:0.75rem;color:#b45309;font-weight:600;">PENDING</div><div style="font-size:1.3rem;font-weight:800;color:#b45309;">$167K</div></div>
+            <div style="text-align:center;padding:12px;background:#fecaca;border-radius:8px;"><div style="font-size:0.75rem;color:#dc2626;font-weight:600;">OVERDUE</div><div style="font-size:1.3rem;font-weight:800;color:#dc2626;">$42K</div></div>
+          </div>
+          <div class="payment-row"><div class="payment-status paid"></div><div class="payment-info"><div class="payment-project">Bayfront Tower — Pay App #4</div><div class="payment-gc">Turner Construction</div></div><div class="payment-amount">$94,500</div><span class="payment-days on-time">Paid</span></div>
+          <div class="payment-row"><div class="payment-status pending"></div><div class="payment-info"><div class="payment-project">Marina District Phase 2</div><div class="payment-gc">Moss & Associates</div></div><div class="payment-amount">$167,200</div><span class="payment-days warning">Due in 8 days</span></div>
+          <div class="payment-row"><div class="payment-status overdue"></div><div class="payment-info"><div class="payment-project">Coral Ridge Office Park</div><div class="payment-gc">Suffolk Construction</div></div><div class="payment-amount">$42,800</div><span class="payment-days late">18 days late</span></div>
+          <div class="payment-row"><div class="payment-status paid"></div><div class="payment-info"><div class="payment-project">Flagler Heights Mixed Use</div><div class="payment-gc">Stiles Construction</div></div><div class="payment-amount">$189,600</div><span class="payment-days on-time">Paid</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOL 4: COMPLIANCE MONITOR -->
+<section class="tool-section">
+  <div class="container">
+    <div class="tool-header">
+      <div class="tool-icon tool-icon-purple">🛡️</div>
+      <div class="tool-header-text"><h2>Compliance Monitor</h2><span class="tool-status tool-status-soon">Coming Soon</span></div>
+    </div>
+    <div class="tool-layout">
+      <div>
+        <p class="tool-description">Never lose a bid because your insurance lapsed or your license expired. AI tracks every compliance document, sends renewal reminders, and keeps your Readiness Score at 100%.</p>
+        <ul class="tool-features">
+          <li>Tracks insurance, licenses, certifications, and bonds</li>
+          <li>30/60/90 day renewal reminders</li>
+          <li>Auto-generates compliance certificates for GCs</li>
+          <li>Monitors state-specific requirements by trade</li>
+          <li>Readiness Score that GCs can verify instantly</li>
+          <li>Document storage with quick-share links</li>
+        </ul>
+        <button class="btn btn-secondary" onclick="openModal()">Join Waitlist</button>
+      </div>
+      <div class="tool-demo">
+        <div class="tool-demo-header"><div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>Compliance Dashboard</div>
+        <div class="tool-demo-body">
+          <div style="text-align:center;margin-bottom:16px;">
+            <div style="font-size:0.8rem;color:var(--gray-500);margin-bottom:4px;">READINESS SCORE</div>
+            <div style="font-size:2.5rem;font-weight:900;color:#16a34a;">94<span style="font-size:1.2rem;color:var(--gray-400);">/100</span></div>
+          </div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:#dcfce7;">📋</div><div class="compliance-info"><div class="compliance-name">General Liability Insurance</div><div class="compliance-detail">$2M coverage • State Farm</div></div><span class="compliance-badge current">Current</span></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:#fef3c7;">🔑</div><div class="compliance-info"><div class="compliance-name">Contractor License — FL</div><div class="compliance-detail">CGC License #CGC062847</div></div><span class="compliance-badge expiring">Renew in 34 days</span></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:#dcfce7;">🏗️</div><div class="compliance-info"><div class="compliance-name">Workers' Compensation</div><div class="compliance-detail">$1M/$1M • Hartford</div></div><span class="compliance-badge current">Current</span></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:#fecaca;">⚡</div><div class="compliance-info"><div class="compliance-name">OSHA 30 Certification</div><div class="compliance-detail">Foreman — Mike Rodriguez</div></div><span class="compliance-badge expired">Expired</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALL TOOLS OVERVIEW -->
+<section class="tool-section" style="background:var(--gray-50);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;">
+      <h2 style="font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:12px;">More Tools on the Roadmap</h2>
+      <p style="color:var(--gray-600);max-width:600px;margin:0 auto;">We're building every tool a sub needs to run a smarter business.</p>
+    </div>
+    <div class="all-tools-grid">
+      <div class="all-tool-card"><div class="tool-icon tool-icon-blue" style="width:44px;height:44px;font-size:1.2rem;">📝</div><h3>Proposal Generator</h3><p>Create professional, detailed proposals in minutes. AI generates specs, schedules, and pricing from your project data.</p><div class="tool-card-status"><span class="tool-status tool-status-soon">Coming Q2 2026</span></div></div>
+      <div class="all-tool-card"><div class="tool-icon tool-icon-green" style="width:44px;height:44px;font-size:1.2rem;">🔍</div><h3>Spec Analysis</h3><p>AI reads project specs and extracts every detail relevant to your trade. No more manual scope extraction.</p><div class="tool-card-status"><span class="tool-status tool-status-soon">Coming Q2 2026</span></div></div>
+      <div class="all-tool-card"><div class="tool-icon tool-icon-orange" style="width:44px;height:44px;font-size:1.2rem;">📊</div><h3>Bid Analytics</h3><p>Track your win rate, bid amounts, and project profitability. AI shows where you're winning and where you're losing.</p><div class="tool-card-status"><span class="tool-status tool-status-soon">Coming Q3 2026</span></div></div>
+      <div class="all-tool-card"><div class="tool-icon tool-icon-teal" style="width:44px;height:44px;font-size:1.2rem;">🤖</div><h3>AI Takeoff</h3><p>Upload blueprints and AI counts quantities, measures areas, and generates material lists for your trade automatically.</p><div class="tool-card-status"><span class="tool-status tool-status-soon">Coming Q3 2026</span></div></div>
+      <div class="all-tool-card"><div class="tool-icon tool-icon-red" style="width:44px;height:44px;font-size:1.2rem;">📅</div><h3>Schedule Assistant</h3><p>AI helps you manage crew schedules, project timelines, and resource allocation across multiple active jobs.</p><div class="tool-card-status"><span class="tool-status tool-status-soon">Coming Q4 2026</span></div></div>
+      <div class="all-tool-card"><div class="tool-icon tool-icon-purple" style="width:44px;height:44px;font-size:1.2rem;">💬</div><h3>GC Communication Hub</h3><p>Centralize all GC communications, RFIs, and submittals in one place. AI drafts responses and tracks deadlines.</p><div class="tool-card-status"><span class="tool-status tool-status-soon">Coming Q4 2026</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
 <section class="cta-section">
   <div class="container">
-    <h2>Save 10+ Hours a Week on Admin</h2>
-    <p>Upgrade to Pro and unlock the full suite of AI tools. Bid smarter, bid faster, win more work.</p>
-    <div class="cta-input-group">
-      <input type="email" class="cta-input" placeholder="Enter your work email">
-      <button class="btn btn-orange" onclick="openModal()">Start Pro Trial</button>
+    <h2>Stop Wasting Time on Paperwork.</h2>
+    <p>Join the platform that puts AI to work for your business. Start free, upgrade when you're ready.</p>
+    <div class="cta-input-group" id="tools-cta-form">
+      <input type="email" class="cta-input" id="tools-cta-email" placeholder="Enter your work email">
+      <button class="btn btn-orange" onclick="submitToolsCta()">Get Early Access</button>
     </div>
-    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">$49/month. First month free.</p>
+    <p style="font-size:0.8rem;color:#475569;margin-top:16px;">Free plan available forever. No credit card required.</p>
   </div>
 </section>
 
-<!-- ============ FOOTER ============ -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
@@ -182,44 +362,15 @@
         <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
         <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
       </div>
-      <div>
-        <h4>Platform</h4>
-        <ul class="footer-links">
-          <li><a href="find-subs.html">Find Subs</a></li>
-          <li><a href="project-board.html">Project Board</a></li>
-          <li><a href="gc-ratings.html">GC Ratings</a></li>
-          <li><a href="ai-tools.html">AI Tools</a></li>
-          <li><a href="pricing.html">Pricing</a></li>
-        </ul>
-      </div>
-            <div>
-        <h4>Resources</h4>
-        <ul class="footer-links">
-          <li><a href="resources/lien-waiver-templates.html">Lien Waiver Templates</a></li>
-          <li><a href="resources/pay-app-templates.html">Pay App Templates</a></li>
-          <li><a href="resources/insurance-guide.html">Insurance Guide</a></li>
-          <li><a href="resources/bonding-guide.html">Bonding Guide</a></li>
-          <li><a href="resources/blog.html">Blog</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Company</h4>
-        <ul class="footer-links">
-          <li><a href="about.html">About / Our Story</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-        </ul>
-      </div>
+      <div><h4>Platform</h4><ul class="footer-links"><li><a href="find-subs.html">Find Subs</a></li><li><a href="project-board.html">Project Board</a></li><li><a href="gc-ratings.html">GC Ratings</a></li><li><a href="ai-tools.html">AI Tools</a></li><li><a href="pricing.html">Pricing</a></li></ul></div>
+      <div><h4>Resources</h4><ul class="footer-links"><li><a href="resources/lien-waiver-templates.html">Lien Waiver Templates</a></li><li><a href="resources/pay-app-templates.html">Pay App Templates</a></li><li><a href="resources/insurance-guide.html">Insurance Guide</a></li><li><a href="resources/bonding-guide.html">Bonding Guide</a></li><li><a href="resources/blog.html">Blog</a></li></ul></div>
+      <div><h4>Company</h4><ul class="footer-links"><li><a href="about.html">About / Our Story</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li></ul></div>
     </div>
-    <div class="footer-bottom">
-      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
-      <span>Built with ⚡ by a sub, for subs.</span>
-    </div>
+    <div class="footer-bottom"><span>&copy; 2026 Subcontractors.ai. All rights reserved.</span><span>Built with ⚡ by a sub, for subs.</span></div>
   </div>
 </footer>
 
-<!-- ============ SIGNUP MODAL ============ -->
+<!-- SIGNUP MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal" style="position:relative;">
     <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -228,64 +379,26 @@
     <input type="text" class="modal-input" placeholder="Company Name">
     <input type="email" class="modal-input" placeholder="Email Address">
     <select class="modal-input" style="appearance:auto;">
-      <option value="">Select Your Trade</option>
-      <option>Electrical</option>
-      <option>Plumbing</option>
-      <option>HVAC</option>
-      <option>Glass & Glazing</option>
-      <option>Concrete</option>
-      <option>Roofing</option>
-      <option>Painting</option>
-      <option>Framing</option>
-      <option>Excavation</option>
-      <option>Drywall</option>
-      <option>Flooring</option>
-      <option>Fire Protection</option>
-      <option>Steel / Iron</option>
-      <option>Other</option>
+      <option value="">Select Your Trade</option><option>Electrical</option><option>Plumbing</option><option>HVAC</option><option>Glass & Glazing</option><option>Concrete</option><option>Roofing</option><option>Painting</option><option>Framing</option><option>Excavation</option><option>Drywall</option><option>Flooring</option><option>Fire Protection</option><option>Steel / Iron</option><option>Other</option>
     </select>
     <input type="text" class="modal-input" placeholder="City, State">
-    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="submitSignup(this)">Create Free Profile &rarr;</button>
     <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
   </div>
 </div>
 
 <script>
-// ============ AI DEMO ============
-function runAiDemo() {
-  const upload = document.getElementById('ai-upload');
-  const result = document.getElementById('ai-result');
-  upload.innerHTML = '<div style="padding:20px;"><div class="ai-upload-icon">⚙️</div><div class="ai-upload-title">Analyzing plans...</div><div style="margin-top:12px;height:6px;background:var(--gray-200);border-radius:3px;overflow:hidden;max-width:300px;margin-left:auto;margin-right:auto;"><div style="height:100%;background:var(--blue);border-radius:3px;animation:progress 2s ease-in-out forwards;" id="progress-bar"></div></div></div>';
-  setTimeout(() => {
-    upload.style.display = 'none';
-    result.classList.add('show');
-  }, 2500);
-}
+function runAiDemo(){const u=document.getElementById('ai-upload'),r=document.getElementById('ai-result');u.innerHTML='<div style="padding:20px;"><div class="ai-upload-icon">⚙️</div><div class="ai-upload-title">Analyzing plans...</div><div style="margin-top:12px;height:6px;background:var(--gray-200);border-radius:3px;overflow:hidden;max-width:300px;margin-left:auto;margin-right:auto;"><div style="height:100%;background:var(--blue);border-radius:3px;animation:progress 2s ease-in-out forwards;"></div></div></div>';setTimeout(()=>{u.style.display='none';r.classList.add('show');},2500);}
 
-// ============ MODAL ============
-function openModal() { document.getElementById('modal').classList.add('show'); }
-function closeModal() { document.getElementById('modal').classList.remove('show'); }
-document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+function submitToolsCta(){const e=document.getElementById('tools-cta-email').value;if(!e||!e.includes('@')){document.getElementById('tools-cta-email').style.borderColor='#ef4444';return;}const f=document.getElementById('tools-cta-form'),b=f.querySelector('.btn');b.textContent='Sending...';b.disabled=true;fetch('https://formsubmit.co/ajax/connor@acglass.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:e,_subject:'New Signup - AI Tools Page',source:'ai-tools-cta'})}).then(r=>r.json()).then(()=>{f.innerHTML='<div style="text-align:center;padding:16px;"><div style="font-size:2rem;margin-bottom:8px;">✓</div><div style="color:#fff;font-weight:700;font-size:1.1rem;">You\'re on the list!</div><div style="color:#94a3b8;font-size:0.9rem;margin-top:4px;">We\'ll notify you when new tools launch.</div></div>';}).catch(()=>{f.innerHTML='<div style="text-align:center;padding:16px;"><div style="font-size:2rem;margin-bottom:8px;">✓</div><div style="color:#fff;font-weight:700;font-size:1.1rem;">You\'re on the list!</div><div style="color:#94a3b8;font-size:0.9rem;margin-top:4px;">We\'ll notify you when new tools launch.</div></div>';});}
 
-// ============ MOBILE MENU ============
-function toggleMobile() {
-  const links = document.querySelector('.nav-links');
-  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-  links.style.position = 'absolute';
-  links.style.top = '64px';
-  links.style.left = '0';
-  links.style.right = '0';
-  links.style.background = '#fff';
-  links.style.flexDirection = 'column';
-  links.style.padding = '16px';
-  links.style.borderBottom = '1px solid var(--gray-200)';
-  links.style.boxShadow = 'var(--shadow-lg)';
-}
+function openModal(){document.getElementById('modal').classList.add('show');}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-// Progress bar animation
-const style = document.createElement('style');
-style.textContent = '@keyframes progress { 0% { width: 0%; } 100% { width: 100%; } }';
-document.head.appendChild(style);
+function submitSignup(btn){const m=document.getElementById('modal'),i=m.querySelectorAll('.modal-input'),c=i[0].value,e=i[1].value,t=i[2].value,l=i[3].value;if(!e||!e.includes('@')){i[1].style.borderColor='#ef4444';i[1].focus();return;}btn.textContent='Creating Profile...';btn.disabled=true;fetch('https://formsubmit.co/ajax/connor@acglass.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({company:c,email:e,trade:t,location:l,_subject:'New Signup - '+(c||e),source:'signup-modal'})}).then(r=>r.json()).then(()=>{m.querySelector('.modal').innerHTML='<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';}).catch(()=>{m.querySelector('.modal').innerHTML='<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';});}
+
+function toggleMobile(){const l=document.querySelector('.nav-links');if(l.style.display==='flex'){l.style.display='none';}else{l.style.display='flex';l.style.position='absolute';l.style.top='64px';l.style.left='0';l.style.right='0';l.style.background='#fff';l.style.flexDirection='column';l.style.padding='16px';l.style.borderBottom='1px solid var(--gray-200)';l.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';l.style.zIndex='1000';}}
 </script>
 </body>
 </html>

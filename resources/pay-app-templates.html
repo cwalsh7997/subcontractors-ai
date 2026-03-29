@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Pay Application Templates for Construction Billing | Subcontractors.ai</title>
-<meta name="description" content="Download free pay application templates. AIA G702/G703, continuation sheets, schedules of values, and more for subcontractor billing to general contractors.">
-<meta property="og:title" content="Free Pay Application Templates for Construction Billing">
-<meta property="og:description" content="Download free pay application templates. AIA G702/G703, continuation sheets, schedules of values, and more for subcontractor billing to general contractors.">
+<title>Free Pay App Templates — AIA G702/G703 & More | Subcontractors.ai</title>
+<meta name="description" content="Download free payment application templates. AIA G702/G703, continuation sheets, change orders, and billing summaries for construction subcontractors.">
+<meta name="keywords" content="pay app template, AIA G702, AIA G703, payment application, construction billing template">
+<meta property="og:url" content="https://www.subcontractors.ai/resources/pay-app-templates.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Pay App Templates — AIA G702/G703 & More | Subcontractors.ai">
+<meta name="twitter:description" content="Download free payment application templates. AIA G702/G703, continuation sheets, change orders, and billing summaries for construction subcontractors.">
+<meta property="og:title" content="Free Pay App Templates — AIA G702/G703 & More | Subcontractors.ai">
+<meta property="og:description" content="Download free payment application templates. AIA G702/G703, continuation sheets, change orders, and billing summaries for construction subcontractors.">
 <meta property="og:type" content="website">
+<link rel="canonical" href="https://www.subcontractors.ai/resources/pay-app-templates.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="../styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -133,8 +139,8 @@
               <li>Works with most GCs nationwide</li>
             </ul>
             <div class="template-download">
-              <button class="btn btn-primary btn-sm" onclick="alert('Coming soon - join the waitlist!')">PDF</button>
-              <button class="btn btn-secondary btn-sm" onclick="alert('Coming soon - join the waitlist!')">Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="downloadTemplate('aia-g702-payment-application.pdf')">PDF</button>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Excel version coming soon!')">Excel</button>
             </div>
           </div>
 
@@ -150,8 +156,8 @@
               <li>Professional formatting</li>
             </ul>
             <div class="template-download">
-              <button class="btn btn-primary btn-sm" onclick="alert('Coming soon - join the waitlist!')">PDF</button>
-              <button class="btn btn-secondary btn-sm" onclick="alert('Coming soon - join the waitlist!')">Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="downloadTemplate('continuation-sheet-g703.pdf')">PDF</button>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Excel version coming soon!')">Excel</button>
             </div>
           </div>
 
@@ -167,8 +173,8 @@
               <li>Align with contract value</li>
             </ul>
             <div class="template-download">
-              <button class="btn btn-primary btn-sm" onclick="alert('Coming soon - join the waitlist!')">PDF</button>
-              <button class="btn btn-secondary btn-sm" onclick="alert('Coming soon - join the waitlist!')">Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="downloadTemplate('continuation-sheet-g703.pdf')">PDF</button>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Excel version coming soon!')">Excel</button>
             </div>
           </div>
 
@@ -184,8 +190,8 @@
               <li>Protects your payment rights</li>
             </ul>
             <div class="template-download">
-              <button class="btn btn-primary btn-sm" onclick="alert('Coming soon - join the waitlist!')">PDF</button>
-              <button class="btn btn-secondary btn-sm" onclick="alert('Coming soon - join the waitlist!')">Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="downloadTemplate('monthly-billing-summary.pdf')">PDF</button>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Excel version coming soon!')">Excel</button>
             </div>
           </div>
 
@@ -201,8 +207,8 @@
               <li>Prevents payment disputes</li>
             </ul>
             <div class="template-download">
-              <button class="btn btn-primary btn-sm" onclick="alert('Coming soon - join the waitlist!')">PDF</button>
-              <button class="btn btn-secondary btn-sm" onclick="alert('Coming soon - join the waitlist!')">Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="downloadTemplate('change-order-request.pdf')">PDF</button>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Excel version coming soon!')">Excel</button>
             </div>
           </div>
 
@@ -218,8 +224,8 @@
               <li>Professional appearance</li>
             </ul>
             <div class="template-download">
-              <button class="btn btn-primary btn-sm" onclick="alert('Coming soon - join the waitlist!')">PDF</button>
-              <button class="btn btn-secondary btn-sm" onclick="alert('Coming soon - join the waitlist!')">Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="downloadTemplate('monthly-billing-summary.pdf')">PDF</button>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Excel version coming soon!')">Excel</button>
             </div>
           </div>
         </div>
@@ -416,7 +422,7 @@
       <option>Other</option>
     </select>
     <input type="text" class="modal-input" placeholder="City, State">
-    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile →</button>
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="submitSignup(this)">Create Free Profile →</button>
     <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
   </div>
 </div>
@@ -425,6 +431,55 @@
 function openModal() { document.getElementById('modal').classList.add('show'); }
 function closeModal() { document.getElementById('modal').classList.remove('show'); }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// ============ SIGNUP FORM SUBMISSION ============
+function submitSignup(btn) {
+  const modal = document.getElementById('modal');
+  const inputs = modal.querySelectorAll('.modal-input');
+  const company = inputs[0].value;
+  const email = inputs[1].value;
+  const trade = inputs[2].value;
+  const location = inputs[3].value;
+
+  if (!email || !email.includes('@')) {
+    inputs[1].style.borderColor = '#ef4444';
+    inputs[1].focus();
+    return;
+  }
+
+  btn.textContent = 'Creating Profile...';
+  btn.disabled = true;
+
+  fetch('https://formsubmit.co/ajax/connor@acglass.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      company: company,
+      email: email,
+      trade: trade,
+      location: location,
+      _subject: 'New Subcontractors.ai Signup - ' + (company || email),
+      source: 'signup-modal'
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    const modalContent = modal.querySelector('.modal');
+    modalContent.innerHTML = '<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';
+  })
+  .catch(err => {
+    const modalContent = modal.querySelector('.modal');
+    modalContent.innerHTML = '<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';
+  });
+}
+
+// Template download handler
+function downloadTemplate(filename) {
+  const link = document.createElement('a');
+  link.href = '../templates/' + filename;
+  link.download = filename;
+  link.click();
+}
 </script>
 
 </body>

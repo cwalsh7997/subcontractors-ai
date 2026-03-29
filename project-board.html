@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project Board — Subcontractors.ai</title>
-<meta name="description" content="Browse active construction projects. Filter by type, location, and budget. Find and bid on projects that match your trade.">
-<meta property="og:title" content="Project Board — Subcontractors.ai">
-<meta property="og:description" content="Browse active construction projects. Filter by type, location, and budget. Find and bid on projects that match your trade.">
+<title>Construction Project Board — Find & Bid on Projects | Subcontractors.ai</title>
+<meta name="description" content="Browse active construction projects seeking subcontractor bids. Filter by trade, location, budget, and project type. Win more work with AI-powered matching.">
+<meta name="keywords" content="construction projects, subcontractor bids, construction bidding, project board">
+<meta property="og:url" content="https://www.subcontractors.ai/project-board.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Construction Project Board — Find & Bid on Projects | Subcontractors.ai">
+<meta name="twitter:description" content="Browse active construction projects seeking subcontractor bids. Filter by trade, location, budget, and project type. Win more work with AI-powered matching.">
+<meta property="og:title" content="Construction Project Board — Find & Bid on Projects | Subcontractors.ai">
+<meta property="og:description" content="Browse active construction projects seeking subcontractor bids. Filter by trade, location, budget, and project type. Win more work with AI-powered matching.">
 <meta property="og:type" content="website">
+<link rel="canonical" href="https://www.subcontractors.ai/project-board.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1144,7 +1150,7 @@ function openModal() {
       <option>Other</option>
     </select>
     <input type="text" class="modal-input" placeholder="City, State">
-    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="submitSignup(this)">Create Free Profile &rarr;</button>
     <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
   `;
   document.getElementById('modal').classList.add('show');
@@ -1176,6 +1182,47 @@ function toggleMobile() {
 // ============ INIT ============
 initFilters();
 applyFilters();
+
+// ============ SIGNUP FORM SUBMISSION ============
+function submitSignup(btn) {
+  const modal = document.getElementById('modal');
+  const inputs = modal.querySelectorAll('.modal-input');
+  const company = inputs[0].value;
+  const email = inputs[1].value;
+  const trade = inputs[2].value;
+  const location = inputs[3].value;
+
+  if (!email || !email.includes('@')) {
+    inputs[1].style.borderColor = '#ef4444';
+    inputs[1].focus();
+    return;
+  }
+
+  btn.textContent = 'Creating Profile...';
+  btn.disabled = true;
+
+  fetch('https://formsubmit.co/ajax/connor@acglass.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      company: company,
+      email: email,
+      trade: trade,
+      location: location,
+      _subject: 'New Subcontractors.ai Signup - ' + (company || email),
+      source: 'signup-modal'
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    const modalContent = modal.querySelector('.modal');
+    modalContent.innerHTML = '<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';
+  })
+  .catch(err => {
+    const modalContent = modal.querySelector('.modal');
+    modalContent.innerHTML = '<button class="modal-close" onclick="closeModal()">&times;</button><div style="text-align:center;padding:40px 20px;"><div style="font-size:3rem;margin-bottom:16px;">🎉</div><h2 style="margin-bottom:12px;">Welcome to Subcontractors.ai!</h2><p style="color:var(--gray-500);margin-bottom:24px;">Your early access profile is being created. We\'ll email you when the platform is ready.</p><button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Got It</button></div>';
+  });
+}
 </script>
 </body>
 </html>
