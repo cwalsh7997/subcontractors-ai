@@ -24,8 +24,9 @@
 // Example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 //
 
-window.SUPABASE_URL = '';
-window.SUPABASE_ANON_KEY = '';
+window.SUPABASE_URL = 'https://ljpsfhhcbjvkkuvdpjip.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_f898wEm3YersXvhYHDygDw_Ea-rmOFw';
+window.SUPABASE_KEY = 'sb_publishable_f898wEm3YersXvhYHDygDw_Ea-rmOFw';
 
 // =============================================================================
 // ADMIN CONFIGURATION
