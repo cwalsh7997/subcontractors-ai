@@ -3,12 +3,17 @@
  *
  * POST /api/bid-assistant
  * Body: { project, location, trade, buildingType, sqft, gc, notes, dueDate }
+ * Headers: Authorization: Bearer <supabase_jwt> (optional — anonymous gets free tier limits)
  *
- * Environment Variables (set in Vercel Dashboard):
- *   OPENAI_API_KEY — sk-xxx (GPT-4o-mini for cost efficiency)
- *
- * Returns streamed JSON with scope, costs, risks, timeline
+ * Features:
+ * - Auth-aware: logged-in users get plan-appropriate responses
+ * - Usage tracking: enforces monthly limits per plan
+ * - Free tier: basic analysis (3/month)
+ * - Pro+: full detailed analysis with cost breakdowns
  */
+
+const { verifyAuth } = require('./_lib/auth');
+const { checkUsage, trackUsage } = require('./_lib/usage');
 
 const ALLOWED_ORIGINS = [
   'https://www.subcontractors.ai',
@@ -35,7 +40,28 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   if (!process.env.OPENAI_API_KEY) {
-    return res.status(500).json({ error: 'AI service not configured. Set OPENAI_API_KEY in environment variables.' });
+    return res.status(500).json({ error: 'AI service not configured.' });
+  }
+
+  // Step 1: Check auth (graceful — null means anonymous/free)
+  const auth = await verifyAuth(req);
+  const userId = auth?.user?.id || null;
+  const userEmail = auth?.user?.email || 'anonymous';
+  const plan = auth?.plan || 'free';
+
+  // Step 2: Check usage limits (graceful — allows through if table doesn't exist)
+  const usage = await checkUsage(userId, 'bid-assistant', plan);
+
+  if (!usage.allowed) {
+    return res.status(403).json({
+      error: 'Monthly usage limit reached',
+      usage,
+      upgrade: plan === 'free'
+        ? 'Upgrade to Pro for 50 analyses/month → /pricing.html'
+        : plan === 'pro'
+          ? 'Upgrade to Business for 200 analyses/month → /pricing.html'
+          : null,
+    });
   }
 
   try {
@@ -46,8 +72,13 @@ module.exports = async (req, res) => {
     }
 
     const sf = parseInt(sqft) || 25000;
+    const isPaid = ['pro', 'business', 'enterprise'].includes(plan);
 
-    const systemPrompt = `You are an expert construction estimator and bid analyst specializing in commercial construction subcontracting. You provide detailed, accurate scope analysis, cost estimates, risk assessments, and project timelines.
+    // Adjust detail level based on plan
+    const maxTokens = isPaid ? 2000 : 800;
+
+    const systemPrompt = isPaid
+      ? `You are an expert construction estimator and bid analyst specializing in commercial construction subcontracting. You provide detailed, accurate scope analysis, cost estimates, risk assessments, and project timelines.
 
 IMPORTANT RULES:
 - Be specific and quantitative. Use real industry numbers.
@@ -74,6 +105,22 @@ RESPONSE FORMAT (strict JSON):
     { "phase": "string", "duration": "string", "description": "string" }
   ],
   "recommendations": "string with 2-3 sentences of strategic advice for the sub"
+}`
+      : `You are a construction bid analyst. Provide a brief scope overview and high-level cost range. Keep it concise.
+
+RESPONSE FORMAT (strict JSON):
+{
+  "scopeItems": ["3-4 key scope items"],
+  "costEstimate": {
+    "low": number,
+    "mid": number,
+    "high": number
+  },
+  "risks": [
+    { "level": "high|medium", "text": "top 2 risks only" }
+  ],
+  "recommendations": "1 sentence of advice",
+  "upgradeNote": "Upgrade to Pro for detailed cost breakdowns, timeline, and 50 analyses/month"
 }`;
 
     const userPrompt = `Analyze this bid opportunity for a ${trade} subcontractor:
@@ -86,7 +133,7 @@ GENERAL CONTRACTOR: ${gc || 'Not specified'}
 BID DUE DATE: ${dueDate || 'Not specified'}
 SCOPE NOTES: ${notes || 'None provided'}
 
-Provide a comprehensive bid analysis with scope items, cost estimates, risk flags, and timeline. All costs should be realistic for ${location || 'a typical US market'} in 2026. The subcontractor's trade is ${trade}.`;
+Provide a ${isPaid ? 'comprehensive' : 'brief'} bid analysis. All costs should be realistic for ${location || 'a typical US market'} in 2026. The subcontractor's trade is ${trade}.`;
 
     // Call OpenAI
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -102,7 +149,7 @@ Provide a comprehensive bid analysis with scope items, cost estimates, risk flag
           { role: 'user', content: userPrompt },
         ],
         temperature: 0.3,
-        max_tokens: 2000,
+        max_tokens: maxTokens,
         response_format: { type: 'json_object' },
       }),
     });
@@ -120,7 +167,6 @@ Provide a comprehensive bid analysis with scope items, cost estimates, risk flag
       return res.status(502).json({ error: 'No response from AI service.' });
     }
 
-    // Parse and validate the JSON response
     let analysis;
     try {
       analysis = JSON.parse(content);
@@ -129,10 +175,20 @@ Provide a comprehensive bid analysis with scope items, cost estimates, risk flag
       return res.status(502).json({ error: 'AI returned invalid format. Please try again.' });
     }
 
-    // Return the analysis
+    // Track usage (non-fatal)
+    await trackUsage(userId, 'bid-assistant');
+
+    console.log(`Bid analysis: user=${userEmail} plan=${plan} tokens=${data.usage?.total_tokens}`);
+
     return res.status(200).json({
       success: true,
       analysis,
+      plan,
+      usage: {
+        used: usage.used + 1,
+        limit: usage.limit,
+        remaining: Math.max(0, usage.remaining - 1),
+      },
       model: 'gpt-4o-mini',
       tokens: data.usage?.total_tokens || 0,
     });

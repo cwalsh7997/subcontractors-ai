@@ -65,7 +65,7 @@ window.APP_CONFIG = {
   // Demo mode: when true, app uses localStorage instead of Supabase
   // Set to false after configuring Supabase
   // In demo mode, all data is stored locally and lost on browser clear
-  demoMode: true,
+  demoMode: false,
 
   // Session timeout in minutes (0 = no timeout)
   sessionTimeout: 0,
