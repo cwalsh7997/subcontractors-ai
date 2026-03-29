@@ -96,7 +96,7 @@
     </style>
 </head>
 <body>
-    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <button class="hamburger" onclick="toggleSidebar ? toggleSidebar() : document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
     <div class="container">
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -175,7 +175,14 @@
                         </tr>
                     </thead>
                     <tbody id="payments-body">
-                        <tr><td colspan="5" class="empty-state"><h3>No payments yet</h3><p>Add your first invoice from the <a href="payments.html">Payments</a> page.</p></td></tr>
+                        <tr><td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">&#x1f4b0;</div>
+                                <div class="empty-state-title">No payments yet</div>
+                                <div class="empty-state-text">Start tracking your invoices and payments to see them here. Never chase a payment again.</div>
+                                <a href="payments.html" class="btn" style="background:#2563eb;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;">Add Your First Invoice</a>
+                            </div>
+                        </td></tr>
                     </tbody>
                 </table>
             </div>

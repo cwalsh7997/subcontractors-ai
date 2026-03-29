@@ -934,9 +934,129 @@ function isValidPhone(phone) {
   return /^(\+?1[-.\s]?)?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})$/.test(phone);
 }
 
-// Initialize app when DOM is ready
+// =============================================================================
+// GLOBAL TOAST NOTIFICATION SYSTEM
+// =============================================================================
+
+/**
+ * Show a toast notification
+ * @param {string} message - Message text
+ * @param {'success'|'error'|'info'|'warning'} type - Toast type
+ * @param {number} duration - Auto-dismiss ms (default 4000)
+ */
+function showToast(message, type = 'info', duration = 4000) {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const icons = {
+    success: '\u2705',
+    error: '\u274C',
+    info: '\u2139\uFE0F',
+    warning: '\u26A0\uFE0F'
+  };
+
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + type;
+  toast.innerHTML = '<span class="toast-icon">' + (icons[type] || '') + '</span>' +
+    '<span class="toast-message">' + message + '</span>' +
+    '<button class="toast-close" onclick="this.parentElement.remove()">&times;</button>';
+
+  container.appendChild(toast);
+
+  // Trigger show animation
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
+
+  // Auto dismiss
+  if (duration > 0) {
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, duration);
+  }
+}
+
+// Expose globally
+window.showToast = showToast;
+
+// =============================================================================
+// SIDEBAR OVERLAY (MOBILE)
+// =============================================================================
+
+function initSidebarOverlay() {
+  const sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+
+  // Create overlay element if not exists
+  let overlay = document.querySelector('.sidebar-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  // Close sidebar when overlay clicked
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  // Patch existing toggle functions to also toggle overlay
+  const origToggle = window.toggleSidebar;
+  window.toggleSidebar = function() {
+    if (origToggle) origToggle();
+    else sidebar.classList.toggle('open');
+
+    if (sidebar.classList.contains('open')) {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    } else {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+}
+
+// =============================================================================
+// SKELETON LOADING HELPER
+// =============================================================================
+
+/**
+ * Show skeleton loading in a container
+ * @param {HTMLElement} container - Container element
+ * @param {number} rows - Number of skeleton rows
+ * @param {'card'|'row'|'stat'} type - Skeleton type
+ */
+function showSkeleton(container, rows = 3, type = 'row') {
+  const skeletons = [];
+  for (let i = 0; i < rows; i++) {
+    skeletons.push('<div class="skeleton skeleton-' + type + '"></div>');
+  }
+  container.innerHTML = skeletons.join('');
+}
+
+/**
+ * Generate skeleton stat cards HTML
+ * @param {number} count - Number of stat cards
+ * @returns {string} HTML string
+ */
+function skeletonStats(count = 4) {
+  return Array(count).fill('<div class="skeleton skeleton-stat"></div>').join('');
+}
+
+window.showSkeleton = showSkeleton;
+window.skeletonStats = skeletonStats;
+
+// Initialize sidebar overlay on DOM ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
+  document.addEventListener('DOMContentLoaded', () => { initApp(); initSidebarOverlay(); });
 } else {
   initApp();
+  initSidebarOverlay();
 }

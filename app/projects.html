@@ -97,7 +97,7 @@
     </style>
 </head>
 <body>
-    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <button class="hamburger" onclick="toggleSidebar ? toggleSidebar() : document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
     <div class="container">
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -420,7 +420,7 @@
             document.getElementById('filter-count').textContent = filtered.length + ' of ' + allProjects.length + ' projects';
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="empty-state"><h3>No projects match your filters</h3><p>Try broadening your search criteria</p></div>';
+                grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#x1f50d;</div><div class="empty-state-title">No projects match your filters</div><div class="empty-state-text">Try broadening your search — adjust your trade, location, or budget range.</div></div>';
                 return;
             }
 
