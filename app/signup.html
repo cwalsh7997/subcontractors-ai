@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign up for Subcontractors.ai - Connect with vetted subcontractors for your projects">
+    <title>Sign Up - Subcontractors.ai</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a3a52 0%, #2d5a7b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #1f2937;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container a {
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .logo-container img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: inline-block;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .demo-banner {
+            background-color: #fbbf24;
+            color: #78350f;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .demo-banner.show {
+            display: block;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-heading {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .auth-subtext {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s;
+            background-color: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input.error,
+        .form-select.error {
+            border-color: #ef4444;
+        }
+
+        .form-input.error:focus,
+        .form-select.error:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .error-message {
+            font-size: 13px;
+            color: #ef4444;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #ef4444;
+            transition: all 0.2s;
+        }
+
+        .strength-fill.medium {
+            background-color: #f59e0b;
+            width: 66.66%;
+        }
+
+        .strength-fill.strong {
+            background-color: #10b981;
+            width: 100%;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            min-width: 50px;
+        }
+
+        .strength-text.weak {
+            color: #ef4444;
+        }
+
+        .strength-text.medium {
+            color: #f59e0b;
+        }
+
+        .strength-text.strong {
+            color: #10b981;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 24px 0;
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
+            accent-color: #3b82f6;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #6b7280;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .checkbox-label a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .checkbox-label a:hover {
+            color: #1d4ed8;
+        }
+
+        .checkbox-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .checkbox-error.show {
+            display: block;
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            margin-top: 8px;
+        }
+
+        .auth-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .auth-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .auth-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .button-text {
+            display: inline;
+        }
+
+        .button-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .auth-divider {
+            text-align: center;
+            margin: 24px 0;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .auth-footer {
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .auth-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .auth-footer a:hover {
+            color: #1d4ed8;
+        }
+
+        .success-message {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 32px 24px;
+            }
+
+            .auth-heading {
+                font-size: 24px;
+            }
+
+            .logo-container {
+                margin-bottom: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo-container">
+            <a href="../index.html">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="white"/>
+                    <path d="M12 18C12 15.2386 14.2386 13 17 13H23C25.7614 13 28 15.2386 28 18V22C28 24.7614 25.7614 27 23 27H17C14.2386 27 12 24.7614 12 22V18Z" stroke="#1a3a52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 20L19 23L24 17" stroke="#1a3a52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="logo-text">Subcontractors.ai</span>
+            </a>
+        </div>
+
+        <div class="demo-banner" id="demoBanner">
+            Running in demo mode — any email/password will work
+        </div>
+
+        <div class="auth-card">
+            <h1 class="auth-heading">Create Your Free Account</h1>
+            <p class="auth-subtext">Start connecting with vetted subcontractors today</p>
+
+            <div class="success-message" id="successMessage">
+                Account created successfully! Redirecting to dashboard...
+            </div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label class="form-label" for="companyName">Company Name</label>
+                    <input
+                        type="text"
+                        id="companyName"
+                        name="companyName"
+                        class="form-input"
+                        placeholder="Your company name"
+                        required
+                    >
+                    <div class="error-message" id="companyNameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="you@example.com"
+                        required
+                    >
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-input"
+                        placeholder="At least 8 characters"
+                        required
+                    >
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <span class="strength-text" id="strengthText"></span>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        class="form-input"
+                        placeholder="Confirm your password"
+                        required
+                    >
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="trade">Primary Trade</label>
+                    <select id="trade" name="trade" class="form-select" required>
+                        <option value="">Select a trade</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="HVAC">HVAC</option>
+                        <option value="Glass & Glazing">Glass & Glazing</option>
+                        <option value="Concrete">Concrete</option>
+                        <option value="Roofing">Roofing</option>
+                        <option value="Painting">Painting</option>
+                        <option value="Framing">Framing</option>
+                        <option value="Excavation">Excavation</option>
+                        <option value="Drywall">Drywall</option>
+                        <option value="Flooring">Flooring</option>
+                        <option value="Fire Protection">Fire Protection</option>
+                        <option value="Steel/Iron">Steel/Iron</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="error-message" id="tradeError"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="city">City</label>
+                        <input
+                            type="text"
+                            id="city"
+                            name="city"
+                            class="form-input"
+                            placeholder="Your city"
+                            required
+                        >
+                        <div class="error-message" id="cityError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="state">State</label>
+                        <input
+                            type="text"
+                            id="state"
+                            name="state"
+                            class="form-input"
+                            placeholder="State or province"
+                            required
+                        >
+                        <div class="error-message" id="stateError"></div>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input
+                        type="checkbox"
+                        id="termsCheckbox"
+                        name="terms"
+                        class="checkbox-input"
+                        required
+                    >
+                    <div>
+                        <label class="checkbox-label" for="termsCheckbox">
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                        </label>
+                        <div class="checkbox-error" id="termsError"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-button" id="signupButton">
+                    <span class="button-spinner" id="buttonSpinner" style="display: none;"></span>
+                    <span class="button-text">Create Account</span>
+                </button>
+            </form>
+
+            <div class="auth-divider"></div>
+
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const companyNameInput = document.getElementById('companyName');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const tradeSelect = document.getElementById('trade');
+        const cityInput = document.getElementById('city');
+        const stateInput = document.getElementById('state');
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const signupButton = document.getElementById('signupButton');
+        const buttonSpinner = document.getElementById('buttonSpinner');
+        const successMessage = document.getElementById('successMessage');
+        const demoBanner = document.getElementById('demoBanner');
+
+        // Error elements
+        const companyNameError = document.getElementById('companyNameError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+        const tradeError = document.getElementById('tradeError');
+        const cityError = document.getElementById('cityError');
+        const stateError = document.getElementById('stateError');
+        const termsError = document.getElementById('termsError');
+
+        // Password strength elements
+        const strengthFill = document.getElementById('strengthFill');
+        const strengthText = document.getElementById('strengthText');
+
+        // Check if running in demo mode
+        const supabaseUrl = window.SUPABASE_URL;
+        const supabaseKey = window.SUPABASE_KEY;
+        const isDemoMode = !supabaseUrl || !supabaseKey;
+
+        if (isDemoMode) {
+            demoBanner.classList.add('show');
+        }
+
+        // Clear error messages on input
+        function clearError(input, errorElement) {
+            input.addEventListener('input', () => {
+                errorElement.classList.remove('show');
+                errorElement.textContent = '';
+                input.classList.remove('error');
+            });
+        }
+
+        clearError(companyNameInput, companyNameError);
+        clearError(emailInput, emailError);
+        clearError(passwordInput, passwordError);
+        clearError(confirmPasswordInput, confirmPasswordError);
+        clearError(tradeSelect, tradeError);
+        clearError(cityInput, cityError);
+        clearError(stateInput, stateError);
+
+        // Password strength checker
+        function calculatePasswordStrength(password) {
+            if (!password) return 0;
+
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            return strength;
+        }
+
+        function updatePasswordStrength() {
+            const password = passwordInput.value;
+            const strength = calculatePasswordStrength(password);
+
+            strengthFill.className = 'strength-fill';
+            strengthText.className = 'strength-text';
+
+            if (strength === 0) {
+                strengthText.textContent = '';
+                strengthFill.style.width = '0%';
+            } else if (strength <= 2) {
+                strengthFill.classList.add('weak');
+                strengthText.textContent = 'Weak';
+                strengthText.classList.add('weak');
+                strengthFill.style.width = '33.33%';
+            } else if (strength <= 4) {
+                strengthFill.classList.add('medium');
+                strengthText.textContent = 'Medium';
+                strengthText.classList.add('medium');
+                strengthFill.style.width = '66.66%';
+            } else {
+                strengthFill.classList.add('strong');
+                strengthText.textContent = 'Strong';
+                strengthText.classList.add('strong');
+                strengthFill.style.width = '100%';
+            }
+        }
+
+        passwordInput.addEventListener('input', updatePasswordStrength);
+
+        termsCheckbox.addEventListener('change', () => {
+            termsError.classList.remove('show');
+            termsError.textContent = '';
+        });
+
+        // Form validation
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            // Company name
+            if (!companyNameInput.value.trim()) {
+                companyNameError.textContent = 'Company name is required';
+                companyNameError.classList.add('show');
+                companyNameInput.classList.add('error');
+                isValid = false;
+            }
+
+            // Email
+            if (!emailInput.value.trim()) {
+                emailError.textContent = 'Email is required';
+                emailError.classList.add('show');
+                emailInput.classList.add('error');
+                isValid = false;
+            } else if (!isValidEmail(emailInput.value)) {
+                emailError.textContent = 'Please enter a valid email';
+                emailError.classList.add('show');
+                emailInput.classList.add('error');
+                isValid = false;
+            }
+
+            // Password
+            if (!passwordInput.value) {
+                passwordError.textContent = 'Password is required';
+                passwordError.classList.add('show');
+                passwordInput.classList.add('error');
+                isValid = false;
+            } else if (passwordInput.value.length < 8) {
+                passwordError.textContent = 'Password must be at least 8 characters';
+                passwordError.classList.add('show');
+                passwordInput.classList.add('error');
+                isValid = false;
+            }
+
+            // Confirm password
+            if (!confirmPasswordInput.value) {
+                confirmPasswordError.textContent = 'Please confirm your password';
+                confirmPasswordError.classList.add('show');
+                confirmPasswordInput.classList.add('error');
+                isValid = false;
+            } else if (passwordInput.value !== confirmPasswordInput.value) {
+                confirmPasswordError.textContent = 'Passwords do not match';
+                confirmPasswordError.classList.add('show');
+                confirmPasswordInput.classList.add('error');
+                isValid = false;
+            }
+
+            // Trade
+            if (!tradeSelect.value) {
+                tradeError.textContent = 'Please select a trade';
+                tradeError.classList.add('show');
+                tradeSelect.classList.add('error');
+                isValid = false;
+            }
+
+            // City
+            if (!cityInput.value.trim()) {
+                cityError.textContent = 'City is required';
+                cityError.classList.add('show');
+                cityInput.classList.add('error');
+                isValid = false;
+            }
+
+            // State
+            if (!stateInput.value.trim()) {
+                stateError.textContent = 'State is required';
+                stateError.classList.add('show');
+                stateInput.classList.add('error');
+                isValid = false;
+            }
+
+            // Terms checkbox
+            if (!termsCheckbox.checked) {
+                termsError.textContent = 'You must agree to the terms';
+                termsError.classList.add('show');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Handle signup
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Clear all errors
+            companyNameError.classList.remove('show');
+            emailError.classList.remove('show');
+            passwordError.classList.remove('show');
+            confirmPasswordError.classList.remove('show');
+            tradeError.classList.remove('show');
+            cityError.classList.remove('show');
+            stateError.classList.remove('show');
+            termsError.classList.remove('show');
+
+            companyNameInput.classList.remove('error');
+            emailInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+            confirmPasswordInput.classList.remove('error');
+            tradeSelect.classList.remove('error');
+            cityInput.classList.remove('error');
+            stateInput.classList.remove('error');
+
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            // Disable button and show loading state
+            signupButton.disabled = true;
+            buttonSpinner.style.display = 'inline-block';
+
+            try {
+                if (isDemoMode) {
+                    // Demo mode: store user data in localStorage
+                    const userData = {
+                        id: 'demo-' + Date.now(),
+                        email: emailInput.value,
+                        name: companyNameInput.value.split(' ')[0],
+                        company_name: companyNameInput.value,
+                        trade: tradeSelect.value,
+                        city: cityInput.value,
+                        state: stateInput.value,
+                        created_at: new Date().toISOString(),
+                        demo: true
+                    };
+
+                    localStorage.setItem('sb-demo-user', JSON.stringify(userData));
+                    localStorage.setItem('sb-demo-session', JSON.stringify({
+                        access_token: 'demo-token-' + Date.now(),
+                        user: userData
+                    }));
+
+                    successMessage.classList.add('show');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    // Production mode: use Supabase
+                    const { data, error } = await window.supabase.auth.signUp({
+                        email: emailInput.value,
+                        password: passwordInput.value,
+                        options: {
+                            data: {
+                                company_name: companyNameInput.value,
+                                trade: tradeSelect.value,
+                                city: cityInput.value,
+                                state: stateInput.value
+                            }
+                        }
+                    });
+
+                    if (error) {
+                        if (error.message.includes('already registered')) {
+                            emailError.textContent = 'This email is already registered';
+                            emailError.classList.add('show');
+                            emailInput.classList.add('error');
+                        } else {
+                            emailError.textContent = error.message;
+                            emailError.classList.add('show');
+                            emailInput.classList.add('error');
+                        }
+                        return;
+                    }
+
+                    if (data) {
+                        successMessage.classList.add('show');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1500);
+                    }
+                }
+            } catch (error) {
+                emailError.textContent = 'An error occurred. Please try again.';
+                emailError.classList.add('show');
+                emailInput.classList.add('error');
+            } finally {
+                // Re-enable button and hide loading state
+                signupButton.disabled = false;
+                buttonSpinner.style.display = 'none';
+            }
+        });
+
+        // Check if user is already logged in
+        if (!isDemoMode && window.supabase) {
+            window.supabase.auth.onAuthStateChange((event, session) => {
+                if (session) {
+                    window.location.href = 'dashboard.html';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
