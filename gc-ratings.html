@@ -11,6 +11,219 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+.rate-form-container {
+  background: #f8fafc;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 40px;
+}
+
+.rate-form-container h3 {
+  margin-bottom: 12px;
+  color: #0f1729;
+}
+
+.rate-form-container > p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #0f1729;
+  margin-bottom: 6px;
+}
+
+.form-input, .form-textarea, .form-select {
+  padding: 12px 14px;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #0f1729;
+  background: #fff;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-row-full {
+  grid-column: 1 / -1;
+}
+
+.star-rating {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.star-input {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  color: #cbd5e1;
+  transition: color 0.2s;
+}
+
+.star-input:hover, .star-input.active {
+  color: #f59e0b;
+}
+
+.sub-ratings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 16px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+}
+
+.sub-rating-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sub-rating-label {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.form-button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.form-button-group button {
+  flex: 1;
+}
+
+.success-message {
+  display: none;
+  padding: 16px;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  color: #166534;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.success-message.show {
+  display: block;
+}
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-label {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.filter-select {
+  padding: 10px 12px;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #0f1729;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.gc-reviews-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.gc-review-item {
+  padding: 12px;
+  background: #f1f5f9;
+  border-left: 3px solid var(--blue);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.gc-review-quote {
+  color: #334155;
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.gc-review-author {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+}
+</style>
 </head>
 <body>
 
@@ -46,13 +259,134 @@
   </div>
 </section>
 
-<!-- ============ RATE GC SECTION ============ -->
+<!-- ============ RATE GC FORM SECTION ============ -->
 <section class="section">
   <div class="container">
-    <div class="rate-gc-section">
-      <h3>Have You Worked with a General Contractor?</h3>
-      <p>Share your experience and help other subcontractors make informed decisions. Your honest reviews keep the industry fair.</p>
-      <button class="btn btn-primary btn-lg" onclick="openModal()">Rate a GC Today &rarr;</button>
+    <div class="rate-form-container">
+      <h3>Rate Your GC Experience</h3>
+      <p>Share honest feedback about payment speed, change orders, communication, and safety. Help other subs make better decisions.</p>
+
+      <div id="success-message" class="success-message">
+        Thank you! Your review has been submitted and will appear after verification.
+      </div>
+
+      <form id="rate-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">GC Company Name *</label>
+            <input type="text" class="form-input" id="form-gc-name" placeholder="Enter general contractor name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Trade *</label>
+            <select class="form-select" id="form-trade" required>
+              <option value="">Select your trade</option>
+              <option value="Electrical">Electrical</option>
+              <option value="HVAC">HVAC</option>
+              <option value="Plumbing">Plumbing</option>
+              <option value="Concrete">Concrete</option>
+              <option value="Framing">Framing</option>
+              <option value="Roofing">Roofing</option>
+              <option value="Painting">Painting</option>
+              <option value="Landscaping">Landscaping</option>
+              <option value="Drywall">Drywall</option>
+              <option value="Flooring">Flooring</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your Location *</label>
+            <input type="text" class="form-input" id="form-location" placeholder="City, State" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Overall Rating *</label>
+            <div class="star-rating" id="overall-rating">
+              <button type="button" class="star-input" data-value="1" onclick="setRating(1, 'overall')">★</button>
+              <button type="button" class="star-input" data-value="2" onclick="setRating(2, 'overall')">★</button>
+              <button type="button" class="star-input" data-value="3" onclick="setRating(3, 'overall')">★</button>
+              <button type="button" class="star-input" data-value="4" onclick="setRating(4, 'overall')">★</button>
+              <button type="button" class="star-input" data-value="5" onclick="setRating(5, 'overall')">★</button>
+            </div>
+            <input type="hidden" id="form-overall-rating" value="">
+          </div>
+        </div>
+
+        <div class="form-group form-row-full">
+          <label class="form-label">Sub-Ratings</label>
+          <div class="sub-ratings-grid">
+            <div class="sub-rating-item">
+              <span class="sub-rating-label">Payment Speed</span>
+              <div class="star-rating" id="payment-rating">
+                <button type="button" class="star-input" data-value="1" onclick="setRating(1, 'payment')">★</button>
+                <button type="button" class="star-input" data-value="2" onclick="setRating(2, 'payment')">★</button>
+                <button type="button" class="star-input" data-value="3" onclick="setRating(3, 'payment')">★</button>
+                <button type="button" class="star-input" data-value="4" onclick="setRating(4, 'payment')">★</button>
+                <button type="button" class="star-input" data-value="5" onclick="setRating(5, 'payment')">★</button>
+              </div>
+              <input type="hidden" id="form-payment-rating" value="">
+            </div>
+
+            <div class="sub-rating-item">
+              <span class="sub-rating-label">Change Orders</span>
+              <div class="star-rating" id="changes-rating">
+                <button type="button" class="star-input" data-value="1" onclick="setRating(1, 'changes')">★</button>
+                <button type="button" class="star-input" data-value="2" onclick="setRating(2, 'changes')">★</button>
+                <button type="button" class="star-input" data-value="3" onclick="setRating(3, 'changes')">★</button>
+                <button type="button" class="star-input" data-value="4" onclick="setRating(4, 'changes')">★</button>
+                <button type="button" class="star-input" data-value="5" onclick="setRating(5, 'changes')">★</button>
+              </div>
+              <input type="hidden" id="form-changes-rating" value="">
+            </div>
+
+            <div class="sub-rating-item">
+              <span class="sub-rating-label">Communication</span>
+              <div class="star-rating" id="communication-rating">
+                <button type="button" class="star-input" data-value="1" onclick="setRating(1, 'communication')">★</button>
+                <button type="button" class="star-input" data-value="2" onclick="setRating(2, 'communication')">★</button>
+                <button type="button" class="star-input" data-value="3" onclick="setRating(3, 'communication')">★</button>
+                <button type="button" class="star-input" data-value="4" onclick="setRating(4, 'communication')">★</button>
+                <button type="button" class="star-input" data-value="5" onclick="setRating(5, 'communication')">★</button>
+              </div>
+              <input type="hidden" id="form-communication-rating" value="">
+            </div>
+
+            <div class="sub-rating-item">
+              <span class="sub-rating-label">Safety</span>
+              <div class="star-rating" id="safety-rating">
+                <button type="button" class="star-input" data-value="1" onclick="setRating(1, 'safety')">★</button>
+                <button type="button" class="star-input" data-value="2" onclick="setRating(2, 'safety')">★</button>
+                <button type="button" class="star-input" data-value="3" onclick="setRating(3, 'safety')">★</button>
+                <button type="button" class="star-input" data-value="4" onclick="setRating(4, 'safety')">★</button>
+                <button type="button" class="star-input" data-value="5" onclick="setRating(5, 'safety')">★</button>
+              </div>
+              <input type="hidden" id="form-safety-rating" value="">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row form-row-full">
+          <div class="form-group">
+            <label class="form-label">Your Review *</label>
+            <textarea class="form-textarea" id="form-review" placeholder="Share details about your experience with this GC. What was the payment experience like? How did they handle change orders? Communication quality? Safety practices?" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email (optional)</label>
+            <input type="email" class="form-input" id="form-email" placeholder="your@email.com">
+          </div>
+        </div>
+
+        <div class="form-button-group">
+          <button type="submit" class="btn btn-primary btn-lg">Submit Review</button>
+          <button type="reset" class="btn btn-secondary btn-lg">Clear</button>
+        </div>
+      </form>
+
+      <p style="font-size:0.8rem;color:#64748b;margin-top:16px;">Your honest feedback is valuable. Reviews are verified before publication. Anonymous reviews welcome.</p>
     </div>
   </div>
 </section>
@@ -60,7 +394,7 @@
 <!-- ============ GC RATINGS ============ -->
 <section class="section section-alt">
   <div class="container">
-    <div class="directory-search">
+    <div class="directory-search" style="margin-bottom: 24px;">
       <input type="text" class="search-input" placeholder="Search general contractors..." id="gc-search" oninput="filterGCs()">
       <select class="search-select" id="gc-sort" onchange="filterGCs()">
         <option value="highest">Highest Rated</option>
@@ -68,7 +402,47 @@
         <option value="payment">Best Payment</option>
       </select>
     </div>
+
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label class="filter-label">GC Type</label>
+        <select class="filter-select" id="filter-type" onchange="filterGCs()">
+          <option value="">All Types</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Industrial">Industrial</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Data Center">Data Center</option>
+          <option value="Residential">Residential</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Minimum Rating</label>
+        <select class="filter-select" id="filter-rating" onchange="filterGCs()">
+          <option value="">All Ratings</option>
+          <option value="4.0">4.0+</option>
+          <option value="4.5">4.5+</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Region</label>
+        <select class="filter-select" id="filter-region" onchange="filterGCs()">
+          <option value="">All Regions</option>
+          <option value="National">National</option>
+          <option value="Southeast">Southeast</option>
+          <option value="Northeast">Northeast</option>
+          <option value="Midwest">Midwest</option>
+          <option value="Southwest">Southwest</option>
+          <option value="West Coast">West Coast</option>
+        </select>
+      </div>
+    </div>
+
     <div class="gc-grid" id="gc-grid"></div>
+    <div class="no-results" id="no-results" style="display:none;">
+      No general contractors match your filters. Try adjusting your search criteria.
+    </div>
   </div>
 </section>
 
@@ -79,7 +453,7 @@
     <p>Honest contractor ratings help subs avoid bad GCs and find the ones worth working for. Rate your experience today.</p>
     <div class="cta-input-group">
       <input type="email" class="cta-input" placeholder="Enter your work email">
-      <button class="btn btn-orange" onclick="openModal()">Rate a GC Free</button>
+      <button class="btn btn-orange" onclick="scrollToForm()">Rate a GC Free</button>
     </div>
     <p style="font-size:0.8rem;color:#475569;margin-top:16px;">No account required. Anonymous ratings available.</p>
   </div>
@@ -130,48 +504,544 @@
   </div>
 </footer>
 
-<!-- ============ SIGNUP MODAL ============ -->
-<div class="modal-overlay" id="modal">
-  <div class="modal" style="position:relative;">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
-    <h2>Rate a General Contractor</h2>
-    <p>Share your honest experience. Help other subs work with the best GCs.</p>
-    <input type="text" class="modal-input" placeholder="GC Company Name">
-    <input type="email" class="modal-input" placeholder="Your Email (optional)">
-    <select class="modal-input" style="appearance:auto;">
-      <option value="">How many stars?</option>
-      <option>5 Stars ★★★★★</option>
-      <option>4 Stars ★★★★☆</option>
-      <option>3 Stars ★★★☆☆</option>
-      <option>2 Stars ★★☆☆☆</option>
-      <option>1 Star ★☆☆☆☆</option>
-    </select>
-    <textarea class="modal-input" style="resize:vertical;min-height:100px;" placeholder="Share your experience (payment speed, change orders, communication, safety, etc.)"></textarea>
-    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Submit Review &rarr;</button>
-    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Anonymous reviews welcome. Your name will never be published.</p>
-  </div>
-</div>
-
 <script>
-// ============ MOCK DATA ============
+// ============ GC DATA ============
 const gcs = [
-  { name: "Suffolk Construction", type: "Commercial GC — National", score: 4.6, reviews: 142, payment: 4.8, changes: 4.2, communication: 4.7, safety: 4.9, review: "Pays on time, every time. Best GC I've worked with in South Florida. Change orders are fair and processed fast.", reviewer: "Electrical Sub, Miami" },
-  { name: "Turner Construction", type: "Commercial GC — National", score: 4.4, reviews: 231, payment: 4.1, changes: 4.3, communication: 4.6, safety: 4.8, review: "Massive projects, good safety culture. Payment can be slow on retainage release, but they always pay.", reviewer: "HVAC Sub, Orlando" },
-  { name: "Brasfield & Gorrie", type: "Commercial GC — Southeast", score: 4.5, reviews: 89, payment: 4.7, changes: 4.4, communication: 4.3, safety: 4.6, review: "Great to work with. Fair on change orders, and their PMs actually pick up the phone. Rare these days.", reviewer: "Concrete Sub, Jacksonville" },
-  { name: "DPR Construction", type: "Commercial/Industrial GC", score: 4.3, reviews: 67, payment: 4.0, changes: 4.5, communication: 4.4, safety: 4.9, review: "Top-tier safety program. They push schedules hard but the work environment is professional. Payment is average speed.", reviewer: "Plumbing Sub, Tampa" },
+  {
+    name: "Turner Construction",
+    type: "Commercial GC",
+    region: "National",
+    score: 4.6,
+    reviews: 234,
+    payment: 4.8,
+    changes: 4.2,
+    communication: 4.7,
+    safety: 4.9,
+    reviewQuotes: [
+      { quote: "Pays on time, every time. Best GC I've worked with in the Southeast. Change orders are fair and processed fast.", reviewer: "Electrical Sub, Miami" },
+      { quote: "Massive projects, good safety culture. Payment can be slow on retainage release, but they always pay.", reviewer: "HVAC Sub, Orlando" },
+      { quote: "Their PMs actually pick up the phone. Rare these days. Fair on pricing and change orders.", reviewer: "Concrete Sub, Jacksonville" }
+    ]
+  },
+  {
+    name: "Suffolk Construction",
+    type: "Commercial GC",
+    region: "National",
+    score: 4.5,
+    reviews: 189,
+    payment: 4.7,
+    changes: 4.4,
+    communication: 4.6,
+    safety: 4.8,
+    reviewQuotes: [
+      { quote: "Professional outfit. Pay apps process within 15 days. Communication is excellent.", reviewer: "Plumbing Sub, Boston" },
+      { quote: "Great to work with. Fair on change orders, and safety is non-negotiable here.", reviewer: "Electrical Sub, New York" },
+      { quote: "Retainage is clear from the start. No surprises. Solid all around.", reviewer: "HVAC Sub, Philadelphia" }
+    ]
+  },
+  {
+    name: "Hensel Phelps Construction",
+    type: "Commercial/Industrial",
+    region: "National",
+    score: 4.4,
+    reviews: 156,
+    payment: 4.5,
+    changes: 4.3,
+    communication: 4.5,
+    safety: 4.7,
+    reviewQuotes: [
+      { quote: "Big company, but they treat subs fairly. Safety culture is top-notch.", reviewer: "Concrete Sub, Denver" },
+      { quote: "Payment schedule is clear and they stick to it. No games.", reviewer: "Roofing Sub, Las Vegas" },
+      { quote: "Good communication from the site PMs. They understand sub constraints.", reviewer: "Electrical Sub, Phoenix" }
+    ]
+  },
+  {
+    name: "DPR Construction",
+    type: "Commercial/Industrial",
+    region: "National",
+    score: 4.7,
+    reviews: 198,
+    payment: 4.6,
+    changes: 4.8,
+    communication: 4.9,
+    safety: 4.9,
+    reviewQuotes: [
+      { quote: "Top-tier safety program. They push schedules hard but the work environment is professional.", reviewer: "Plumbing Sub, San Francisco" },
+      { quote: "Excellent communication and fair change order process. One of the best.", reviewer: "HVAC Sub, San Jose" },
+      { quote: "Really cares about sub success. Pays progress invoices promptly.", reviewer: "Electrical Sub, Sacramento" }
+    ]
+  },
+  {
+    name: "PCL Construction",
+    type: "Commercial/Industrial",
+    region: "National",
+    score: 4.3,
+    reviews: 167,
+    payment: 4.4,
+    changes: 4.2,
+    communication: 4.4,
+    safety: 4.6,
+    reviewQuotes: [
+      { quote: "Consistent, professional projects across multiple regions. Payment is reliable.", reviewer: "Framing Sub, Dallas" },
+      { quote: "Large company, but they manage change orders fairly. Good communication.", reviewer: "Concrete Sub, Houston" },
+      { quote: "Safety meetings are frequent and taken seriously. Good PM accountability.", reviewer: "Electrical Sub, Austin" }
+    ]
+  },
+  {
+    name: "Brasfield & Gorrie",
+    type: "Commercial GC",
+    region: "Southeast",
+    score: 4.6,
+    reviews: 142,
+    payment: 4.8,
+    changes: 4.5,
+    communication: 4.7,
+    safety: 4.8,
+    reviewQuotes: [
+      { quote: "Southeast regional leader. Pays quickly and treats subs with respect.", reviewer: "HVAC Sub, Atlanta" },
+      { quote: "Fair on change orders and very responsive to issues. Top tier.", reviewer: "Electrical Sub, Charlotte" },
+      { quote: "Their PMs actually manage the job well. Rare to see projects this organized.", reviewer: "Plumbing Sub, Nashville" }
+    ]
+  },
+  {
+    name: "Clark Construction",
+    type: "Commercial GC",
+    region: "National",
+    score: 4.4,
+    reviews: 178,
+    payment: 4.6,
+    changes: 4.3,
+    communication: 4.4,
+    safety: 4.7,
+    reviewQuotes: [
+      { quote: "Established player with solid payment practices. Change orders handled fairly.", reviewer: "Concrete Sub, Washington DC" },
+      { quote: "Good communication on big projects. They keep subs informed.", reviewer: "Electrical Sub, Baltimore" },
+      { quote: "Safety is a priority. Good accident record and pre-job planning.", reviewer: "HVAC Sub, Philadelphia" }
+    ]
+  },
+  {
+    name: "Skanska",
+    type: "Commercial/Industrial",
+    region: "National",
+    score: 4.2,
+    reviews: 134,
+    payment: 4.3,
+    changes: 4.0,
+    communication: 4.2,
+    safety: 4.5,
+    reviewQuotes: [
+      { quote: "International company with consistent standards. Payment is fair and on time.", reviewer: "Electrical Sub, Boston" },
+      { quote: "Large organization but they manage sub relationships well.", reviewer: "Concrete Sub, New York" },
+      { quote: "Good safety culture but can be slow on change order approvals.", reviewer: "HVAC Sub, Chicago" }
+    ]
+  },
+  {
+    name: "Walsh Group",
+    type: "Commercial/Industrial",
+    region: "Midwest",
+    score: 4.5,
+    reviews: 121,
+    payment: 4.7,
+    changes: 4.4,
+    communication: 4.6,
+    safety: 4.8,
+    reviewQuotes: [
+      { quote: "Chicago-based powerhouse. Pays reliably and manages projects professionally.", reviewer: "Structural Steel, Chicago" },
+      { quote: "Fair with change orders and good communication from start to finish.", reviewer: "Electrical Sub, Milwaukee" },
+      { quote: "Safety culture is strong. They invest in project controls.", reviewer: "Concrete Sub, St. Louis" }
+    ]
+  },
+  {
+    name: "Holder Construction",
+    type: "Commercial GC",
+    region: "Southeast",
+    score: 4.3,
+    reviews: 98,
+    payment: 4.5,
+    changes: 4.2,
+    communication: 4.3,
+    safety: 4.5,
+    reviewQuotes: [
+      { quote: "Southeast builder with good track record. Payments arrive as scheduled.", reviewer: "HVAC Sub, Atlanta" },
+      { quote: "Fair-minded GC. They listen to sub concerns and adjust fairly.", reviewer: "Electrical Sub, Jacksonville" },
+      { quote: "Good project management. Subs are treated professionally.", reviewer: "Plumbing Sub, Miami" }
+    ]
+  },
+  {
+    name: "Balfour Beatty",
+    type: "Industrial/Infrastructure",
+    region: "National",
+    score: 4.1,
+    reviews: 145,
+    payment: 4.2,
+    changes: 3.9,
+    communication: 4.1,
+    safety: 4.6,
+    reviewQuotes: [
+      { quote: "Large infrastructure player. Safety is exceptional. Payment is steady.", reviewer: "Electrical Sub, Houston" },
+      { quote: "Heavy industrial focus. Change orders can be bureaucratic but fair.", reviewer: "Mechanical Sub, Dallas" },
+      { quote: "Good safety record. Communication could be better on daily issues.", reviewer: "Concrete Sub, San Antonio" }
+    ]
+  },
+  {
+    name: "Whiting-Turner",
+    type: "Commercial GC",
+    region: "Northeast",
+    score: 4.6,
+    reviews: 167,
+    payment: 4.8,
+    changes: 4.6,
+    communication: 4.7,
+    safety: 4.9,
+    reviewQuotes: [
+      { quote: "Northeast legend. Pays on time, treats subs fairly, safety is paramount.", reviewer: "Electrical Sub, Boston" },
+      { quote: "Fantastic to work with. Their attention to detail and fairness is remarkable.", reviewer: "HVAC Sub, Baltimore" },
+      { quote: "One of the best GCs to work for. Clear expectations and fair payment.", reviewer: "Plumbing Sub, New York" }
+    ]
+  },
+  {
+    name: "Gilbane Building Company",
+    type: "Commercial/Healthcare",
+    region: "National",
+    score: 4.4,
+    reviews: 156,
+    payment: 4.5,
+    changes: 4.3,
+    communication: 4.5,
+    safety: 4.6,
+    reviewQuotes: [
+      { quote: "Experienced with healthcare projects. Payment is reliable and professional.", reviewer: "HVAC Sub, Boston" },
+      { quote: "Good communication on complex projects. They manage scope creep fairly.", reviewer: "Electrical Sub, Providence" },
+      { quote: "Solid company with good project controls and sub management.", reviewer: "Concrete Sub, Hartford" }
+    ]
+  },
+  {
+    name: "McCarthy Holdings",
+    type: "Commercial/Industrial",
+    region: "National",
+    score: 4.5,
+    reviews: 189,
+    payment: 4.6,
+    changes: 4.4,
+    communication: 4.6,
+    safety: 4.8,
+    reviewQuotes: [
+      { quote: "Multi-state operator with consistent standards. Payment is fair and timely.", reviewer: "Concrete Sub, St. Louis" },
+      { quote: "Good communication and reasonable change order process.", reviewer: "Electrical Sub, Kansas City" },
+      { quote: "Professional outfit. They treat subs as partners, not vendors.", reviewer: "HVAC Sub, Memphis" }
+    ]
+  },
+  {
+    name: "JE Dunn Construction",
+    type: "Commercial GC",
+    region: "Midwest",
+    score: 4.4,
+    reviews: 134,
+    payment: 4.5,
+    changes: 4.2,
+    communication: 4.4,
+    safety: 4.6,
+    reviewQuotes: [
+      { quote: "Midwest-based with strong reputation. Pays as promised.", reviewer: "Electrical Sub, Kansas City" },
+      { quote: "Fair and straightforward. Good communication on job sites.", reviewer: "HVAC Sub, Omaha" },
+      { quote: "Solid company with good safety record and professional staff.", reviewer: "Concrete Sub, Denver" }
+    ]
+  },
+  {
+    name: "Mortenson Construction",
+    type: "Commercial/Data Center",
+    region: "West Coast",
+    score: 4.6,
+    reviews: 178,
+    payment: 4.7,
+    changes: 4.5,
+    communication: 4.8,
+    safety: 4.9,
+    reviewQuotes: [
+      { quote: "Data center specialist with excellent safety culture. Payment is on time.", reviewer: "Electrical Sub, Portland" },
+      { quote: "Fantastic communication and fair change order process.", reviewer: "HVAC Sub, Seattle" },
+      { quote: "One of the best to work with. They genuinely care about sub success.", reviewer: "Concrete Sub, San Jose" }
+    ]
+  },
+  {
+    name: "Structure Tone",
+    type: "Commercial GC",
+    region: "Northeast",
+    score: 4.3,
+    reviews: 112,
+    payment: 4.4,
+    changes: 4.2,
+    communication: 4.3,
+    safety: 4.5,
+    reviewQuotes: [
+      { quote: "NYC-based with good reputation. Payment is reliable.", reviewer: "Electrical Sub, New York" },
+      { quote: "Fair-minded on change orders. Good communication with subs.", reviewer: "HVAC Sub, Boston" },
+      { quote: "Professional company with solid project management.", reviewer: "Plumbing Sub, New Jersey" }
+    ]
+  },
+  {
+    name: "Pepper Construction",
+    type: "Commercial GC",
+    region: "Midwest",
+    score: 4.2,
+    reviews: 89,
+    payment: 4.3,
+    changes: 4.0,
+    communication: 4.1,
+    safety: 4.4,
+    reviewQuotes: [
+      { quote: "Solid Midwest builder. Payment is fair and on schedule.", reviewer: "Concrete Sub, Chicago" },
+      { quote: "Good communication from PMs. Change orders handled professionally.", reviewer: "Electrical Sub, Milwaukee" },
+      { quote: "Decent safety program and project controls.", reviewer: "HVAC Sub, Indianapolis" }
+    ]
+  },
+  {
+    name: "Boral Construction",
+    type: "Residential/Commercial",
+    region: "West Coast",
+    score: 4.0,
+    reviews: 67,
+    payment: 4.1,
+    changes: 3.9,
+    communication: 4.0,
+    safety: 4.2,
+    reviewQuotes: [
+      { quote: "West Coast builder. Payment is generally on time. Fair on pricing.", reviewer: "Framing Sub, Los Angeles" },
+      { quote: "Residential and commercial mix. Communication could be better.", reviewer: "Electrical Sub, San Diego" },
+      { quote: "Decent company to work with but change orders take time.", reviewer: "Plumbing Sub, Phoenix" }
+    ]
+  },
+  {
+    name: "Swinerton Builders",
+    type: "Commercial/Healthcare",
+    region: "West Coast",
+    score: 4.3,
+    reviews: 124,
+    payment: 4.4,
+    changes: 4.1,
+    communication: 4.3,
+    safety: 4.5,
+    reviewQuotes: [
+      { quote: "Healthcare specialist on West Coast. Good safety and payment practices.", reviewer: "HVAC Sub, San Francisco" },
+      { quote: "Professional company with good communication. Fair change orders.", reviewer: "Electrical Sub, Los Angeles" },
+      { quote: "Solid reputation in the region. Subs are treated fairly.", reviewer: "Concrete Sub, San Diego" }
+    ]
+  },
+  {
+    name: "Hochstein Construction",
+    type: "Commercial/Industrial",
+    region: "Southwest",
+    score: 4.2,
+    reviews: 94,
+    payment: 4.3,
+    changes: 4.0,
+    communication: 4.1,
+    safety: 4.4,
+    reviewQuotes: [
+      { quote: "Southwest builder with fair payment practices. Reliable schedule.", reviewer: "Concrete Sub, Phoenix" },
+      { quote: "Good communication and reasonable change order handling.", reviewer: "Electrical Sub, Albuquerque" },
+      { quote: "Professional company with solid safety culture.", reviewer: "HVAC Sub, Las Vegas" }
+    ]
+  },
+  {
+    name: "Robins & Myers",
+    type: "Industrial/Data Center",
+    region: "National",
+    score: 4.1,
+    reviews: 108,
+    payment: 4.2,
+    changes: 3.8,
+    communication: 4.0,
+    safety: 4.6,
+    reviewQuotes: [
+      { quote: "Industrial specialist. Safety is exceptional. Payment is steady.", reviewer: "Mechanical Sub, Houston" },
+      { quote: "Large infrastructure company. Good communication on technical aspects.", reviewer: "Electrical Sub, Dallas" },
+      { quote: "Change orders can be slow but they are fair. Safety is paramount.", reviewer: "Structural Steel, Austin" }
+    ]
+  },
+  {
+    name: "Heery International",
+    type: "Commercial/Healthcare",
+    region: "National",
+    score: 4.4,
+    reviews: 142,
+    payment: 4.5,
+    changes: 4.3,
+    communication: 4.4,
+    safety: 4.6,
+    reviewQuotes: [
+      { quote: "Healthcare and institutional expert. Payment is reliable.", reviewer: "HVAC Sub, Atlanta" },
+      { quote: "Professional company with good project controls and communication.", reviewer: "Electrical Sub, Boston" },
+      { quote: "Fair-minded on change orders and sub management.", reviewer: "Plumbing Sub, Nashville" }
+    ]
+  },
+  {
+    name: "Schlotzsky Inc",
+    type: "Commercial GC",
+    region: "Southwest",
+    score: 3.9,
+    reviews: 76,
+    payment: 4.0,
+    changes: 3.8,
+    communication: 3.9,
+    safety: 4.1,
+    reviewQuotes: [
+      { quote: "Regional player with decent payment practices. Can improve communication.", reviewer: "Concrete Sub, Austin" },
+      { quote: "Fair on pricing but change orders can be contentious.", reviewer: "Electrical Sub, Dallas" },
+      { quote: "Okay to work with but not the best communication or safety practices.", reviewer: "HVAC Sub, Houston" }
+    ]
+  },
+  {
+    name: "Tutor Perini",
+    type: "Industrial/Infrastructure",
+    region: "National",
+    score: 4.3,
+    reviews: 167,
+    payment: 4.4,
+    changes: 4.1,
+    communication: 4.2,
+    safety: 4.7,
+    reviewQuotes: [
+      { quote: "Large infrastructure company. Safety is top priority. Payment is fair.", reviewer: "Electrical Sub, Los Angeles" },
+      { quote: "Good project management and professional communication.", reviewer: "Concrete Sub, San Francisco" },
+      { quote: "Strong safety record. Change orders require careful documentation.", reviewer: "Mechanical Sub, San Diego" }
+    ]
+  },
+  {
+    name: "Walsh Group",
+    type: "Commercial/Industrial",
+    region: "Southwest",
+    score: 4.3,
+    reviews: 115,
+    payment: 4.4,
+    changes: 4.2,
+    communication: 4.3,
+    safety: 4.5,
+    reviewQuotes: [
+      { quote: "Southwest operation is solid. Payment is on schedule.", reviewer: "Electrical Sub, Phoenix" },
+      { quote: "Fair and professional. Good communication with subs.", reviewer: "HVAC Sub, Albuquerque" },
+      { quote: "Decent company to work with. Safety and project controls are good.", reviewer: "Concrete Sub, Las Vegas" }
+    ]
+  },
+  {
+    name: "Sturgeon Electric (GC Division)",
+    type: "Industrial/Data Center",
+    region: "West Coast",
+    score: 4.4,
+    reviews: 98,
+    payment: 4.6,
+    changes: 4.3,
+    communication: 4.4,
+    safety: 4.7,
+    reviewQuotes: [
+      { quote: "Data center and industrial specialist. Excellent payment practices.", reviewer: "Electrical Sub, Portland" },
+      { quote: "Professional and fair. Good communication on technical projects.", reviewer: "HVAC Sub, Seattle" },
+      { quote: "Top-tier safety culture. Subs are valued partners.", reviewer: "Concrete Sub, San Jose" }
+    ]
+  },
+  {
+    name: "Austin Commercial",
+    type: "Commercial GC",
+    region: "Southwest",
+    score: 4.5,
+    reviews: 134,
+    payment: 4.6,
+    changes: 4.4,
+    communication: 4.5,
+    safety: 4.7,
+    reviewQuotes: [
+      { quote: "Southwest leader. Pays on time and treats subs fairly.", reviewer: "Electrical Sub, Phoenix" },
+      { quote: "Great communication and fair change order process.", reviewer: "HVAC Sub, Dallas" },
+      { quote: "Professional company with strong safety record and good PMs.", reviewer: "Concrete Sub, Austin" }
+    ]
+  }
 ];
 
-// ============ RENDER FUNCTIONS ============
+// ============ STAR RATING STATE ============
+let ratings = {
+  overall: 0,
+  payment: 0,
+  changes: 0,
+  communication: 0,
+  safety: 0
+};
+
+// ============ SET RATING FUNCTION ============
+function setRating(value, category) {
+  ratings[category] = value;
+  document.getElementById(`form-${category}-rating`).value = value;
+
+  const stars = document.querySelectorAll(`#${category}-rating .star-input`);
+  stars.forEach(star => {
+    if (parseInt(star.dataset.value) <= value) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+// ============ FORM SUBMISSION ============
+function handleSubmit(e) {
+  e.preventDefault();
+
+  const gcName = document.getElementById('form-gc-name').value;
+  const trade = document.getElementById('form-trade').value;
+  const location = document.getElementById('form-location').value;
+  const review = document.getElementById('form-review').value;
+  const email = document.getElementById('form-email').value;
+
+  if (!ratings.overall) {
+    alert('Please select an overall rating');
+    return;
+  }
+
+  if (!ratings.payment || !ratings.changes || !ratings.communication || !ratings.safety) {
+    alert('Please rate all sub-categories');
+    return;
+  }
+
+  // Show success message
+  const successMsg = document.getElementById('success-message');
+  successMsg.classList.add('show');
+
+  // Reset form after 3 seconds
+  setTimeout(() => {
+    document.getElementById('rate-form').reset();
+    ratings = { overall: 0, payment: 0, changes: 0, communication: 0, safety: 0 };
+    document.querySelectorAll('.star-input').forEach(s => s.classList.remove('active'));
+    successMsg.classList.remove('show');
+  }, 3000);
+}
+
+// ============ RENDER GCs ============
 function renderGCs(data) {
   const grid = document.getElementById('gc-grid');
+  const noResults = document.getElementById('no-results');
+
+  if (data.length === 0) {
+    grid.innerHTML = '';
+    noResults.style.display = 'block';
+    return;
+  }
+
+  noResults.style.display = 'none';
+
   grid.innerHTML = data.map(g => {
     const stars = n => '★'.repeat(Math.floor(n)) + (n % 1 >= 0.5 ? '½' : '') + '☆'.repeat(5 - Math.ceil(n));
+    const reviewsHtml = g.reviewQuotes.map(r => `
+      <div class="gc-review-item">
+        <div class="gc-review-quote">"${r.quote}"</div>
+        <div class="gc-review-author">— ${r.reviewer}</div>
+      </div>
+    `).join('');
+
     return `
     <div class="gc-card">
       <div class="gc-top">
         <div>
           <div class="gc-name">${g.name}</div>
-          <div class="gc-type">${g.type}</div>
+          <div class="gc-type">${g.type} — ${g.region}</div>
         </div>
         <div class="gc-overall">
           <div class="gc-score-big">${g.score}</div>
@@ -184,20 +1054,29 @@ function renderGCs(data) {
         <div class="gc-rating-item"><span class="gc-rating-label">Communication</span><span class="gc-rating-stars">${stars(g.communication)}</span></div>
         <div class="gc-rating-item"><span class="gc-rating-label">Safety</span><span class="gc-rating-stars">${stars(g.safety)}</span></div>
       </div>
-      <div class="gc-review">
-        "${g.review}"
-        <div class="gc-review-author">— ${g.reviewer}</div>
+      <div class="gc-reviews-wrapper">
+        ${reviewsHtml}
       </div>
     </div>`;
   }).join('');
 }
 
-// ============ FILTER FUNCTION ============
+// ============ FILTER GCs ============
 function filterGCs() {
   const search = document.getElementById('gc-search').value.toLowerCase();
   const sort = document.getElementById('gc-sort').value;
+  const typeFilter = document.getElementById('filter-type').value;
+  const ratingFilter = document.getElementById('filter-rating').value;
+  const regionFilter = document.getElementById('filter-region').value;
 
-  let filtered = gcs.filter(g => g.name.toLowerCase().includes(search) || g.type.toLowerCase().includes(search));
+  let filtered = gcs.filter(g => {
+    const matchesSearch = g.name.toLowerCase().includes(search) || g.type.toLowerCase().includes(search);
+    const matchesType = !typeFilter || g.type.includes(typeFilter);
+    const matchesRating = !ratingFilter || g.score >= parseFloat(ratingFilter);
+    const matchesRegion = !regionFilter || g.region.includes(regionFilter);
+
+    return matchesSearch && matchesType && matchesRating && matchesRegion;
+  });
 
   if (sort === 'most') {
     filtered.sort((a, b) => b.reviews - a.reviews);
@@ -208,6 +1087,11 @@ function filterGCs() {
   }
 
   renderGCs(filtered);
+}
+
+// ============ SCROLL TO FORM ============
+function scrollToForm() {
+  document.querySelector('.rate-form-container').scrollIntoView({ behavior: 'smooth' });
 }
 
 // ============ MODAL ============
@@ -233,5 +1117,6 @@ function toggleMobile() {
 // ============ INIT ============
 renderGCs(gcs);
 </script>
+
 </body>
 </html>

@@ -393,8 +393,8 @@ img { max-width: 100%; }
             <div class="hero-stat-label">Annual Market</div>
           </div>
           <div class="hero-stat">
-            <div class="hero-stat-num">0</div>
-            <div class="hero-stat-label">Platforms for Subs</div>
+            <div class="hero-stat-num">2,400+</div>
+            <div class="hero-stat-label">Early Access Members</div>
           </div>
         </div>
       </div>
@@ -712,9 +712,15 @@ img { max-width: 100%; }
   <div class="container">
     <h2>Stop Being an Afterthought.</h2>
     <p>Join the first platform that puts subcontractors first. Create your free profile in under 3 minutes.</p>
-    <div class="cta-input-group">
-      <input type="email" class="cta-input" placeholder="Enter your work email">
-      <button class="btn btn-orange" onclick="openModal()">Get Started Free</button>
+    <div id="cta-form-state">
+      <div class="cta-input-group">
+        <input type="email" class="cta-input" id="cta-email" placeholder="Enter your work email">
+        <button class="btn btn-orange" onclick="submitCtaEmail()">Get Started Free</button>
+      </div>
+    </div>
+    <div id="cta-success-state" style="display:none;">
+      <p style="font-size:1.1rem;color:#fff;font-weight:600;">✓ You're in! Check your email for next steps.</p>
+      <p style="font-size:0.9rem;color:#cbd5e1;margin-top:12px;">Join 2,400+ subs who've signed up this month</p>
     </div>
     <p style="font-size:0.8rem;color:#475569;margin-top:16px;">No credit card required. Free plan available forever.</p>
   </div>
@@ -769,30 +775,40 @@ img { max-width: 100%; }
 <div class="modal-overlay" id="modal">
   <div class="modal" style="position:relative;">
     <button class="modal-close" onclick="closeModal()">&times;</button>
-    <h2>Create Your Free Profile</h2>
-    <p>Join thousands of subcontractors who are taking control of their business.</p>
-    <input type="text" class="modal-input" placeholder="Company Name">
-    <input type="email" class="modal-input" placeholder="Email Address">
-    <select class="modal-input" style="appearance:auto;">
-      <option value="">Select Your Trade</option>
-      <option>Electrical</option>
-      <option>Plumbing</option>
-      <option>HVAC</option>
-      <option>Glass & Glazing</option>
-      <option>Concrete</option>
-      <option>Roofing</option>
-      <option>Painting</option>
-      <option>Framing</option>
-      <option>Excavation</option>
-      <option>Drywall</option>
-      <option>Flooring</option>
-      <option>Fire Protection</option>
-      <option>Steel / Iron</option>
-      <option>Other</option>
-    </select>
-    <input type="text" class="modal-input" placeholder="City, State">
-    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
-    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
+    <div id="modal-form-state">
+      <h2>Create Your Free Profile</h2>
+      <p>Join thousands of subcontractors who are taking control of their business.</p>
+      <input type="text" class="modal-input" id="modal-name" placeholder="Full Name" required>
+      <input type="email" class="modal-input" id="modal-email" placeholder="Email Address" required>
+      <input type="text" class="modal-input" id="modal-company" placeholder="Company Name" required>
+      <select class="modal-input" id="modal-trade" required>
+        <option value="">Select Your Trade</option>
+        <option>Electrical</option>
+        <option>Plumbing</option>
+        <option>HVAC</option>
+        <option>Glass & Glazing</option>
+        <option>Concrete</option>
+        <option>Roofing</option>
+        <option>Painting</option>
+        <option>Framing</option>
+        <option>Excavation</option>
+        <option>Drywall</option>
+        <option>Flooring</option>
+        <option>Fire Protection</option>
+        <option>Steel / Iron</option>
+        <option>Other</option>
+      </select>
+      <input type="text" class="modal-input" id="modal-city" placeholder="City, State" required>
+      <input type="tel" class="modal-input" id="modal-phone" placeholder="Phone (optional)">
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="submitSignupForm()">Create Free Profile &rarr;</button>
+      <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Join 2,400+ subcontractors already on the platform</p>
+    </div>
+    <div id="modal-success-state" style="display:none;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:16px;">✓</div>
+      <h2 style="color:var(--navy);margin-bottom:8px;">Welcome to the Future of Subcontracting!</h2>
+      <p style="color:var(--gray-500);margin-bottom:24px;">Your early access account is being set up. We'll email you within 24 hours with your login credentials.</p>
+      <button class="btn btn-primary btn-lg" style="width:100%;" onclick="closeModal()">Close</button>
+    </div>
   </div>
 </div>
 
@@ -962,6 +978,44 @@ function runAiDemo() {
 function openModal() { document.getElementById('modal').classList.add('show'); }
 function closeModal() { document.getElementById('modal').classList.remove('show'); }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+function submitSignupForm() {
+  const name = document.getElementById('modal-name').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const company = document.getElementById('modal-company').value.trim();
+  const trade = document.getElementById('modal-trade').value.trim();
+  const city = document.getElementById('modal-city').value.trim();
+
+  // Validate required fields
+  if (!name || !email || !company || !trade || !city) {
+    alert('Please fill in all required fields');
+    return;
+  }
+
+  // Simple email validation
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  // Show success state
+  document.getElementById('modal-form-state').style.display = 'none';
+  document.getElementById('modal-success-state').style.display = 'block';
+}
+
+function submitCtaEmail() {
+  const email = document.getElementById('cta-email').value.trim();
+
+  // Simple email validation
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid work email');
+    return;
+  }
+
+  // Show success state
+  document.getElementById('cta-form-state').style.display = 'none';
+  document.getElementById('cta-success-state').style.display = 'block';
+}
 
 function toggleMobile() {
   const links = document.querySelector('.nav-links');

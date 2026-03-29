@@ -11,6 +11,240 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+.project-filters-advanced {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 1 auto;
+}
+
+.filter-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: white;
+  min-width: 140px;
+}
+
+.filter-group input[type="text"]::placeholder {
+  color: #94a3b8;
+}
+
+.filter-chip {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #475569;
+}
+
+.filter-chip:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+}
+
+.filter-chip.active {
+  background: #0f1729;
+  color: white;
+  border-color: #0f1729;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.load-more-btn {
+  padding: 12px 32px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #0f1729;
+  transition: all 0.2s;
+}
+
+.load-more-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.load-more-btn:active {
+  background: #cbd5e1;
+}
+
+.expanded-modal {
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.expanded-modal h3 {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f1729;
+}
+
+.expanded-modal p {
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.modal-section {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-section:last-child {
+  border-bottom: none;
+}
+
+.scope-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.scope-list li {
+  padding: 8px 0;
+  padding-left: 24px;
+  position: relative;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.scope-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.interest-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.interest-form input,
+.interest-form select,
+.interest-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.interest-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-success {
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  color: #047857;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.save-icon {
+  transition: all 0.2s;
+}
+
+.save-icon.saved {
+  color: #f59e0b;
+}
+
+.project-grid-count {
+  font-size: 0.9rem;
+  color: #475569;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .project-filters-advanced {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-group select,
+  .filter-group input {
+    width: 100%;
+    min-width: unset;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -42,21 +276,60 @@
 <section class="page-header">
   <div class="container">
     <h1>Project Board</h1>
-    <p>Active construction projects seeking qualified subcontractors. Filter by project type and find the jobs that match your expertise and location.</p>
+    <p>Active construction projects seeking qualified subcontractors. Filter by project type, location, trade, and budget to find jobs that match your expertise.</p>
   </div>
 </section>
 
 <!-- ============ PROJECT BOARD ============ -->
 <section class="section">
   <div class="container">
+
+    <!-- Type Filter Chips -->
     <div class="project-filters">
-      <button class="filter-chip active" onclick="filterProjects(this, 'all')">All Projects</button>
-      <button class="filter-chip" onclick="filterProjects(this, 'commercial')">Commercial</button>
-      <button class="filter-chip" onclick="filterProjects(this, 'residential')">Residential</button>
-      <button class="filter-chip" onclick="filterProjects(this, 'industrial')">Industrial</button>
-      <button class="filter-chip" onclick="filterProjects(this, 'municipal')">Municipal</button>
+      <button class="filter-chip active" onclick="filterProjects(this, 'type', 'all')">All Projects</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'type', 'commercial')">Commercial</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'type', 'residential')">Residential</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'type', 'industrial')">Industrial</button>
+      <button class="filter-chip" onclick="filterProjects(this, 'type', 'municipal')">Municipal</button>
     </div>
+
+    <!-- Advanced Filters -->
+    <div class="project-filters-advanced">
+      <div class="filter-group">
+        <label>Search</label>
+        <input type="text" id="search-input" placeholder="Project name..." onkeyup="applyFilters()">
+      </div>
+      <div class="filter-group">
+        <label>Location</label>
+        <select id="location-filter" onchange="applyFilters()">
+          <option value="">All Locations</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Trade</label>
+        <select id="trade-filter" onchange="applyFilters()">
+          <option value="">All Trades</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Budget</label>
+        <select id="budget-filter" onchange="applyFilters()">
+          <option value="">All Budgets</option>
+          <option value="under-500k">Under $500K</option>
+          <option value="500k-2m">$500K - $2M</option>
+          <option value="2m-5m">$2M - $5M</option>
+          <option value="over-5m">Over $5M</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="project-grid-count" id="count-display"></div>
     <div class="project-list" id="project-list"></div>
+
+    <div class="load-more-container" id="load-more-container" style="display:none;">
+      <button class="load-more-btn" onclick="loadMore()">Load More Projects</button>
+    </div>
+
   </div>
 </section>
 
@@ -122,8 +395,735 @@
 <div class="modal-overlay" id="modal">
   <div class="modal" style="position:relative;">
     <button class="modal-close" onclick="closeModal()">&times;</button>
-    <h2>Create Your Free Profile</h2>
-    <p>Join thousands of subcontractors who are taking control of their business.</p>
+    <h2 id="modal-title">Create Your Free Profile</h2>
+    <p id="modal-subtitle">Join thousands of subcontractors who are taking control of their business.</p>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ============ PROJECT DATA ============
+const projects = [
+  {
+    id: 1,
+    title: "Brickell Heights Tower — Phase 3",
+    gc: "Suffolk Construction",
+    type: "commercial",
+    location: "Miami, FL",
+    state: "FL",
+    status: "Bidding",
+    budget: "$2.4M - $3.1M",
+    budgetMin: 2400000,
+    sf: "320,000 SF",
+    due: "14 days",
+    trades: ["Glass & Glazing", "HVAC", "Electrical"],
+    description: "Modern luxury high-rise office and residential tower in the heart of Brickell with premium finishes, energy-efficient systems, and panoramic views of Biscayne Bay.",
+    scope: [
+      "Curtainwall and exterior glazing installation",
+      "HVAC system setup and testing",
+      "Complete electrical infrastructure including smart building controls",
+      "Fire protection and safety systems",
+      "Interior finishes and lighting"
+    ]
+  },
+  {
+    id: 2,
+    title: "Lakewood Ranch Town Center Expansion",
+    gc: "Brasfield & Gorrie",
+    type: "commercial",
+    location: "Bradenton, FL",
+    state: "FL",
+    status: "Bidding",
+    budget: "$850K - $1.2M",
+    budgetMin: 850000,
+    sf: "95,000 SF",
+    due: "21 days",
+    trades: ["Concrete", "Framing", "Roofing"],
+    description: "Expansion of mixed-use town center with retail, dining, and office spaces. Focus on sustainable construction and innovative retail design.",
+    scope: [
+      "Structural steel framing and composite decking",
+      "Reinforced concrete foundations and floors",
+      "Standing seam metal roofing system",
+      "Drainage and stormwater management",
+      "Loading dock and service areas"
+    ]
+  },
+  {
+    id: 3,
+    title: "Palm Harbor Waterfront Residences",
+    gc: "PCL Construction",
+    type: "residential",
+    location: "Clearwater, FL",
+    state: "FL",
+    status: "Urgent",
+    budget: "$1.8M - $2.5M",
+    budgetMin: 1800000,
+    sf: "180,000 SF",
+    due: "7 days",
+    trades: ["Plumbing", "Electrical", "Painting"],
+    description: "Luxury waterfront apartment complex with direct bay access, private docks, and resort-style amenities. Premium materials throughout.",
+    scope: [
+      "Rough and finish plumbing for 240 units",
+      "Electrical wiring and smart home integration",
+      "Interior and exterior painting (eco-friendly)",
+      "Hot water systems and recirculation pumps",
+      "Marina electrical infrastructure"
+    ]
+  },
+  {
+    id: 4,
+    title: "Port Everglades Logistics Hub",
+    gc: "DPR Construction",
+    type: "industrial",
+    location: "Fort Lauderdale, FL",
+    state: "FL",
+    status: "New",
+    budget: "$4.2M - $5.8M",
+    budgetMin: 4200000,
+    sf: "450,000 SF",
+    due: "30 days",
+    trades: ["Concrete", "Steel / Iron", "Electrical"],
+    description: "State-of-the-art logistics and distribution facility with advanced automation, climate control, and direct port access.",
+    scope: [
+      "350,000 SF reinforced concrete slab with specialty joints",
+      "Structural steel frame and mezzanine systems",
+      "208V and 480V electrical distribution",
+      "Overhead crane electrical and controls",
+      "Dock bumpers and pit drainage"
+    ]
+  },
+  {
+    id: 5,
+    title: "Orange County Public Library Renovation",
+    gc: "Hensel Phelps",
+    type: "municipal",
+    location: "Orlando, FL",
+    state: "FL",
+    status: "Bidding",
+    budget: "$320K - $480K",
+    budgetMin: 320000,
+    sf: "28,000 SF",
+    due: "10 days",
+    trades: ["Painting", "Framing", "HVAC", "Glass & Glazing"],
+    description: "Complete renovation of historic downtown library including new wing for digital media, updated HVAC, and accessibility improvements.",
+    scope: [
+      "Interior wall framing and drywall",
+      "Complete interior and exterior painting",
+      "Window and glass door replacement",
+      "HVAC system upgrade and ductwork",
+      "LED lighting throughout"
+    ]
+  },
+  {
+    id: 6,
+    title: "Aventura Medical Plaza",
+    gc: "Turner Construction",
+    type: "commercial",
+    location: "Aventura, FL",
+    state: "FL",
+    status: "New",
+    budget: "$3.6M - $4.8M",
+    budgetMin: 3600000,
+    sf: "210,000 SF",
+    due: "18 days",
+    trades: ["Electrical", "Plumbing", "HVAC", "Glass & Glazing"],
+    description: "Multi-story medical office building with surgical suites, diagnostic facilities, and specialized HVAC for clean rooms.",
+    scope: [
+      "Medical-grade MEP systems throughout",
+      "Stainless steel piping for operating rooms",
+      "Emergency backup power and generators",
+      "Low-particle HVAC systems",
+      "Advanced security and access control"
+    ]
+  },
+  {
+    id: 7,
+    title: "Atlanta Tech Park Phase 2",
+    gc: "Skanska USA",
+    type: "commercial",
+    location: "Atlanta, GA",
+    state: "GA",
+    status: "Bidding",
+    budget: "$2.8M - $3.9M",
+    budgetMin: 2800000,
+    sf: "275,000 SF",
+    due: "12 days",
+    trades: ["Electrical", "HVAC", "Glass & Glazing"],
+    description: "Technology campus expansion with collaborative office spaces, maker labs, and fiber optic infrastructure.",
+    scope: [
+      "Campus-wide fiber optic network",
+      "High-capacity electrical panels",
+      "Modular HVAC systems for flexible layouts",
+      "Curtainwall with smart glass",
+      "Data center backup systems"
+    ]
+  },
+  {
+    id: 8,
+    title: "Dallas Medical Center Hospital Expansion",
+    gc: "McCarthy Holdings",
+    type: "commercial",
+    location: "Dallas, TX",
+    state: "TX",
+    status: "Closing Soon",
+    budget: "$8.5M - $12M",
+    budgetMin: 8500000,
+    sf: "520,000 SF",
+    due: "5 days",
+    trades: ["Electrical", "Plumbing", "HVAC", "Steel / Iron"],
+    description: "Major hospital expansion including new surgical wing, ICU, and advanced imaging facilities.",
+    scope: [
+      "Structural steel frame for 7 floors",
+      "Full MEP infrastructure for hospital operations",
+      "Backup power for critical systems",
+      "Specialized HVAC for operating rooms",
+      "Medical gas piping and distribution"
+    ]
+  },
+  {
+    id: 9,
+    title: "Austin Luxury Condominium Tower",
+    gc: "Ashton Woods",
+    type: "residential",
+    location: "Austin, TX",
+    state: "TX",
+    status: "New",
+    budget: "$5.2M - $7.1M",
+    budgetMin: 5200000,
+    sf: "380,000 SF",
+    due: "25 days",
+    trades: ["Plumbing", "Electrical", "Concrete"],
+    description: "High-rise luxury condos with rooftop amenities, wine cellar, and concierge services.",
+    scope: [
+      "350 residential units",
+      "Luxury finishes throughout",
+      "Smart home integration",
+      "Heated pools and spas",
+      "Rooftop lounge and bar"
+    ]
+  },
+  {
+    id: 10,
+    title: "Denver Distribution Warehouse",
+    gc: "JE Dunn Construction",
+    type: "industrial",
+    location: "Denver, CO",
+    state: "CO",
+    status: "Bidding",
+    budget: "$2.1M - $3.2M",
+    budgetMin: 2100000,
+    sf: "380,000 SF",
+    due: "16 days",
+    trades: ["Concrete", "Steel / Iron", "Electrical"],
+    description: "Modern logistics facility with automated racking, climate control, and rail access.",
+    scope: [
+      "400,000 SF concrete slab",
+      "Steel frame with mezzanine",
+      "High-bay LED lighting",
+      "Electrical for conveyor systems",
+      "Loading dock with 30 bays"
+    ]
+  },
+  {
+    id: 11,
+    title: "Boston Government Center Renovation",
+    gc: "Whiting-Turner",
+    type: "municipal",
+    location: "Boston, MA",
+    state: "MA",
+    status: "Bidding",
+    budget: "$1.5M - $2.2M",
+    budgetMin: 1500000,
+    sf: "95,000 SF",
+    due: "19 days",
+    trades: ["Painting", "HVAC", "Electrical", "Glass & Glazing"],
+    description: "Historic government building modernization with improved energy efficiency and public spaces.",
+    scope: [
+      "Facade restoration and new windows",
+      "HVAC modernization",
+      "Electrical panel upgrades",
+      "Interior painting and finishes",
+      "Accessibility improvements"
+    ]
+  },
+  {
+    id: 12,
+    title: "Phoenix Sky Harbor Airport Terminal B",
+    gc: "Sunbelt Construction",
+    type: "municipal",
+    location: "Phoenix, AZ",
+    state: "AZ",
+    status: "New",
+    budget: "$9.8M - $13.5M",
+    budgetMin: 9800000,
+    sf: "620,000 SF",
+    due: "28 days",
+    trades: ["Electrical", "HVAC", "Glass & Glazing", "Concrete"],
+    description: "Modern airport terminal with retail, restaurants, and advanced traveler amenities.",
+    scope: [
+      "Terminal infrastructure MEP",
+      "Departure/arrival hall electrical",
+      "Security screening areas",
+      "Retail space rough-in",
+      "Ground power systems for gates"
+    ]
+  },
+  {
+    id: 13,
+    title: "Seattle High School Renovation",
+    gc: "Hunt Construction",
+    type: "municipal",
+    location: "Seattle, WA",
+    state: "WA",
+    status: "Bidding",
+    budget: "$1.2M - $1.8M",
+    budgetMin: 1200000,
+    sf: "185,000 SF",
+    due: "13 days",
+    trades: ["Painting", "Framing", "HVAC"],
+    description: "Comprehensive high school renovation including new science wings and athletic facilities.",
+    scope: [
+      "Science lab buildout",
+      "Athletic facility electrical",
+      "New HVAC zones",
+      "Interior painting",
+      "Cafeteria renovation"
+    ]
+  },
+  {
+    id: 14,
+    title: "Las Vegas Casino Resort — North Tower",
+    gc: "Heery International",
+    type: "commercial",
+    location: "Las Vegas, NV",
+    state: "NV",
+    status: "Closing Soon",
+    budget: "$6.8M - $9.2M",
+    budgetMin: 6800000,
+    sf: "480,000 SF",
+    due: "3 days",
+    trades: ["Electrical", "HVAC", "Glass & Glazing"],
+    description: "Premium casino resort with luxury suites, restaurants, and entertainment venues.",
+    scope: [
+      "Gaming floor electrical systems",
+      "Luxury suite finishes",
+      "High-capacity HVAC",
+      "LED lighting and signage",
+      "Security and surveillance"
+    ]
+  },
+  {
+    id: 15,
+    title: "Chicago Office Tower — Façade",
+    gc: "Triptych Construction",
+    type: "commercial",
+    location: "Chicago, IL",
+    state: "IL",
+    status: "Bidding",
+    budget: "$3.2M - $4.5M",
+    budgetMin: 3200000,
+    sf: "340,000 SF",
+    due: "22 days",
+    trades: ["Glass & Glazing", "Steel / Iron"],
+    description: "Premium office tower with double-skin façade and integrated shading systems.",
+    scope: [
+      "2.1M SF curtainwall",
+      "Automated exterior shading",
+      "Structural steel connections",
+      "Window cleaning system",
+      "Expansion joint management"
+    ]
+  },
+  {
+    id: 16,
+    title: "Miami Beach Retail Center",
+    gc: "Heatherwood Homes",
+    type: "commercial",
+    location: "Miami Beach, FL",
+    state: "FL",
+    status: "New",
+    budget: "$1.6M - $2.3M",
+    budgetMin: 1600000,
+    sf: "125,000 SF",
+    due: "20 days",
+    trades: ["Concrete", "Framing", "Electrical"],
+    description: "Upscale open-air shopping center with dining and entertainment options.",
+    scope: [
+      "Reinforced concrete structure",
+      "Metal stud framing",
+      "Electrical for retail tenants",
+      "Parking structure MEP",
+      "Landscape lighting"
+    ]
+  },
+  {
+    id: 17,
+    title: "Houston Data Center Complex",
+    gc: "Satterfield & Sons",
+    type: "industrial",
+    location: "Houston, TX",
+    state: "TX",
+    status: "Bidding",
+    budget: "$5.5M - $7.8M",
+    budgetMin: 5500000,
+    sf: "240,000 SF",
+    due: "17 days",
+    trades: ["Electrical", "HVAC", "Concrete"],
+    description: "Enterprise data center with redundant power, cooling, and secure access.",
+    scope: [
+      "N+1 electrical redundancy",
+      "Precision air conditioning",
+      "Concrete cold floor",
+      "Fire suppression systems",
+      "Raised floor installation"
+    ]
+  },
+  {
+    id: 18,
+    title: "San Francisco Residential Complex",
+    gc: "XL Contracting",
+    type: "residential",
+    location: "San Francisco, CA",
+    state: "CA",
+    status: "New",
+    budget: "$4.3M - $6.1M",
+    budgetMin: 4300000,
+    sf: "320,000 SF",
+    due: "26 days",
+    trades: ["Plumbing", "Electrical", "Painting"],
+    description: "Mixed-income residential development with green building certification.",
+    scope: [
+      "280 apartment units",
+      "LEED Gold certification",
+      "Rooftop garden",
+      "Underground parking",
+      "Community spaces"
+    ]
+  },
+  {
+    id: 19,
+    title: "DC Government Office Building",
+    gc: "Kiewit Infrastructure",
+    type: "municipal",
+    location: "Washington, DC",
+    state: "DC",
+    status: "Bidding",
+    budget: "$2.4M - $3.6M",
+    budgetMin: 2400000,
+    sf: "210,000 SF",
+    due: "15 days",
+    trades: ["HVAC", "Electrical", "Glass & Glazing"],
+    description: "Federal government office building with high security and modern amenities.",
+    scope: [
+      "Secure entry systems",
+      "Advanced HVAC filtration",
+      "Backup power systems",
+      "Fiber optic infrastructure",
+      "Storm water management"
+    ]
+  },
+  {
+    id: 20,
+    title: "Portland Oregon Mixed Use Development",
+    gc: "Ness Group",
+    type: "commercial",
+    location: "Portland, OR",
+    state: "OR",
+    status: "Closing Soon",
+    budget: "$3.8M - $5.2M",
+    budgetMin: 3800000,
+    sf: "295,000 SF",
+    due: "6 days",
+    trades: ["Framing", "Electrical", "Plumbing"],
+    description: "Sustainable mixed-use development with retail, offices, and residential units.",
+    scope: [
+      "200 parking spaces",
+      "Retail ground floor",
+      "Office space (15 floors)",
+      "Rooftop restaurant",
+      "Green roof systems"
+    ]
+  },
+  {
+    id: 21,
+    title: "Tampa Bay Sports Complex",
+    gc: "Hubbard Construction",
+    type: "municipal",
+    location: "Tampa, FL",
+    state: "FL",
+    status: "Bidding",
+    budget: "$7.2M - $9.8M",
+    budgetMin: 7200000,
+    sf: "410,000 SF",
+    due: "24 days",
+    trades: ["Concrete", "Steel / Iron", "Electrical"],
+    description: "State-of-the-art sports facility with training facilities and public amenities.",
+    scope: [
+      "Stadium structural steel",
+      "Field lighting systems",
+      "Locker room MEP",
+      "Scoreboard and electronic systems",
+      "Broadcast infrastructure"
+    ]
+  }
+];
+
+let currentTypeFilter = 'all';
+let displayedCount = 8;
+let filteredProjects = [...projects];
+let savedProjects = [];
+
+// ============ POPULATE FILTER DROPDOWNS ============
+function initFilters() {
+  // Get unique locations
+  const locations = [...new Set(projects.map(p => p.state))].sort();
+  const locationSelect = document.getElementById('location-filter');
+  locations.forEach(loc => {
+    const option = document.createElement('option');
+    option.value = loc;
+    option.textContent = loc;
+    locationSelect.appendChild(option);
+  });
+
+  // Get unique trades
+  const trades = [...new Set(projects.flatMap(p => p.trades))].sort();
+  const tradeSelect = document.getElementById('trade-filter');
+  trades.forEach(trade => {
+    const option = document.createElement('option');
+    option.value = trade;
+    option.textContent = trade;
+    tradeSelect.appendChild(option);
+  });
+}
+
+// ============ APPLY ALL FILTERS ============
+function applyFilters() {
+  const searchTerm = document.getElementById('search-input').value.toLowerCase();
+  const locationValue = document.getElementById('location-filter').value;
+  const tradeValue = document.getElementById('trade-filter').value;
+  const budgetValue = document.getElementById('budget-filter').value;
+
+  filteredProjects = projects.filter(p => {
+    // Type filter
+    if (currentTypeFilter !== 'all' && p.type !== currentTypeFilter) return false;
+
+    // Search filter
+    if (searchTerm && !p.title.toLowerCase().includes(searchTerm) && !p.gc.toLowerCase().includes(searchTerm)) {
+      return false;
+    }
+
+    // Location filter
+    if (locationValue && p.state !== locationValue) return false;
+
+    // Trade filter
+    if (tradeValue && !p.trades.includes(tradeValue)) return false;
+
+    // Budget filter
+    if (budgetValue) {
+      const minBudget = p.budgetMin;
+      switch (budgetValue) {
+        case 'under-500k':
+          if (minBudget >= 500000) return false;
+          break;
+        case '500k-2m':
+          if (minBudget < 500000 || minBudget >= 2000000) return false;
+          break;
+        case '2m-5m':
+          if (minBudget < 2000000 || minBudget >= 5000000) return false;
+          break;
+        case 'over-5m':
+          if (minBudget < 5000000) return false;
+          break;
+      }
+    }
+
+    return true;
+  });
+
+  displayedCount = 8;
+  renderProjects();
+}
+
+// ============ FILTER BY TYPE ============
+function filterProjects(btn, filterType, value) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  currentTypeFilter = value;
+  document.getElementById('search-input').value = '';
+  document.getElementById('location-filter').value = '';
+  document.getElementById('trade-filter').value = '';
+  document.getElementById('budget-filter').value = '';
+  applyFilters();
+}
+
+// ============ RENDER PROJECTS ============
+function renderProjects() {
+  const list = document.getElementById('project-list');
+  const displayProjects = filteredProjects.slice(0, displayedCount);
+
+  list.innerHTML = displayProjects.map(p => `
+    <div class="project-card" data-id="${p.id}">
+      <div class="project-top">
+        <div>
+          <div class="project-title">
+            ${p.title}
+            ${p.status === 'Urgent' ? '<span class="badge badge-red">Urgent</span>' : ''}
+            ${p.status === 'New' ? '<span class="badge badge-green">New</span>' : ''}
+            ${p.status === 'Closing Soon' ? '<span class="badge badge-orange">Closing Soon</span>' : ''}
+          </div>
+          <div class="project-gc">${p.gc}</div>
+        </div>
+        <div class="project-budget">
+          <div class="project-budget-value">${p.budget}</div>
+          <div class="project-budget-label">Estimated Range</div>
+        </div>
+      </div>
+      <div class="project-details">
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>${p.location}</div>
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>${p.sf}</div>
+        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Bid due in ${p.due}</div>
+      </div>
+      <div class="project-trades">${p.trades.map(t => `<span class="badge badge-blue">${t}</span>`).join('')}</div>
+      <div class="project-actions">
+        <button class="btn btn-primary btn-sm" onclick="openDetailModal(${p.id})">View & Bid</button>
+        <button class="btn btn-secondary btn-sm save-btn" onclick="toggleSaveProject(${p.id})" title="Save Project">
+          <svg class="save-icon ${savedProjects.includes(p.id) ? 'saved' : ''}" fill="${savedProjects.includes(p.id) ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h6a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  // Update count display
+  document.getElementById('count-display').textContent = `Showing ${displayProjects.length} of ${filteredProjects.length} projects`;
+
+  // Show/hide load more button
+  const loadMoreBtn = document.getElementById('load-more-container');
+  if (filteredProjects.length > displayedCount) {
+    loadMoreBtn.style.display = 'flex';
+  } else {
+    loadMoreBtn.style.display = 'none';
+  }
+}
+
+// ============ LOAD MORE PROJECTS ============
+function loadMore() {
+  displayedCount += 8;
+  renderProjects();
+}
+
+// ============ SAVE PROJECT ============
+function toggleSaveProject(projectId) {
+  const index = savedProjects.indexOf(projectId);
+  if (index > -1) {
+    savedProjects.splice(index, 1);
+  } else {
+    savedProjects.push(projectId);
+  }
+  renderProjects();
+  showToast(index > -1 ? 'Project removed from saved' : 'Project saved!');
+}
+
+// ============ SHOW TOAST ============
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// ============ DETAIL MODAL ============
+function openDetailModal(projectId) {
+  const project = projects.find(p => p.id === projectId);
+  if (!project) return;
+
+  const modal = document.getElementById('modal');
+  const title = document.getElementById('modal-title');
+  const subtitle = document.getElementById('modal-subtitle');
+  const content = document.getElementById('modal-content');
+
+  title.textContent = project.title;
+  subtitle.textContent = `${project.gc} • ${project.location}`;
+
+  content.innerHTML = `
+    <div class="expanded-modal">
+      <div class="modal-section">
+        <h3>Project Details</h3>
+        <p><strong>Location:</strong> ${project.location}</p>
+        <p><strong>Square Footage:</strong> ${project.sf}</p>
+        <p><strong>Budget:</strong> ${project.budget}</p>
+        <p><strong>Status:</strong> ${project.status}</p>
+        <p><strong>Bid Due:</strong> ${project.due}</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Project Description</h3>
+        <p>${project.description}</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Scope of Work</h3>
+        <ul class="scope-list">
+          ${project.scope.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="modal-section">
+        <h3>Required Trades</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          ${project.trades.map(t => `<span class="badge badge-blue">${t}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h3>Express Interest</h3>
+        <form class="interest-form" onsubmit="submitInterest(event, ${projectId})">
+          <input type="text" placeholder="Your Name" required>
+          <input type="email" placeholder="Your Email" required>
+          <input type="text" placeholder="Company Name" required>
+          <select required>
+            <option value="">Your Trade</option>
+            <option>Electrical</option>
+            <option>Plumbing</option>
+            <option>HVAC</option>
+            <option>Glass & Glazing</option>
+            <option>Concrete</option>
+            <option>Roofing</option>
+            <option>Painting</option>
+            <option>Framing</option>
+            <option>Excavation</option>
+            <option>Drywall</option>
+            <option>Flooring</option>
+            <option>Fire Protection</option>
+            <option>Steel / Iron</option>
+            <option>Other</option>
+          </select>
+          <textarea placeholder="Tell the GC about your experience with this project type..." required></textarea>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">Submit Interest</button>
+        </form>
+        <div class="form-success" id="success-msg" style="display:none;">Your interest has been submitted! The GC will contact qualified subs within 48 hours.</div>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('show');
+}
+
+function submitInterest(e, projectId) {
+  e.preventDefault();
+  const form = e.target;
+  form.style.display = 'none';
+  document.getElementById('success-msg').style.display = 'block';
+  setTimeout(() => {
+    closeModal();
+  }, 2000);
+}
+
+// ============ MODAL FUNCTIONS ============
+function openModal() {
+  document.getElementById('modal-title').textContent = 'Create Your Free Profile';
+  document.getElementById('modal-subtitle').textContent = 'Join thousands of subcontractors who are taking control of their business.';
+  document.getElementById('modal-content').innerHTML = `
     <input type="text" class="modal-input" placeholder="Company Name">
     <input type="email" class="modal-input" placeholder="Email Address">
     <select class="modal-input" style="appearance:auto;">
@@ -146,61 +1146,17 @@
     <input type="text" class="modal-input" placeholder="City, State">
     <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile &rarr;</button>
     <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
-  </div>
-</div>
-
-<script>
-// ============ MOCK DATA ============
-const projects = [
-  { title: "Brickell Heights Tower — Phase 3", gc: "Suffolk Construction", type: "commercial", budget: "$2.4M - $3.1M", location: "Miami, FL", due: "14 days", trades: ["Glass & Glazing", "HVAC", "Electrical"], sf: "320,000 SF", status: "Bidding" },
-  { title: "Lakewood Ranch Town Center", gc: "Brasfield & Gorrie", type: "commercial", budget: "$850K - $1.2M", location: "Bradenton, FL", due: "21 days", trades: ["Concrete", "Framing", "Roofing"], sf: "95,000 SF", status: "Bidding" },
-  { title: "Palm Harbor Waterfront Residences", gc: "PCL Construction", type: "residential", budget: "$1.8M - $2.5M", location: "Clearwater, FL", due: "7 days", trades: ["Plumbing", "Electrical", "Painting"], sf: "180,000 SF", status: "Urgent" },
-  { title: "Port Everglades Logistics Hub", gc: "DPR Construction", type: "industrial", budget: "$4.2M - $5.8M", location: "Fort Lauderdale, FL", due: "30 days", trades: ["Concrete", "Steel / Iron", "Electrical"], sf: "450,000 SF", status: "New" },
-  { title: "Orange County Public Library Renovation", gc: "Hensel Phelps", type: "municipal", budget: "$320K - $480K", location: "Orlando, FL", due: "10 days", trades: ["Painting", "Framing", "HVAC", "Glass & Glazing"], sf: "28,000 SF", status: "Bidding" },
-  { title: "Aventura Medical Plaza", gc: "Turner Construction", type: "commercial", budget: "$3.6M - $4.8M", location: "Aventura, FL", due: "18 days", trades: ["Electrical", "Plumbing", "HVAC", "Glass & Glazing"], sf: "210,000 SF", status: "New" },
-];
-
-// ============ RENDER FUNCTIONS ============
-function renderProjects(data) {
-  const list = document.getElementById('project-list');
-  list.innerHTML = data.map(p => `
-    <div class="project-card" data-type="${p.type}">
-      <div class="project-top">
-        <div>
-          <div class="project-title">${p.title} ${p.status === 'Urgent' ? '<span class="badge badge-red">Urgent</span>' : p.status === 'New' ? '<span class="badge badge-green">New</span>' : ''}</div>
-          <div class="project-gc">${p.gc}</div>
-        </div>
-        <div class="project-budget">
-          <div class="project-budget-value">${p.budget}</div>
-          <div class="project-budget-label">Estimated Range</div>
-        </div>
-      </div>
-      <div class="project-details">
-        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>${p.location}</div>
-        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>${p.sf}</div>
-        <div class="project-detail"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Bid due in ${p.due}</div>
-      </div>
-      <div class="project-trades">${p.trades.map(t => `<span class="badge badge-blue">${t}</span>`).join('')}</div>
-      <div class="project-actions">
-        <button class="btn btn-primary btn-sm" onclick="openModal()">View & Bid</button>
-        <button class="btn btn-secondary btn-sm">Save Project</button>
-      </div>
-    </div>
-  `).join('');
+  `;
+  document.getElementById('modal').classList.add('show');
 }
 
-// ============ FILTER FUNCTION ============
-function filterProjects(btn, type) {
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
-  const filtered = type === 'all' ? projects : projects.filter(p => p.type === type);
-  renderProjects(filtered);
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
 }
 
-// ============ MODAL ============
-function openModal() { document.getElementById('modal').classList.add('show'); }
-function closeModal() { document.getElementById('modal').classList.remove('show'); }
-document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
 
 // ============ MOBILE MENU ============
 function toggleMobile() {
@@ -218,7 +1174,8 @@ function toggleMobile() {
 }
 
 // ============ INIT ============
-renderProjects(projects);
+initFilters();
+applyFilters();
 </script>
 </body>
 </html>
