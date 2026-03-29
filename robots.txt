@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /app/
+Disallow: /app/login.html
+Disallow: /app/signup.html
+Disallow: /app/dashboard.html
 
-Sitemap: https://subcontractors.ai/sitemap.xml
+Sitemap: https://www.subcontractors.ai/sitemap.xml

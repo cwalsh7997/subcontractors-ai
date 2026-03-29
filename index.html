@@ -385,6 +385,76 @@ img { max-width: 100%; }
   .testimonials-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "Subcontractors.ai",
+      "url": "https://www.subcontractors.ai",
+      "logo": "https://www.subcontractors.ai/logo.png",
+      "description": "AI-powered platform built exclusively for construction subcontractors. Find projects, rate GCs, track payments, and grow your business.",
+      "foundingDate": "2025",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Fort Lauderdale",
+        "addressRegion": "FL",
+        "addressCountry": "US"
+      },
+      "sameAs": [],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "hello@subcontractors.ai",
+        "contactType": "customer service"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "name": "Subcontractors.ai",
+      "url": "https://www.subcontractors.ai",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.subcontractors.ai/find-subs.html?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Subcontractors.ai",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "name": "Free"
+        },
+        {
+          "@type": "Offer",
+          "price": "49",
+          "priceCurrency": "USD",
+          "name": "Pro",
+          "billingIncrement": "Monthly"
+        },
+        {
+          "@type": "Offer",
+          "price": "149",
+          "priceCurrency": "USD",
+          "name": "Business",
+          "billingIncrement": "Monthly"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "2400"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
