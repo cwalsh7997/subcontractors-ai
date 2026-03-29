@@ -1261,24 +1261,7 @@ function submitCtaEmail() {
   });
 }
 
-  // Show success state
-  document.getElementById('cta-form-state').style.display = 'none';
-  document.getElementById('cta-success-state').style.display = 'block';
-}
-
-function toggleMobile() {
-  const links = document.querySelector('.nav-links');
-  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-  links.style.position = 'absolute';
-  links.style.top = '64px';
-  links.style.left = '0';
-  links.style.right = '0';
-  links.style.background = '#fff';
-  links.style.flexDirection = 'column';
-  links.style.padding = '16px';
-  links.style.borderBottom = '1px solid var(--gray-200)';
-  links.style.boxShadow = 'var(--shadow-lg)';
-}
+// toggleMobile() defined below with slide-out mobile menu
 
 // ============ INIT ============
 renderSubs(subs);
