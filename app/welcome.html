@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f1729 0%, #1e3a5f 50%, #0f1729 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: #1e293b; }
+        .welcome-container { max-width: 680px; width: 100%; }
+        .welcome-card { background: #fff; border-radius: 16px; padding: 48px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .welcome-badge { display: inline-block; background: #dcfce7; color: #16a34a; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+        .welcome-title { font-size: 32px; font-weight: 800; color: #0f1729; margin-bottom: 8px; line-height: 1.2; }
+        .welcome-sub { font-size: 16px; color: #64748b; margin-bottom: 32px; line-height: 1.5; }
+        .steps { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+        .step { display: flex; gap: 16px; align-items: flex-start; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .step:hover { border-color: #2563eb; background: #f8fafc; }
+        .step-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #fff; flex-shrink: 0; }
+        .step-1 .step-num { background: #2563eb; }
+        .step-2 .step-num { background: #10b981; }
+        .step-3 .step-num { background: #f59e0b; }
+        .step-4 .step-num { background: #8b5cf6; }
+        .step-info h3 { font-size: 15px; font-weight: 700; color: #0f1729; margin-bottom: 4px; }
+        .step-info p { font-size: 13px; color: #64748b; line-height: 1.5; }
+        .step-time { font-size: 11px; color: #94a3b8; background: #f1f5f9; padding: 2px 8px; border-radius: 10px; white-space: nowrap; margin-left: auto; align-self: center; }
+        .welcome-cta { display: flex; gap: 12px; }
+        .btn { padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: 'Inter', sans-serif; text-decoration: none; text-align: center; }
+        .btn-primary { background: #2563eb; color: #fff; flex: 1; }
+        .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .btn-secondary { background: #f1f5f9; color: #334155; }
+        .btn-secondary:hover { background: #e2e8f0; }
+        .welcome-footer { text-align: center; margin-top: 24px; font-size: 13px; color: #94a3b8; }
+        .welcome-footer a { color: #2563eb; text-decoration: none; }
+        .confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
+        @media (max-width: 480px) {
+            .welcome-card { padding: 32px 24px; }
+            .welcome-title { font-size: 24px; }
+            .welcome-cta { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="confetti" id="confetti"></canvas>
+    <div class="welcome-container">
+        <div class="welcome-card">
+            <div class="welcome-badge">Account Created</div>
+            <h1 class="welcome-title" id="welcome-name">Welcome to Subcontractors.ai!</h1>
+            <p class="welcome-sub">Your account is live. Here's how to get the most out of the platform in the next 5 minutes:</p>
+
+            <div class="steps">
+                <div class="step step-1">
+                    <div class="step-num">1</div>
+                    <div class="step-info">
+                        <h3>Complete Your Profile</h3>
+                        <p>Add your company details, license number, and service areas. This is how GCs find and vet you.</p>
+                    </div>
+                    <span class="step-time">2 min</span>
+                </div>
+                <div class="step step-2">
+                    <div class="step-num">2</div>
+                    <div class="step-info">
+                        <h3>Add Insurance &amp; Bonding</h3>
+                        <p>Upload your GL, workers comp, and bonding info. Subs with complete compliance docs win 40% more bids.</p>
+                    </div>
+                    <span class="step-time">1 min</span>
+                </div>
+                <div class="step step-3">
+                    <div class="step-num">3</div>
+                    <div class="step-info">
+                        <h3>Track Your First Invoice</h3>
+                        <p>Add a current invoice or pay app to start tracking payments. Never lose track of what you're owed.</p>
+                    </div>
+                    <span class="step-time">1 min</span>
+                </div>
+                <div class="step step-4">
+                    <div class="step-num">4</div>
+                    <div class="step-info">
+                        <h3>Explore AI Tools</h3>
+                        <p>Try the AI Bid Assistant — upload plans and get scope extraction, cost estimates, and bid sheets in minutes.</p>
+                    </div>
+                    <span class="step-time">2 min</span>
+                </div>
+            </div>
+
+            <div class="welcome-cta">
+                <a href="profile.html" class="btn btn-primary">Complete My Profile &rarr;</a>
+                <a href="dashboard.html" class="btn btn-secondary">Go to Dashboard</a>
+            </div>
+
+            <div class="welcome-footer">
+                Need help? Email <a href="mailto:connor@acglass.com">connor@acglass.com</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script>
+        // Personalize welcome
+        (async function() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                const sb = window.supabase.createClient(url, key);
+                const { data: { session } } = await sb.auth.getSession();
+                if (session) {
+                    const name = session.user.user_metadata?.company_name || session.user.email.split('@')[0];
+                    document.getElementById('welcome-name').textContent = 'Welcome, ' + name + '!';
+                }
+            }
+        })();
+
+        // Mini confetti animation
+        (function() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const pieces = [];
+            const colors = ['#2563eb','#10b981','#f59e0b','#8b5cf6','#ec4899','#f97316'];
+            for (let i = 0; i < 80; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 8 + 4,
+                    h: Math.random() * 4 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    angle: Math.random() * 360,
+                    spin: (Math.random() - 0.5) * 4
+                });
+            }
+            let frame = 0;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.angle * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = Math.max(0, 1 - frame / 120);
+                    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+                    ctx.restore();
+                    p.y += p.speed;
+                    p.x += Math.sin(frame * 0.02 + p.speed) * 0.5;
+                    p.angle += p.spin;
+                });
+                frame++;
+                if (frame < 150) requestAnimationFrame(draw);
+                else { ctx.clearRect(0, 0, canvas.width, canvas.height); canvas.style.display = 'none'; }
+            }
+            draw();
+        })();
+    </script>
+</body>
+</html>

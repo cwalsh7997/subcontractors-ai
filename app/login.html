@@ -375,10 +375,35 @@
             demoBanner.classList.add('show');
         }
 
-        // Prevent forgot password for now
-        forgotLink.addEventListener('click', (e) => {
+        // Password reset
+        forgotLink.addEventListener('click', async (e) => {
             e.preventDefault();
-            alert('Password reset will be available soon. Please contact support.');
+            const email = emailInput.value.trim();
+            if (!email) {
+                emailError.textContent = 'Enter your email above, then click Forgot password';
+                emailError.classList.add('show');
+                emailInput.classList.add('error');
+                return;
+            }
+            if (!sbClient) {
+                alert('Password reset requires a connected account.');
+                return;
+            }
+            try {
+                const { error } = await sbClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/app/login.html'
+                });
+                if (error) {
+                    emailError.textContent = error.message;
+                    emailError.classList.add('show');
+                } else {
+                    successMessage.textContent = 'Password reset email sent! Check your inbox.';
+                    successMessage.classList.add('show');
+                }
+            } catch (err) {
+                emailError.textContent = 'Error sending reset email. Try again.';
+                emailError.classList.add('show');
+            }
         });
 
         // Clear error messages on input

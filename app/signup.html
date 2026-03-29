@@ -793,7 +793,7 @@
 
                     successMessage.classList.add('show');
                     setTimeout(() => {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'welcome.html';
                     }, 1500);
                 } else {
                     // Production mode: use Supabase
@@ -826,7 +826,7 @@
                     if (data) {
                         successMessage.classList.add('show');
                         setTimeout(() => {
-                            window.location.href = 'dashboard.html';
+                            window.location.href = 'welcome.html';
                         }, 1500);
                     }
                 }
@@ -845,7 +845,7 @@
         if (!isDemoMode && sbClient) {
             sbClient.auth.onAuthStateChange((event, session) => {
                 if (session) {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'welcome.html';
                 }
             });
         }

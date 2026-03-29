@@ -175,23 +175,20 @@ async function signIn(email, password) {
  * @async
  */
 async function signOut() {
-  if (isDemoMode()) {
-    localStorage.removeItem('demo_user');
-    localStorage.removeItem('demo_profile');
-    localStorage.removeItem('demo_payments');
-    localStorage.removeItem('demo_projects');
-    currentUser = null;
-    userProfile = null;
-    window.location.href = '../index.html';
-    return;
-  }
+  // Clear all local storage
+  localStorage.removeItem('demo_user');
+  localStorage.removeItem('demo_profile');
+  localStorage.removeItem('demo_payments');
+  localStorage.removeItem('demo_projects');
+  localStorage.removeItem('sb-demo-user');
+  localStorage.removeItem('sb-demo-session');
 
   if (supabase) {
-    await supabase.auth.signOut();
+    try { await supabase.auth.signOut(); } catch(e) {}
   }
   currentUser = null;
   userProfile = null;
-  window.location.href = '../index.html';
+  window.location.href = 'login.html';
 }
 
 /**
