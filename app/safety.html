@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Toolbox - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .sign-out-btn:hover { background-color: #7f1d1d; border-color: #dc2626; color: #fca5a5; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; overflow-y: auto; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+        .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: #fff; border-radius: 12px; padding: 16px 20px; border: 1px solid #e2e8f0; border-left: 4px solid #e2e8f0; }
+        .stat-card.green { border-left-color: #16a34a; }
+        .stat-card.blue { border-left-color: #2563eb; }
+        .stat-card.orange { border-left-color: #f59e0b; }
+        .stat-card.red { border-left-color: #dc2626; }
+        .stat-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; }
+        .stat-value { font-size: 24px; font-weight: 800; margin-top: 4px; }
+        .stat-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+
+        .tabs { display: flex; gap: 0; margin-bottom: 24px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .tab { flex: 1; padding: 14px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #64748b; transition: all 0.2s; }
+        .tab:hover { background: #f8fafc; }
+        .tab.active { background: #dc2626; color: #fff; }
+
+        /* Toolbox Talk Topics */
+        .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .topic-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; }
+        .topic-card:hover { border-color: #dc2626; box-shadow: 0 4px 12px rgba(220,38,38,0.08); }
+        .topic-card.used { border-left: 4px solid #16a34a; }
+        .topic-icon { font-size: 28px; margin-bottom: 8px; }
+        .topic-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .topic-desc { font-size: 12px; color: #64748b; line-height: 1.5; }
+        .topic-meta { font-size: 11px; color: #94a3b8; margin-top: 8px; display: flex; gap: 12px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+        .form-textarea { min-height: 80px; resize: vertical; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-danger { background: #dc2626; color: #fff; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+
+        /* Incident log */
+        .incident-row { padding: 14px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+        .incident-row:last-child { border-bottom: none; }
+        .incident-type { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+        .type-near-miss { background: #fef3c7; color: #d97706; }
+        .type-incident { background: #fee2e2; color: #dc2626; }
+        .type-observation { background: #dbeafe; color: #2563eb; }
+        .type-violation { background: #fce7f3; color: #be185d; }
+
+        .checklist-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .checklist-item:last-child { border-bottom: none; }
+        .checklist-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #16a34a; cursor: pointer; }
+        .checklist-item label { font-size: 13px; cursor: pointer; flex: 1; }
+        .checklist-item .risk { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 8px; }
+        .risk-high { background: #fee2e2; color: #dc2626; }
+        .risk-med { background: #fef3c7; color: #d97706; }
+        .risk-low { background: #dcfce7; color: #16a34a; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+            .stat-cards { grid-template-columns: 1fr 1fr; }
+            .topic-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail"></span>
+                </div>
+            </div>
+                        <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link">&#x1f4dd; Bid Assistant</a></li>
+                <li class="nav-item"><a href="compliance.html" class="nav-link">&#x1f6e1; Compliance</a></li>
+                <li class="nav-item"><a href="aia-pay-app.html" class="nav-link">&#x1f4c4; AIA Pay App</a></li>
+                <li class="nav-item"><a href="lien-waivers.html" class="nav-link">&#x1f4dc; Lien Waivers</a></li>
+                <li class="nav-item"><a href="change-orders.html" class="nav-link">&#x1f504; Change Orders</a></li>
+                <li class="nav-item"><a href="daily-log.html" class="nav-link">&#x1f4d3; Daily Log</a></li>
+                <li class="nav-item"><a href="projects.html" class="nav-link">&#x1f4cb; Project Board</a></li>
+                <li class="nav-item"><a href="estimates.html" class="nav-link">&#x1f4b2; Estimates</a></li>
+                <li class="nav-item"><a href="safety.html" class="nav-link active">&#x1f6d1; Safety</a></li>
+                <li class="nav-item"><a href="gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="directory.html" class="nav-link">&#x1f50d; Sub Directory</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
+                <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div>
+                    <div class="page-title">Safety Toolbox</div>
+                    <div class="page-subtitle">Toolbox talks, safety checklists, incident tracking, and OSHA compliance</div>
+                </div>
+            </div>
+
+            <div class="stat-cards">
+                <div class="stat-card green">
+                    <div class="stat-label">Days Without Incident</div>
+                    <div class="stat-value" id="stat-days" style="color:#16a34a;">0</div>
+                    <div class="stat-sub">Keep it going!</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-label">Toolbox Talks</div>
+                    <div class="stat-value" id="stat-talks">0</div>
+                    <div class="stat-sub">completed this month</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-label">Near Misses</div>
+                    <div class="stat-value" id="stat-near-miss" style="color:#d97706;">0</div>
+                    <div class="stat-sub">reported this month</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-label">Open Items</div>
+                    <div class="stat-value" id="stat-open" style="color:#dc2626;">0</div>
+                    <div class="stat-sub">needing attention</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('talks')">Toolbox Talks</button>
+                <button class="tab" onclick="switchTab('checklist')">Site Checklist</button>
+                <button class="tab" onclick="switchTab('incidents')">Incident Log</button>
+                <button class="tab" onclick="switchTab('report')">Report Incident</button>
+            </div>
+
+            <!-- Toolbox Talks -->
+            <div id="tab-talks">
+                <div class="topic-grid" id="topic-grid"></div>
+            </div>
+
+            <!-- Site Safety Checklist -->
+            <div id="tab-checklist" style="display:none;">
+                <div class="card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <div class="card-title">Daily Site Safety Checklist</div>
+                            <div class="card-subtitle">Complete before work begins each day</div>
+                        </div>
+                        <div class="btn-group" style="margin-top:0;">
+                            <button class="btn btn-outline btn-sm" onclick="resetChecklist()">Reset</button>
+                            <button class="btn btn-danger btn-sm" onclick="exportChecklist()">Export PDF</button>
+                        </div>
+                    </div>
+                    <div id="checklist-items"></div>
+                    <div class="form-group full" style="margin-top:16px;">
+                        <label class="form-label">Inspector / Foreman</label>
+                        <input type="text" class="form-input" id="inspector-name" placeholder="Your name">
+                    </div>
+                    <div class="form-group full" style="margin-top:12px;">
+                        <label class="form-label">Notes / Corrective Actions</label>
+                        <textarea class="form-textarea" id="checklist-notes" placeholder="Document any issues found and corrective actions taken"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incident Log -->
+            <div id="tab-incidents" style="display:none;">
+                <div class="card">
+                    <div class="card-title">Incident & Near-Miss Log</div>
+                    <div class="card-subtitle">Track safety events for OSHA compliance</div>
+                    <div id="incident-list"></div>
+                </div>
+            </div>
+
+            <!-- Report Incident -->
+            <div id="tab-report" style="display:none;">
+                <div class="card">
+                    <div class="card-title">Report a Safety Event</div>
+                    <div class="card-subtitle">Document incidents, near misses, and safety observations</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Event Type *</label>
+                            <select class="form-select" id="inc-type">
+                                <option value="near-miss">Near Miss</option>
+                                <option value="incident">Incident</option>
+                                <option value="observation">Safety Observation</option>
+                                <option value="violation">Violation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date *</label>
+                            <input type="date" class="form-input" id="inc-date">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Project</label>
+                            <input type="text" class="form-input" id="inc-project" placeholder="Project name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location on Site</label>
+                            <input type="text" class="form-input" id="inc-location" placeholder="e.g. 3rd floor, east wing">
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Description *</label>
+                            <textarea class="form-textarea" id="inc-description" placeholder="Describe what happened, who was involved, and the root cause if known"></textarea>
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Corrective Action</label>
+                            <textarea class="form-textarea" id="inc-action" placeholder="What was done to address the issue? What preventive measures were put in place?"></textarea>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-danger" onclick="submitIncident()">Submit Report</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let sbClient = null;
+        let currentUser = null;
+        let incidents = [];
+        let completedTalks = [];
+
+        const toolboxTopics = [
+            { id: 'fall-protection', icon: '&#x1f9d7;', title: 'Fall Protection', desc: 'Harnesses, guardrails, warning lines, and leading edge work. OSHA 1926 Subpart M.', category: 'High Risk', osha: '1926.501-503', duration: '15 min' },
+            { id: 'scaffolding', icon: '&#x1f3d7;', title: 'Scaffolding Safety', desc: 'Erection, inspection, capacity, and fall protection on scaffold systems.', category: 'High Risk', osha: '1926.451-454', duration: '15 min' },
+            { id: 'electrical', icon: '&#x26a1;', title: 'Electrical Safety', desc: 'Lockout/tagout, GFCIs, temporary wiring, and energized work permits.', category: 'High Risk', osha: '1926.404-405', duration: '15 min' },
+            { id: 'trenching', icon: '&#x1f3da;', title: 'Trenching & Excavation', desc: 'Soil classification, protective systems, access/egress, and cave-in prevention.', category: 'High Risk', osha: '1926.650-652', duration: '15 min' },
+            { id: 'ppe', icon: '&#x1f9e4;', title: 'PPE Requirements', desc: 'Hard hats, safety glasses, gloves, hi-vis, steel toes, and hearing protection.', category: 'General', osha: '1926.95-106', duration: '10 min' },
+            { id: 'ladder', icon: '&#x1fa9c;', title: 'Ladder Safety', desc: 'Three-point contact, 4:1 ratio, inspection, and proper selection.', category: 'General', osha: '1926.1053', duration: '10 min' },
+            { id: 'heat-illness', icon: '&#x1f321;', title: 'Heat Illness Prevention', desc: 'Water, rest, shade protocol. Recognizing heat stroke vs. heat exhaustion.', category: 'Seasonal', osha: 'OSHA HIP', duration: '10 min' },
+            { id: 'silica', icon: '&#x1f4a8;', title: 'Silica Dust Exposure', desc: 'Table 1 controls, exposure monitoring, respirators, and medical surveillance.', category: 'Health', osha: '1926.1153', duration: '15 min' },
+            { id: 'confined-space', icon: '&#x1f6aa;', title: 'Confined Spaces', desc: 'Permit-required spaces, atmospheric testing, rescue plans, and entry procedures.', category: 'High Risk', osha: '1926.1200', duration: '15 min' },
+            { id: 'crane', icon: '&#x1f3d7;', title: 'Crane & Rigging', desc: 'Signal person, load charts, rigging inspection, and swing radius hazards.', category: 'High Risk', osha: '1926.1400', duration: '15 min' },
+            { id: 'housekeeping', icon: '&#x1f9f9;', title: 'Housekeeping', desc: 'Clear walkways, material storage, trash removal, and slip/trip prevention.', category: 'General', osha: '1926.25', duration: '10 min' },
+            { id: 'fire-prevention', icon: '&#x1f525;', title: 'Fire Prevention', desc: 'Hot work permits, extinguisher locations, flammable storage, and evacuation.', category: 'General', osha: '1926.150-159', duration: '10 min' }
+        ];
+
+        const checklistItems = [
+            { text: 'All workers wearing required PPE (hard hat, safety glasses, hi-vis, steel toes)', risk: 'high' },
+            { text: 'Fall protection in place for work above 6 feet', risk: 'high' },
+            { text: 'Ladders inspected and properly set up', risk: 'med' },
+            { text: 'Scaffolding tagged and inspected', risk: 'high' },
+            { text: 'Excavations properly sloped or shored', risk: 'high' },
+            { text: 'GFCI protection on all temporary power', risk: 'high' },
+            { text: 'Fire extinguishers accessible and charged', risk: 'med' },
+            { text: 'First aid kit stocked and accessible', risk: 'med' },
+            { text: 'Walkways and stairways clear of debris', risk: 'low' },
+            { text: 'Material properly stacked and stored', risk: 'low' },
+            { text: 'Hot work permit posted (if applicable)', risk: 'med' },
+            { text: 'Confined space permits current (if applicable)', risk: 'high' },
+            { text: 'Crane inspection current / load chart posted', risk: 'high' },
+            { text: 'Emergency contact info posted on site', risk: 'low' },
+            { text: 'Toolbox talk conducted today', risk: 'med' },
+            { text: 'SDS sheets accessible for chemicals on site', risk: 'med' }
+        ];
+
+        async function init() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sbClient = window.supabase.createClient(url, key);
+            }
+            if (sbClient) {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                currentUser = session.user;
+            } else {
+                const demo = JSON.parse(localStorage.getItem('sb-demo-user') || 'null');
+                if (!demo) { window.location.href = 'login.html'; return; }
+                currentUser = demo;
+            }
+            const meta = currentUser.user_metadata || {};
+            document.getElementById('sidebar-name').textContent = meta.company_name || currentUser.email;
+            document.getElementById('sidebar-detail').textContent = meta.trade || '';
+            if (['connor@acglass.com'].includes(currentUser.email)) document.getElementById('admin-link').style.display = '';
+
+            document.getElementById('inc-date').value = new Date().toISOString().slice(0, 10);
+            loadData();
+            renderTopics();
+            renderChecklist();
+            renderIncidents();
+            updateStats();
+        }
+
+        function loadData() {
+            try { incidents = JSON.parse(localStorage.getItem('safety_incidents') || '[]'); } catch (e) { incidents = []; }
+            try { completedTalks = JSON.parse(localStorage.getItem('completed_talks') || '[]'); } catch (e) { completedTalks = []; }
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            ['talks', 'checklist', 'incidents', 'report'].forEach(t => {
+                document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
+            });
+        }
+
+        function renderTopics() {
+            const grid = document.getElementById('topic-grid');
+            grid.innerHTML = toolboxTopics.map(t => {
+                const used = completedTalks.includes(t.id);
+                return '<div class="topic-card' + (used ? ' used' : '') + '" onclick="conductTalk(\'' + t.id + '\')">' +
+                    '<div class="topic-icon">' + t.icon + '</div>' +
+                    '<div class="topic-title">' + t.title + '</div>' +
+                    '<div class="topic-desc">' + t.desc + '</div>' +
+                    '<div class="topic-meta">' +
+                        '<span>' + t.osha + '</span>' +
+                        '<span>' + t.duration + '</span>' +
+                        '<span>' + t.category + '</span>' +
+                        (used ? '<span style="color:#16a34a;font-weight:600;">&#x2713; Completed</span>' : '') +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function conductTalk(id) {
+            if (!completedTalks.includes(id)) {
+                completedTalks.push(id);
+                localStorage.setItem('completed_talks', JSON.stringify(completedTalks));
+                renderTopics();
+                updateStats();
+                if (window.toast) toast.success('Toolbox talk marked complete!');
+            } else {
+                if (window.toast) toast.info('Already completed this talk. Click again to review.');
+            }
+        }
+
+        function renderChecklist() {
+            const el = document.getElementById('checklist-items');
+            el.innerHTML = checklistItems.map((item, i) => {
+                const riskClass = 'risk-' + item.risk;
+                const riskLabel = item.risk === 'high' ? 'HIGH' : item.risk === 'med' ? 'MED' : 'LOW';
+                return '<div class="checklist-item">' +
+                    '<input type="checkbox" id="check-' + i + '">' +
+                    '<label for="check-' + i + '">' + item.text + '</label>' +
+                    '<span class="risk ' + riskClass + '">' + riskLabel + '</span>' +
+                '</div>';
+            }).join('');
+        }
+
+        function resetChecklist() {
+            document.querySelectorAll('#checklist-items input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.getElementById('checklist-notes').value = '';
+            document.getElementById('inspector-name').value = '';
+        }
+
+        function exportChecklist() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+            const W = doc.internal.pageSize.getWidth();
+            const M = 50;
+            let y = 50;
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('DAILY SITE SAFETY CHECKLIST', W / 2, y, { align: 'center' });
+            y += 18;
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Date: ' + new Date().toLocaleDateString() + '   |   Inspector: ' + (document.getElementById('inspector-name').value || '_______________'), W / 2, y, { align: 'center' });
+            y += 24;
+            doc.line(M, y, W - M, y);
+            y += 16;
+
+            checklistItems.forEach((item, i) => {
+                if (y > 720) { doc.addPage(); y = 50; }
+                const checked = document.getElementById('check-' + i).checked;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.text(checked ? '[X]' : '[ ]', M, y);
+                doc.text(item.text, M + 25, y);
+                doc.setFont('helvetica', 'bold');
+                doc.text(item.risk.toUpperCase(), W - M, y, { align: 'right' });
+                y += 16;
+            });
+
+            const notes = document.getElementById('checklist-notes').value;
+            if (notes) {
+                y += 10;
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.text('NOTES / CORRECTIVE ACTIONS:', M, y);
+                y += 14;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.splitTextToSize(notes, W - M * 2).forEach(line => {
+                    if (y > 720) { doc.addPage(); y = 50; }
+                    doc.text(line, M, y);
+                    y += 13;
+                });
+            }
+
+            y += 30;
+            doc.line(M, y, M + 200, y);
+            y += 14;
+            doc.setFontSize(8);
+            doc.text('Inspector Signature / Date', M, y);
+
+            doc.save('Safety-Checklist-' + new Date().toISOString().slice(0, 10) + '.pdf');
+            if (window.toast) toast.success('Checklist exported!');
+        }
+
+        function submitIncident() {
+            const type = document.getElementById('inc-type').value;
+            const date = document.getElementById('inc-date').value;
+            const description = document.getElementById('inc-description').value;
+            if (!description) { if (window.toast) toast.warning('Please describe the event.'); return; }
+
+            const incident = {
+                id: 'inc_' + Date.now(),
+                type: type,
+                date: date,
+                project: document.getElementById('inc-project').value,
+                location: document.getElementById('inc-location').value,
+                description: description,
+                action: document.getElementById('inc-action').value,
+                reportedBy: currentUser.email,
+                created: new Date().toISOString()
+            };
+
+            incidents.unshift(incident);
+            localStorage.setItem('safety_incidents', JSON.stringify(incidents));
+            renderIncidents();
+            updateStats();
+
+            // Clear form
+            document.getElementById('inc-description').value = '';
+            document.getElementById('inc-action').value = '';
+            document.getElementById('inc-project').value = '';
+            document.getElementById('inc-location').value = '';
+
+            switchTab('incidents');
+            if (window.toast) toast.success('Safety event reported.');
+        }
+
+        function renderIncidents() {
+            const el = document.getElementById('incident-list');
+            if (incidents.length === 0) {
+                el.innerHTML = '<div style="text-align:center;padding:32px;color:#94a3b8;font-size:13px;">No incidents or near misses reported. That\'s a good thing!</div>';
+                return;
+            }
+            el.innerHTML = incidents.map(inc => {
+                const dateStr = inc.date ? new Date(inc.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+                const typeClass = 'type-' + inc.type;
+                const typeLabel = (inc.type || '').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                return '<div class="incident-row">' +
+                    '<div>' +
+                        '<div style="font-size:14px;font-weight:600;">' + (inc.description || '').slice(0, 80) + '</div>' +
+                        '<div style="font-size:12px;color:#64748b;margin-top:2px;">' + (inc.project || '') + (inc.location ? ' — ' + inc.location : '') + '</div>' +
+                    '</div>' +
+                    '<div style="text-align:right;">' +
+                        '<span class="incident-type ' + typeClass + '">' + typeLabel + '</span>' +
+                        '<div style="font-size:11px;color:#94a3b8;margin-top:4px;">' + dateStr + '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function updateStats() {
+            // Days without incident
+            const incidentsOnly = incidents.filter(i => i.type === 'incident');
+            if (incidentsOnly.length > 0) {
+                const lastIncident = new Date(incidentsOnly[0].date + 'T12:00:00');
+                const days = Math.floor((new Date() - lastIncident) / 86400000);
+                document.getElementById('stat-days').textContent = Math.max(0, days);
+            } else {
+                document.getElementById('stat-days').textContent = '30+';
+            }
+
+            // Talks this month
+            document.getElementById('stat-talks').textContent = completedTalks.length;
+
+            // Near misses this month
+            const thisMonth = new Date().toISOString().slice(0, 7);
+            const nearMisses = incidents.filter(i => i.type === 'near-miss' && (i.date || '').startsWith(thisMonth));
+            document.getElementById('stat-near-miss').textContent = nearMisses.length;
+
+            // Open items
+            const openCount = incidents.filter(i => !i.action).length;
+            document.getElementById('stat-open').textContent = openCount;
+        }
+
+        async function handleSignOut() {
+            if (sbClient) await sbClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+    <script src="toast.js"></script>
+</body>
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimates & Takeoffs - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .sign-out-btn:hover { background-color: #7f1d1d; border-color: #dc2626; color: #fca5a5; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; overflow-y: auto; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; }
+
+        .line-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .line-table th { padding: 10px 8px; text-align: left; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; background: #f8fafc; }
+        .line-table td { padding: 8px; }
+        .line-table input, .line-table select { width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; font-family: inherit; }
+        .line-table input:focus, .line-table select:focus { outline: none; border-color: #2563eb; }
+        .line-table .amt { text-align: right; font-weight: 700; font-size: 13px; padding-right: 12px; }
+        .line-table tfoot td { padding: 12px 8px; font-weight: 700; border-top: 2px solid #0f1729; }
+        .remove-btn { background: none; border: none; color: #dc2626; cursor: pointer; font-size: 18px; }
+
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+        .summary-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        .summary-item .label { color: #64748b; }
+        .summary-item .value { font-weight: 700; }
+        .summary-item.total { border-bottom: none; border-top: 2px solid #0f1729; padding-top: 14px; font-size: 18px; }
+        .summary-item.total .value { color: #2563eb; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: #16a34a; color: #fff; }
+        .btn-success:hover { background: #15803d; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .markup-row { display: flex; gap: 16px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
+        .markup-row label { font-size: 12px; font-weight: 600; color: #475569; }
+        .markup-row input { width: 80px; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; text-align: center; }
+
+        /* Saved estimates */
+        .est-list-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
+        .est-list-item:last-child { border-bottom: none; }
+        .est-info .est-name { font-size: 14px; font-weight: 700; }
+        .est-info .est-meta { font-size: 12px; color: #64748b; }
+        .est-amount { font-size: 16px; font-weight: 800; color: #2563eb; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail"></span>
+                </div>
+            </div>
+                        <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link">&#x1f4dd; Bid Assistant</a></li>
+                <li class="nav-item"><a href="compliance.html" class="nav-link">&#x1f6e1; Compliance</a></li>
+                <li class="nav-item"><a href="aia-pay-app.html" class="nav-link">&#x1f4c4; AIA Pay App</a></li>
+                <li class="nav-item"><a href="lien-waivers.html" class="nav-link">&#x1f4dc; Lien Waivers</a></li>
+                <li class="nav-item"><a href="change-orders.html" class="nav-link">&#x1f504; Change Orders</a></li>
+                <li class="nav-item"><a href="daily-log.html" class="nav-link">&#x1f4d3; Daily Log</a></li>
+                <li class="nav-item"><a href="projects.html" class="nav-link">&#x1f4cb; Project Board</a></li>
+                <li class="nav-item"><a href="estimates.html" class="nav-link active">&#x1f4b2; Estimates</a></li>
+                <li class="nav-item"><a href="safety.html" class="nav-link">&#x1f6d1; Safety</a></li>
+                <li class="nav-item"><a href="gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="directory.html" class="nav-link">&#x1f50d; Sub Directory</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
+                <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div>
+                    <div class="page-title">Estimates & Takeoffs</div>
+                    <div class="page-subtitle">Build professional estimates with labor, materials, and markup calculations</div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="exportEstimatePdf()">Export PDF</button>
+                    <button class="btn btn-primary" onclick="saveEstimate()">Save Estimate</button>
+                </div>
+            </div>
+
+            <!-- Project Info -->
+            <div class="card">
+                <div class="card-title">Project Information</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Estimate Name *</label>
+                        <input type="text" class="form-input" id="est-name" placeholder="e.g. Tampa Office Tower - Glass Package">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Client / GC</label>
+                        <input type="text" class="form-input" id="est-client" placeholder="e.g. Suffolk Construction">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project Location</label>
+                        <input type="text" class="form-input" id="est-location" placeholder="Tampa, FL">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bid Due Date</label>
+                        <input type="date" class="form-input" id="est-due">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Line Items -->
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <div>
+                        <div class="card-title">Line Items</div>
+                        <div class="card-subtitle" style="margin-bottom:0;">Add materials, labor, equipment, and other costs</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="addLineItem()">+ Add Line</button>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="line-table">
+                        <thead>
+                            <tr>
+                                <th style="width:25%;">Description</th>
+                                <th style="width:12%;">Category</th>
+                                <th style="width:10%;">Qty</th>
+                                <th style="width:8%;">Unit</th>
+                                <th style="width:12%;">Unit Cost</th>
+                                <th style="width:12%;">Total</th>
+                                <th style="width:5%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="line-body"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="text-align:right;">Subtotal (before markup)</td>
+                                <td class="amt" id="subtotal">$0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="markup-row">
+                    <label>Overhead %</label>
+                    <input type="number" id="overhead-pct" value="10" min="0" max="100" oninput="recalculate()">
+                    <label>Profit %</label>
+                    <input type="number" id="profit-pct" value="10" min="0" max="100" oninput="recalculate()">
+                    <label>Tax %</label>
+                    <input type="number" id="tax-pct" value="0" min="0" max="30" step="0.25" oninput="recalculate()">
+                    <label>Contingency %</label>
+                    <input type="number" id="contingency-pct" value="5" min="0" max="50" oninput="recalculate()">
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="card">
+                <div class="card-title">Estimate Summary</div>
+                <div class="summary-grid">
+                    <div>
+                        <div class="summary-item"><span class="label">Materials</span><span class="value" id="sum-materials">$0.00</span></div>
+                        <div class="summary-item"><span class="label">Labor</span><span class="value" id="sum-labor">$0.00</span></div>
+                        <div class="summary-item"><span class="label">Equipment</span><span class="value" id="sum-equipment">$0.00</span></div>
+                        <div class="summary-item"><span class="label">Other</span><span class="value" id="sum-other">$0.00</span></div>
+                    </div>
+                    <div>
+                        <div class="summary-item"><span class="label">Subtotal</span><span class="value" id="sum-subtotal">$0.00</span></div>
+                        <div class="summary-item"><span class="label">Overhead</span><span class="value" id="sum-overhead">$0.00</span></div>
+                        <div class="summary-item"><span class="label">Profit</span><span class="value" id="sum-profit">$0.00</span></div>
+                        <div class="summary-item"><span class="label">Tax</span><span class="value" id="sum-tax">$0.00</span></div>
+                        <div class="summary-item"><span class="label">Contingency</span><span class="value" id="sum-contingency">$0.00</span></div>
+                        <div class="summary-item total"><span class="label">Total Bid Amount</span><span class="value" id="sum-total">$0.00</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Saved Estimates -->
+            <div class="card">
+                <div class="card-title">Saved Estimates</div>
+                <div class="card-subtitle">Your previously saved estimates</div>
+                <div id="saved-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let sbClient = null;
+        let currentUser = null;
+        let lineItems = [];
+        let savedEstimates = [];
+        let lineCounter = 0;
+
+        async function init() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sbClient = window.supabase.createClient(url, key);
+            }
+            if (sbClient) {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                currentUser = session.user;
+            } else {
+                const demo = JSON.parse(localStorage.getItem('sb-demo-user') || 'null');
+                if (!demo) { window.location.href = 'login.html'; return; }
+                currentUser = demo;
+            }
+            const meta = currentUser.user_metadata || {};
+            document.getElementById('sidebar-name').textContent = meta.company_name || currentUser.email;
+            document.getElementById('sidebar-detail').textContent = meta.trade || '';
+            if (['connor@acglass.com'].includes(currentUser.email)) document.getElementById('admin-link').style.display = '';
+
+            // Add starter line items
+            addLineItem(); addLineItem(); addLineItem();
+            loadSavedEstimates();
+            renderSaved();
+        }
+
+        function addLineItem() {
+            lineCounter++;
+            const id = 'line_' + lineCounter;
+            const tbody = document.getElementById('line-body');
+            const tr = document.createElement('tr');
+            tr.id = id;
+            tr.innerHTML = `
+                <td><input type="text" placeholder="Description" oninput="recalculate()"></td>
+                <td><select onchange="recalculate()"><option value="material">Material</option><option value="labor">Labor</option><option value="equipment">Equipment</option><option value="other">Other</option></select></td>
+                <td><input type="number" value="1" min="0" step="0.01" oninput="recalculate()"></td>
+                <td><select><option>SF</option><option>LF</option><option>EA</option><option>HR</option><option>Day</option><option>LS</option><option>CY</option><option>TON</option></select></td>
+                <td><input type="number" value="0" min="0" step="0.01" oninput="recalculate()"></td>
+                <td class="amt">$0.00</td>
+                <td><button class="remove-btn" onclick="removeLine('${id}')">&times;</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function removeLine(id) {
+            const row = document.getElementById(id);
+            if (row) row.remove();
+            recalculate();
+        }
+
+        function recalculate() {
+            let subtotal = 0, materials = 0, labor = 0, equipment = 0, other = 0;
+            document.querySelectorAll('#line-body tr').forEach(tr => {
+                const inputs = tr.querySelectorAll('input');
+                const selects = tr.querySelectorAll('select');
+                const qty = parseFloat(inputs[1]?.value) || 0;
+                const unitCost = parseFloat(inputs[2]?.value) || 0;
+                const total = qty * unitCost;
+                const category = selects[0]?.value || 'material';
+
+                tr.querySelector('.amt').textContent = '$' + total.toFixed(2);
+                subtotal += total;
+                if (category === 'material') materials += total;
+                else if (category === 'labor') labor += total;
+                else if (category === 'equipment') equipment += total;
+                else other += total;
+            });
+
+            const overheadPct = parseFloat(document.getElementById('overhead-pct').value) || 0;
+            const profitPct = parseFloat(document.getElementById('profit-pct').value) || 0;
+            const taxPct = parseFloat(document.getElementById('tax-pct').value) || 0;
+            const contingencyPct = parseFloat(document.getElementById('contingency-pct').value) || 0;
+
+            const overheadAmt = subtotal * (overheadPct / 100);
+            const profitAmt = subtotal * (profitPct / 100);
+            const taxAmt = materials * (taxPct / 100); // Tax on materials only
+            const contingencyAmt = subtotal * (contingencyPct / 100);
+            const total = subtotal + overheadAmt + profitAmt + taxAmt + contingencyAmt;
+
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('sum-materials').textContent = '$' + materials.toFixed(2);
+            document.getElementById('sum-labor').textContent = '$' + labor.toFixed(2);
+            document.getElementById('sum-equipment').textContent = '$' + equipment.toFixed(2);
+            document.getElementById('sum-other').textContent = '$' + other.toFixed(2);
+            document.getElementById('sum-subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('sum-overhead').textContent = '$' + overheadAmt.toFixed(2);
+            document.getElementById('sum-profit').textContent = '$' + profitAmt.toFixed(2);
+            document.getElementById('sum-tax').textContent = '$' + taxAmt.toFixed(2);
+            document.getElementById('sum-contingency').textContent = '$' + contingencyAmt.toFixed(2);
+            document.getElementById('sum-total').textContent = '$' + total.toFixed(2);
+        }
+
+        function gatherEstimateData() {
+            const items = [];
+            document.querySelectorAll('#line-body tr').forEach(tr => {
+                const inputs = tr.querySelectorAll('input');
+                const selects = tr.querySelectorAll('select');
+                if (inputs[0]?.value) {
+                    items.push({
+                        description: inputs[0].value,
+                        category: selects[0].value,
+                        qty: parseFloat(inputs[1].value) || 0,
+                        unit: selects[1].value,
+                        unitCost: parseFloat(inputs[2].value) || 0
+                    });
+                }
+            });
+            return {
+                id: 'est_' + Date.now(),
+                name: document.getElementById('est-name').value,
+                client: document.getElementById('est-client').value,
+                location: document.getElementById('est-location').value,
+                dueDate: document.getElementById('est-due').value,
+                items: items,
+                overhead: parseFloat(document.getElementById('overhead-pct').value) || 0,
+                profit: parseFloat(document.getElementById('profit-pct').value) || 0,
+                tax: parseFloat(document.getElementById('tax-pct').value) || 0,
+                contingency: parseFloat(document.getElementById('contingency-pct').value) || 0,
+                saved: new Date().toISOString()
+            };
+        }
+
+        function saveEstimate() {
+            const data = gatherEstimateData();
+            if (!data.name) { if (window.toast) toast.warning('Enter an estimate name.'); return; }
+            if (data.items.length === 0) { if (window.toast) toast.warning('Add at least one line item.'); return; }
+            savedEstimates.push(data);
+            localStorage.setItem('estimates', JSON.stringify(savedEstimates));
+            renderSaved();
+            if (window.toast) toast.success('Estimate saved!');
+        }
+
+        function loadSavedEstimates() {
+            try { savedEstimates = JSON.parse(localStorage.getItem('estimates') || '[]'); } catch (e) { savedEstimates = []; }
+        }
+
+        function loadEstimate(id) {
+            const est = savedEstimates.find(e => e.id === id);
+            if (!est) return;
+            document.getElementById('est-name').value = est.name || '';
+            document.getElementById('est-client').value = est.client || '';
+            document.getElementById('est-location').value = est.location || '';
+            document.getElementById('est-due').value = est.dueDate || '';
+            document.getElementById('overhead-pct').value = est.overhead || 10;
+            document.getElementById('profit-pct').value = est.profit || 10;
+            document.getElementById('tax-pct').value = est.tax || 0;
+            document.getElementById('contingency-pct').value = est.contingency || 5;
+
+            // Clear and rebuild line items
+            document.getElementById('line-body').innerHTML = '';
+            lineCounter = 0;
+            (est.items || []).forEach(item => {
+                addLineItem();
+                const tr = document.getElementById('line_' + lineCounter);
+                const inputs = tr.querySelectorAll('input');
+                const selects = tr.querySelectorAll('select');
+                inputs[0].value = item.description;
+                selects[0].value = item.category;
+                inputs[1].value = item.qty;
+                selects[1].value = item.unit;
+                inputs[2].value = item.unitCost;
+            });
+            recalculate();
+            window.scrollTo(0, 0);
+            if (window.toast) toast.info('Estimate loaded: ' + est.name);
+        }
+
+        function deleteEstimate(id) {
+            if (!confirm('Delete this estimate?')) return;
+            savedEstimates = savedEstimates.filter(e => e.id !== id);
+            localStorage.setItem('estimates', JSON.stringify(savedEstimates));
+            renderSaved();
+            if (window.toast) toast.info('Estimate deleted.');
+        }
+
+        function renderSaved() {
+            const el = document.getElementById('saved-list');
+            if (savedEstimates.length === 0) {
+                el.innerHTML = '<div style="text-align:center;padding:24px;color:#94a3b8;font-size:13px;">No saved estimates. Create one above and click Save.</div>';
+                return;
+            }
+            el.innerHTML = savedEstimates.sort((a, b) => (b.saved || '').localeCompare(a.saved || '')).map(est => {
+                const totalAmt = (est.items || []).reduce((s, i) => s + (i.qty * i.unitCost), 0);
+                const withMarkup = totalAmt * (1 + (est.overhead || 0)/100 + (est.profit || 0)/100 + (est.contingency || 0)/100);
+                const dateStr = est.saved ? new Date(est.saved).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+                return '<div class="est-list-item">' +
+                    '<div class="est-info">' +
+                        '<div class="est-name">' + (est.name || 'Untitled') + '</div>' +
+                        '<div class="est-meta">' + (est.client || '') + (est.client && dateStr ? ' &bull; ' : '') + dateStr + ' &bull; ' + (est.items || []).length + ' items</div>' +
+                    '</div>' +
+                    '<div style="display:flex;align-items:center;gap:12px;">' +
+                        '<div class="est-amount">$' + withMarkup.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + '</div>' +
+                        '<button class="btn btn-outline btn-sm" onclick="loadEstimate(\'' + est.id + '\')">Load</button>' +
+                        '<button class="remove-btn" onclick="deleteEstimate(\'' + est.id + '\')">&times;</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function exportEstimatePdf() {
+            const data = gatherEstimateData();
+            if (!data.name) { if (window.toast) toast.warning('Enter an estimate name before exporting.'); return; }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+            const W = doc.internal.pageSize.getWidth();
+            const M = 50;
+            let y = 50;
+
+            // Header
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(18);
+            doc.text('ESTIMATE / PROPOSAL', W / 2, y, { align: 'center' });
+            y += 22;
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            const meta = currentUser.user_metadata || {};
+            doc.text((meta.company_name || 'Subcontractors.ai'), W / 2, y, { align: 'center' });
+            y += 28;
+
+            doc.setLineWidth(1);
+            doc.line(M, y, W - M, y);
+            y += 20;
+
+            // Project info
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            const fields = [
+                ['Project:', data.name],
+                ['Client / GC:', data.client],
+                ['Location:', data.location],
+                ['Bid Due:', data.dueDate],
+                ['Date:', new Date().toLocaleDateString()]
+            ];
+            fields.forEach(([label, val]) => {
+                if (!val) return;
+                doc.setFont('helvetica', 'bold');
+                doc.text(label, M, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(val, M + 80, y);
+                y += 15;
+            });
+            y += 10;
+
+            // Line items table
+            const tableData = data.items.map(item => [
+                item.description,
+                item.category,
+                item.qty.toString(),
+                item.unit,
+                '$' + item.unitCost.toFixed(2),
+                '$' + (item.qty * item.unitCost).toFixed(2)
+            ]);
+
+            doc.autoTable({
+                head: [['Description', 'Category', 'Qty', 'Unit', 'Unit Cost', 'Total']],
+                body: tableData,
+                startY: y,
+                styles: { fontSize: 8, cellPadding: 5 },
+                headStyles: { fillColor: [15, 23, 41], textColor: [255, 255, 255] },
+                columnStyles: { 4: { halign: 'right' }, 5: { halign: 'right', fontStyle: 'bold' } }
+            });
+
+            y = doc.lastAutoTable.finalY + 20;
+
+            // Summary
+            const subtotal = data.items.reduce((s, i) => s + (i.qty * i.unitCost), 0);
+            const overhead = subtotal * (data.overhead / 100);
+            const profit = subtotal * (data.profit / 100);
+            const matTotal = data.items.filter(i => i.category === 'material').reduce((s, i) => s + (i.qty * i.unitCost), 0);
+            const tax = matTotal * (data.tax / 100);
+            const contingency = subtotal * (data.contingency / 100);
+            const total = subtotal + overhead + profit + tax + contingency;
+
+            function addSummaryLine(label, value, bold) {
+                doc.setFont('helvetica', bold ? 'bold' : 'normal');
+                doc.setFontSize(bold ? 11 : 9);
+                doc.text(label, W - M - 200, y);
+                doc.text('$' + value.toFixed(2), W - M, y, { align: 'right' });
+                y += bold ? 18 : 14;
+            }
+
+            addSummaryLine('Subtotal', subtotal, false);
+            if (overhead) addSummaryLine('Overhead (' + data.overhead + '%)', overhead, false);
+            if (profit) addSummaryLine('Profit (' + data.profit + '%)', profit, false);
+            if (tax) addSummaryLine('Tax (' + data.tax + '%)', tax, false);
+            if (contingency) addSummaryLine('Contingency (' + data.contingency + '%)', contingency, false);
+            doc.setLineWidth(0.5);
+            doc.line(W - M - 200, y - 4, W - M, y - 4);
+            y += 4;
+            addSummaryLine('TOTAL BID AMOUNT', total, true);
+
+            // Footer
+            y += 30;
+            if (y > 680) { doc.addPage(); y = 50; }
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(100);
+            doc.text('This estimate is valid for 30 days from the date above. Prices subject to change based on final scope review.', M, y);
+            y += 30;
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(0);
+            doc.line(M, y, M + 200, y);
+            doc.line(W / 2 + 30, y, W / 2 + 200, y);
+            y += 14;
+            doc.setFontSize(8);
+            doc.setTextColor(0);
+            doc.text('Authorized Signature', M, y);
+            doc.text('Date', W / 2 + 30, y);
+
+            doc.setFontSize(6);
+            doc.setTextColor(150);
+            doc.text('Generated by Subcontractors.ai', W / 2, doc.internal.pageSize.getHeight() - 20, { align: 'center' });
+
+            doc.save('Estimate-' + (data.name || 'proposal').replace(/[^a-zA-Z0-9]/g, '-').slice(0, 30) + '.pdf');
+            if (window.toast) toast.success('Estimate exported as PDF!');
+        }
+
+        async function handleSignOut() {
+            if (sbClient) await sbClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+    <script src="toast.js"></script>
+</body>
+</html>

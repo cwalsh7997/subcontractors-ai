@@ -100,7 +100,7 @@
                     <span id="sidebar-detail"></span>
                 </div>
             </div>
-            <ul class="nav-menu">
+                        <ul class="nav-menu">
                 <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
                 <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
                 <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
@@ -109,9 +109,12 @@
                 <li class="nav-item"><a href="aia-pay-app.html" class="nav-link">&#x1f4c4; AIA Pay App</a></li>
                 <li class="nav-item"><a href="lien-waivers.html" class="nav-link">&#x1f4dc; Lien Waivers</a></li>
                 <li class="nav-item"><a href="change-orders.html" class="nav-link active">&#x1f504; Change Orders</a></li>
+                <li class="nav-item"><a href="daily-log.html" class="nav-link">&#x1f4d3; Daily Log</a></li>
                 <li class="nav-item"><a href="projects.html" class="nav-link">&#x1f4cb; Project Board</a></li>
-                <li class="nav-item"><a href="../ai-tools.html" class="nav-link">&#x1f916; AI Tools</a></li>
-                <li class="nav-item"><a href="../gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="estimates.html" class="nav-link">&#x1f4b2; Estimates</a></li>
+                <li class="nav-item"><a href="safety.html" class="nav-link">&#x1f6d1; Safety</a></li>
+                <li class="nav-item"><a href="gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="directory.html" class="nav-link">&#x1f50d; Sub Directory</a></li>
                 <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
                 <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
             </ul>
@@ -238,6 +241,7 @@
         let sbClient = null;
         let currentUser = null;
         let changeOrders = [];
+        let useSupabase = false;
 
         async function init() {
             const url = window.SUPABASE_URL;
@@ -259,17 +263,43 @@
             document.getElementById('sidebar-detail').textContent = meta.trade || '';
             if (['connor@acglass.com'].includes(currentUser.email)) document.getElementById('admin-link').style.display = '';
 
-            loadCOs();
+            // Try Supabase first, fall back to localStorage
+            await loadCOs();
             renderCOs();
         }
 
-        function loadCOs() {
+        async function loadCOs() {
+            if (sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('change_orders')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    if (!error && data) {
+                        useSupabase = true;
+                        changeOrders = data.map(co => ({
+                            id: co.id,
+                            number: co.number,
+                            project: co.project,
+                            description: co.description,
+                            amount: co.amount,
+                            status: co.status,
+                            date: co.date_submitted,
+                            requestedBy: co.requested_by,
+                            notes: co.notes,
+                            created: co.created_at
+                        }));
+                        return;
+                    }
+                } catch (e) { console.log('Supabase change_orders not available, using localStorage'); }
+            }
+            // Fallback to localStorage
             try {
                 changeOrders = JSON.parse(localStorage.getItem('change_orders') || '[]');
             } catch (e) { changeOrders = []; }
         }
 
-        function saveCOsToStorage() {
+        async function saveCOsToStorage() {
             localStorage.setItem('change_orders', JSON.stringify(changeOrders));
         }
 
@@ -362,8 +392,8 @@
             document.getElementById('m-notes').value = co.notes || '';
         }
 
-        function saveCO() {
-            const data = {
+        async function saveCO() {
+            const formData = {
                 number: document.getElementById('m-number').value,
                 project: document.getElementById('m-project').value,
                 description: document.getElementById('m-description').value,
@@ -374,32 +404,63 @@
                 notes: document.getElementById('m-notes').value
             };
 
-            if (!data.project || !data.description) {
+            if (!formData.project || !formData.description) {
                 if (window.toast) toast.warning('Please enter a project name and description.');
                 return;
             }
 
             const editId = document.getElementById('edit-id').value;
-            if (editId) {
-                const idx = changeOrders.findIndex(c => c.id === editId);
-                if (idx >= 0) { changeOrders[idx] = { ...changeOrders[idx], ...data }; }
-                if (window.toast) toast.success('Change order updated!');
+
+            if (useSupabase && sbClient) {
+                const sbData = {
+                    number: formData.number,
+                    project: formData.project,
+                    description: formData.description,
+                    amount: parseFloat(formData.amount) || 0,
+                    status: formData.status,
+                    date_submitted: formData.date || null,
+                    requested_by: formData.requestedBy,
+                    notes: formData.notes,
+                    user_id: currentUser.id
+                };
+                if (editId) {
+                    const { error } = await sbClient.from('change_orders').update(sbData).eq('id', editId);
+                    if (error) { if (window.toast) toast.error('Save failed: ' + error.message); return; }
+                    if (window.toast) toast.success('Change order updated!');
+                } else {
+                    const { error } = await sbClient.from('change_orders').insert([sbData]);
+                    if (error) { if (window.toast) toast.error('Save failed: ' + error.message); return; }
+                    if (window.toast) toast.success('Change order created!');
+                }
+                await loadCOs();
             } else {
-                data.id = 'co_' + Date.now();
-                data.created = new Date().toISOString();
-                changeOrders.push(data);
-                if (window.toast) toast.success('Change order created!');
+                if (editId) {
+                    const idx = changeOrders.findIndex(c => c.id === editId);
+                    if (idx >= 0) { changeOrders[idx] = { ...changeOrders[idx], ...formData }; }
+                    if (window.toast) toast.success('Change order updated!');
+                } else {
+                    formData.id = 'co_' + Date.now();
+                    formData.created = new Date().toISOString();
+                    changeOrders.push(formData);
+                    if (window.toast) toast.success('Change order created!');
+                }
+                saveCOsToStorage();
             }
 
-            saveCOsToStorage();
             closeModal();
             renderCOs();
         }
 
-        function deleteCO(id) {
+        async function deleteCO(id) {
             if (!confirm('Delete this change order?')) return;
-            changeOrders = changeOrders.filter(c => c.id !== id);
-            saveCOsToStorage();
+            if (useSupabase && sbClient) {
+                const { error } = await sbClient.from('change_orders').delete().eq('id', id);
+                if (error) { if (window.toast) toast.error('Delete failed: ' + error.message); return; }
+                await loadCOs();
+            } else {
+                changeOrders = changeOrders.filter(c => c.id !== id);
+                saveCOsToStorage();
+            }
             renderCOs();
             if (window.toast) toast.info('Change order deleted.');
         }

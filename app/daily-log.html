@@ -94,7 +94,7 @@
                     <span id="sidebar-detail"></span>
                 </div>
             </div>
-            <ul class="nav-menu">
+                        <ul class="nav-menu">
                 <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
                 <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
                 <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
@@ -105,8 +105,10 @@
                 <li class="nav-item"><a href="change-orders.html" class="nav-link">&#x1f504; Change Orders</a></li>
                 <li class="nav-item"><a href="daily-log.html" class="nav-link active">&#x1f4d3; Daily Log</a></li>
                 <li class="nav-item"><a href="projects.html" class="nav-link">&#x1f4cb; Project Board</a></li>
-                <li class="nav-item"><a href="../ai-tools.html" class="nav-link">&#x1f916; AI Tools</a></li>
-                <li class="nav-item"><a href="../gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="estimates.html" class="nav-link">&#x1f4b2; Estimates</a></li>
+                <li class="nav-item"><a href="safety.html" class="nav-link">&#x1f6d1; Safety</a></li>
+                <li class="nav-item"><a href="gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="directory.html" class="nav-link">&#x1f50d; Sub Directory</a></li>
                 <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
                 <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
             </ul>
@@ -244,6 +246,7 @@
         let currentUser = null;
         let selectedWeather = '';
         let logs = [];
+        let useSupabase = false;
 
         async function init() {
             const url = window.SUPABASE_URL;
@@ -270,7 +273,7 @@
             document.getElementById('today-date').textContent = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
             addCrewRow(); addCrewRow(); addCrewRow();
-            loadLogs();
+            await loadLogs();
             renderHistory();
         }
 
@@ -314,16 +317,86 @@
             };
         }
 
-        function saveLog() {
+        async function saveLog() {
             const data = gatherLogData();
             if (!data.project) { if (window.toast) toast.warning('Enter a project name.'); return; }
-            logs.push(data);
-            localStorage.setItem('daily_logs', JSON.stringify(logs));
+
+            if (useSupabase && sbClient) {
+                const sbLog = {
+                    user_id: currentUser.id,
+                    log_date: data.date,
+                    project: data.project,
+                    weather: data.weather,
+                    temperature: data.temp,
+                    wind: data.wind,
+                    work_performed: data.work,
+                    materials: data.materials,
+                    equipment: data.equipment,
+                    delays: data.delays,
+                    safety: data.safety,
+                    visitors: data.visitors,
+                    total_hours: data.totalHours
+                };
+                const { data: inserted, error } = await sbClient.from('daily_logs').insert([sbLog]).select();
+                if (error) {
+                    if (window.toast) toast.error('Save failed: ' + error.message);
+                    // Fallback to localStorage
+                    logs.push(data);
+                    localStorage.setItem('daily_logs', JSON.stringify(logs));
+                } else if (inserted && inserted[0] && data.crew.length > 0) {
+                    const crewRows = data.crew.map(c => ({
+                        log_id: inserted[0].id,
+                        user_id: currentUser.id,
+                        name: c.name,
+                        start_time: c.start,
+                        end_time: c.end,
+                        hours: parseFloat(c.hours) || 0,
+                        notes: c.notes
+                    }));
+                    await sbClient.from('crew_entries').insert(crewRows);
+                }
+                await loadLogs();
+            } else {
+                logs.push(data);
+                localStorage.setItem('daily_logs', JSON.stringify(logs));
+            }
             renderHistory();
             if (window.toast) toast.success('Daily log saved!');
         }
 
-        function loadLogs() {
+        async function loadLogs() {
+            if (sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('daily_logs')
+                        .select('*, crew_entries(*)')
+                        .order('log_date', { ascending: false });
+                    if (!error && data) {
+                        useSupabase = true;
+                        logs = data.map(l => ({
+                            id: l.id,
+                            date: l.log_date,
+                            project: l.project,
+                            weather: l.weather,
+                            temp: l.temperature,
+                            wind: l.wind,
+                            work: l.work_performed,
+                            materials: l.materials,
+                            equipment: l.equipment,
+                            delays: l.delays,
+                            safety: l.safety,
+                            visitors: l.visitors,
+                            totalHours: l.total_hours,
+                            crew: (l.crew_entries || []).map(c => ({
+                                name: c.name, start: c.start_time, end: c.end_time,
+                                hours: c.hours, notes: c.notes
+                            })),
+                            saved: l.created_at
+                        }));
+                        return;
+                    }
+                } catch (e) { console.log('Supabase daily_logs not available, using localStorage'); }
+            }
             try { logs = JSON.parse(localStorage.getItem('daily_logs') || '[]'); } catch (e) { logs = []; }
         }
 

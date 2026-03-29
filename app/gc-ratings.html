@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GC Ratings - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .sign-out-btn:hover { background-color: #7f1d1d; border-color: #dc2626; color: #fca5a5; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; overflow-y: auto; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+        .tabs { display: flex; gap: 0; margin-bottom: 24px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .tab { flex: 1; padding: 14px; text-align: center; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #64748b; transition: all 0.2s; }
+        .tab:hover { background: #f8fafc; }
+        .tab.active { background: #2563eb; color: #fff; }
+
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; }
+        .form-textarea { min-height: 100px; resize: vertical; }
+
+        /* Star rating */
+        .star-group { display: flex; gap: 12px; flex-wrap: wrap; }
+        .star-item { text-align: center; }
+        .star-item label { display: block; font-size: 11px; color: #64748b; margin-bottom: 4px; font-weight: 600; }
+        .stars { display: flex; gap: 2px; }
+        .stars span { font-size: 24px; cursor: pointer; color: #d1d5db; transition: color 0.15s; user-select: none; }
+        .stars span.filled { color: #f59e0b; }
+        .stars span:hover { color: #fbbf24; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: #16a34a; color: #fff; }
+        .btn-success:hover { background: #15803d; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+
+        .toggle-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .toggle { width: 40px; height: 22px; border-radius: 11px; background: #d1d5db; position: relative; cursor: pointer; transition: background 0.2s; }
+        .toggle.on { background: #2563eb; }
+        .toggle::after { content: ''; width: 18px; height: 18px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; transition: left 0.2s; }
+        .toggle.on::after { left: 20px; }
+        .toggle-label { font-size: 13px; color: #475569; }
+
+        /* Review cards */
+        .review-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .review-gc { font-size: 16px; font-weight: 700; }
+        .review-project { font-size: 12px; color: #2563eb; font-weight: 600; }
+        .review-stars { color: #f59e0b; font-size: 16px; letter-spacing: 2px; }
+        .review-text { font-size: 13px; color: #475569; line-height: 1.6; margin: 8px 0; }
+        .review-meta { font-size: 11px; color: #94a3b8; display: flex; gap: 16px; flex-wrap: wrap; }
+        .review-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+        .badge-green { background: #dcfce7; color: #16a34a; }
+        .badge-red { background: #fee2e2; color: #dc2626; }
+
+        .stat-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+        .mini-stat { background: #f8fafc; border-radius: 8px; padding: 12px; text-align: center; }
+        .mini-stat .val { font-size: 22px; font-weight: 800; color: #0f1729; }
+        .mini-stat .lbl { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.3px; margin-top: 2px; }
+
+        .search-bar { display: flex; gap: 12px; margin-bottom: 20px; }
+        .search-bar input { flex: 1; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+        .search-bar input:focus { outline: none; border-color: #2563eb; }
+        .search-bar select { padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .star-group { flex-direction: column; }
+            .stat-row { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail"></span>
+                </div>
+            </div>
+                        <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link">&#x1f4dd; Bid Assistant</a></li>
+                <li class="nav-item"><a href="compliance.html" class="nav-link">&#x1f6e1; Compliance</a></li>
+                <li class="nav-item"><a href="aia-pay-app.html" class="nav-link">&#x1f4c4; AIA Pay App</a></li>
+                <li class="nav-item"><a href="lien-waivers.html" class="nav-link">&#x1f4dc; Lien Waivers</a></li>
+                <li class="nav-item"><a href="change-orders.html" class="nav-link">&#x1f504; Change Orders</a></li>
+                <li class="nav-item"><a href="daily-log.html" class="nav-link">&#x1f4d3; Daily Log</a></li>
+                <li class="nav-item"><a href="projects.html" class="nav-link">&#x1f4cb; Project Board</a></li>
+                <li class="nav-item"><a href="estimates.html" class="nav-link">&#x1f4b2; Estimates</a></li>
+                <li class="nav-item"><a href="safety.html" class="nav-link">&#x1f6d1; Safety</a></li>
+                <li class="nav-item"><a href="gc-ratings.html" class="nav-link active">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="directory.html" class="nav-link">&#x1f50d; Sub Directory</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
+                <li class="nav-item"><a href="settings.html" class="nav-link">&#x2699; Settings</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div>
+                    <div class="page-title">GC Ratings & Reviews</div>
+                    <div class="page-subtitle">Rate general contractors. Help subs make better decisions about who to work for.</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('browse')">Browse Ratings</button>
+                <button class="tab" onclick="switchTab('submit')">Submit a Review</button>
+                <button class="tab" onclick="switchTab('mine')">My Reviews</button>
+            </div>
+
+            <!-- Browse Tab -->
+            <div id="tab-browse">
+                <div class="stat-row" id="stats-row">
+                    <div class="mini-stat"><div class="val" id="stat-total-reviews">0</div><div class="lbl">Total Reviews</div></div>
+                    <div class="mini-stat"><div class="val" id="stat-avg-overall">—</div><div class="lbl">Avg Rating</div></div>
+                    <div class="mini-stat"><div class="val" id="stat-avg-payment">—</div><div class="lbl">Payment Speed</div></div>
+                    <div class="mini-stat"><div class="val" id="stat-gc-count">0</div><div class="lbl">GCs Rated</div></div>
+                    <div class="mini-stat"><div class="val" id="stat-work-again">—</div><div class="lbl">Would Work Again</div></div>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="search-gc" placeholder="Search GC name..." oninput="filterReviews()">
+                    <select id="filter-rating" onchange="filterReviews()">
+                        <option value="">All Ratings</option>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="3">3+ Stars</option>
+                    </select>
+                </div>
+                <div id="reviews-list"></div>
+            </div>
+
+            <!-- Submit Tab -->
+            <div id="tab-submit" style="display:none;">
+                <div class="card">
+                    <div class="card-title">Rate a General Contractor</div>
+                    <div class="card-subtitle">Your honest feedback helps the entire sub community</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">GC Company Name *</label>
+                            <input type="text" class="form-input" id="r-gc" placeholder="e.g. Suffolk Construction">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-input" id="r-project" placeholder="e.g. Tampa Office Tower">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:20px;">
+                        <label class="form-label">Ratings</label>
+                        <div class="star-group">
+                            <div class="star-item">
+                                <label>Overall</label>
+                                <div class="stars" data-field="overall">
+                                    <span onclick="rate('overall',1)">&#9733;</span><span onclick="rate('overall',2)">&#9733;</span><span onclick="rate('overall',3)">&#9733;</span><span onclick="rate('overall',4)">&#9733;</span><span onclick="rate('overall',5)">&#9733;</span>
+                                </div>
+                            </div>
+                            <div class="star-item">
+                                <label>Payment Speed</label>
+                                <div class="stars" data-field="payment">
+                                    <span onclick="rate('payment',1)">&#9733;</span><span onclick="rate('payment',2)">&#9733;</span><span onclick="rate('payment',3)">&#9733;</span><span onclick="rate('payment',4)">&#9733;</span><span onclick="rate('payment',5)">&#9733;</span>
+                                </div>
+                            </div>
+                            <div class="star-item">
+                                <label>Communication</label>
+                                <div class="stars" data-field="communication">
+                                    <span onclick="rate('communication',1)">&#9733;</span><span onclick="rate('communication',2)">&#9733;</span><span onclick="rate('communication',3)">&#9733;</span><span onclick="rate('communication',4)">&#9733;</span><span onclick="rate('communication',5)">&#9733;</span>
+                                </div>
+                            </div>
+                            <div class="star-item">
+                                <label>CO Fairness</label>
+                                <div class="stars" data-field="co_fairness">
+                                    <span onclick="rate('co_fairness',1)">&#9733;</span><span onclick="rate('co_fairness',2)">&#9733;</span><span onclick="rate('co_fairness',3)">&#9733;</span><span onclick="rate('co_fairness',4)">&#9733;</span><span onclick="rate('co_fairness',5)">&#9733;</span>
+                                </div>
+                            </div>
+                            <div class="star-item">
+                                <label>Safety Culture</label>
+                                <div class="stars" data-field="safety">
+                                    <span onclick="rate('safety',1)">&#9733;</span><span onclick="rate('safety',2)">&#9733;</span><span onclick="rate('safety',3)">&#9733;</span><span onclick="rate('safety',4)">&#9733;</span><span onclick="rate('safety',5)">&#9733;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full" style="margin-top:20px;">
+                        <label class="form-label">Written Review</label>
+                        <textarea class="form-textarea" id="r-text" placeholder="Share your experience working with this GC. What went well? What could improve? Be specific — it helps other subs."></textarea>
+                    </div>
+
+                    <div class="form-grid" style="margin-top:16px;">
+                        <div class="form-group">
+                            <label class="form-label">Would you work with them again?</label>
+                            <select class="form-select" id="r-again">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="toggle-row" style="margin-top:20px;">
+                                <div class="toggle" id="r-anon" onclick="this.classList.toggle('on')"></div>
+                                <span class="toggle-label">Post anonymously</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:24px;">
+                        <button class="btn btn-success" onclick="submitReview()">&#x2b50; Submit Review</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Reviews Tab -->
+            <div id="tab-mine" style="display:none;">
+                <div id="my-reviews-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let sbClient = null;
+        let currentUser = null;
+        let allReviews = [];
+        let ratings = { overall: 0, payment: 0, communication: 0, co_fairness: 0, safety: 0 };
+        let useSupabase = false;
+
+        async function init() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sbClient = window.supabase.createClient(url, key);
+            }
+            if (sbClient) {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                currentUser = session.user;
+            } else {
+                const demo = JSON.parse(localStorage.getItem('sb-demo-user') || 'null');
+                if (!demo) { window.location.href = 'login.html'; return; }
+                currentUser = demo;
+            }
+            const meta = currentUser.user_metadata || {};
+            document.getElementById('sidebar-name').textContent = meta.company_name || currentUser.email;
+            document.getElementById('sidebar-detail').textContent = meta.trade || '';
+            if (['connor@acglass.com'].includes(currentUser.email)) document.getElementById('admin-link').style.display = '';
+
+            await loadReviews();
+            renderReviews();
+            updateStats();
+        }
+
+        async function loadReviews() {
+            if (sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('gc_ratings')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    if (!error && data) {
+                        useSupabase = true;
+                        allReviews = data.map(r => ({
+                            id: r.id,
+                            userId: r.user_id,
+                            gc: r.gc_name,
+                            project: r.project,
+                            overall: r.overall_rating,
+                            payment: r.payment_speed,
+                            communication: r.communication,
+                            co_fairness: r.change_order_fairness,
+                            safety: r.safety_culture,
+                            workAgain: r.would_work_again,
+                            text: r.review_text,
+                            anonymous: r.anonymous,
+                            created: r.created_at
+                        }));
+                        return;
+                    }
+                } catch (e) { console.log('gc_ratings table not ready, using localStorage'); }
+            }
+            try { allReviews = JSON.parse(localStorage.getItem('gc_ratings') || '[]'); } catch (e) { allReviews = []; }
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-browse').style.display = name === 'browse' ? '' : 'none';
+            document.getElementById('tab-submit').style.display = name === 'submit' ? '' : 'none';
+            document.getElementById('tab-mine').style.display = name === 'mine' ? '' : 'none';
+            event.target.classList.add('active');
+            if (name === 'mine') renderMyReviews();
+        }
+
+        function rate(field, value) {
+            ratings[field] = value;
+            const container = document.querySelector(`.stars[data-field="${field}"]`);
+            container.querySelectorAll('span').forEach((s, i) => {
+                s.classList.toggle('filled', i < value);
+            });
+        }
+
+        function starStr(n) {
+            return '&#9733;'.repeat(n || 0) + '&#9734;'.repeat(5 - (n || 0));
+        }
+
+        async function submitReview() {
+            const gc = document.getElementById('r-gc').value.trim();
+            if (!gc) { if (window.toast) toast.warning('Enter the GC company name.'); return; }
+            if (!ratings.overall) { if (window.toast) toast.warning('Please rate the GC overall.'); return; }
+
+            const review = {
+                gc: gc,
+                project: document.getElementById('r-project').value.trim(),
+                overall: ratings.overall,
+                payment: ratings.payment,
+                communication: ratings.communication,
+                co_fairness: ratings.co_fairness,
+                safety: ratings.safety,
+                workAgain: document.getElementById('r-again').value === 'true',
+                text: document.getElementById('r-text').value.trim(),
+                anonymous: document.getElementById('r-anon').classList.contains('on'),
+                userId: currentUser.id,
+                created: new Date().toISOString()
+            };
+
+            if (useSupabase && sbClient) {
+                const sbData = {
+                    user_id: currentUser.id,
+                    gc_name: review.gc,
+                    project: review.project,
+                    overall_rating: review.overall,
+                    payment_speed: review.payment,
+                    communication: review.communication,
+                    change_order_fairness: review.co_fairness,
+                    safety_culture: review.safety,
+                    would_work_again: review.workAgain,
+                    review_text: review.text,
+                    anonymous: review.anonymous
+                };
+                const { error } = await sbClient.from('gc_ratings').insert([sbData]);
+                if (error) { if (window.toast) toast.error('Save failed: ' + error.message); return; }
+                await loadReviews();
+            } else {
+                review.id = 'rev_' + Date.now();
+                allReviews.unshift(review);
+                localStorage.setItem('gc_ratings', JSON.stringify(allReviews));
+            }
+
+            // Reset form
+            document.getElementById('r-gc').value = '';
+            document.getElementById('r-project').value = '';
+            document.getElementById('r-text').value = '';
+            Object.keys(ratings).forEach(k => { ratings[k] = 0; });
+            document.querySelectorAll('.stars span').forEach(s => s.classList.remove('filled'));
+            document.getElementById('r-anon').classList.remove('on');
+
+            renderReviews();
+            updateStats();
+            switchTab('browse');
+            if (window.toast) toast.success('Review submitted! Thanks for helping the sub community.');
+        }
+
+        function updateStats() {
+            const total = allReviews.length;
+            document.getElementById('stat-total-reviews').textContent = total;
+            if (total === 0) return;
+            const avgOverall = (allReviews.reduce((s, r) => s + (r.overall || 0), 0) / total).toFixed(1);
+            const avgPayment = (allReviews.reduce((s, r) => s + (r.payment || 0), 0) / total).toFixed(1);
+            const gcSet = new Set(allReviews.map(r => (r.gc || '').toLowerCase()));
+            const workAgainPct = Math.round((allReviews.filter(r => r.workAgain).length / total) * 100);
+            document.getElementById('stat-avg-overall').textContent = avgOverall;
+            document.getElementById('stat-avg-payment').textContent = avgPayment;
+            document.getElementById('stat-gc-count').textContent = gcSet.size;
+            document.getElementById('stat-work-again').textContent = workAgainPct + '%';
+        }
+
+        function renderReviews() {
+            const search = (document.getElementById('search-gc').value || '').toLowerCase();
+            const minRating = parseInt(document.getElementById('filter-rating').value) || 0;
+            let filtered = allReviews;
+            if (search) filtered = filtered.filter(r => (r.gc || '').toLowerCase().includes(search));
+            if (minRating) filtered = filtered.filter(r => (r.overall || 0) >= minRating);
+
+            const el = document.getElementById('reviews-list');
+            if (filtered.length === 0) {
+                el.innerHTML = '<div class="card" style="text-align:center;padding:48px;"><h3 style="color:#334155;">No reviews yet</h3><p style="color:#64748b;font-size:13px;margin-top:8px;">Be the first to rate a GC and help the sub community.</p></div>';
+                return;
+            }
+            el.innerHTML = filtered.map(r => {
+                const dateStr = r.created ? new Date(r.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+                return '<div class="review-card">' +
+                    '<div class="review-header">' +
+                        '<div><div class="review-gc">' + (r.gc || '') + '</div>' +
+                        (r.project ? '<div class="review-project">' + r.project + '</div>' : '') + '</div>' +
+                        '<div class="review-stars">' + starStr(r.overall) + '</div>' +
+                    '</div>' +
+                    (r.text ? '<div class="review-text">' + r.text + '</div>' : '') +
+                    '<div class="review-meta">' +
+                        '<span>Payment: ' + starStr(r.payment) + '</span>' +
+                        '<span>Communication: ' + starStr(r.communication) + '</span>' +
+                        '<span>CO Fairness: ' + starStr(r.co_fairness) + '</span>' +
+                        '<span>Safety: ' + starStr(r.safety) + '</span>' +
+                        '<span class="review-badge ' + (r.workAgain ? 'badge-green' : 'badge-red') + '">' + (r.workAgain ? 'Would Work Again' : 'Would Not Work Again') + '</span>' +
+                        '<span>' + dateStr + '</span>' +
+                        (r.anonymous ? '<span style="font-style:italic;">Anonymous</span>' : '') +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function filterReviews() { renderReviews(); }
+
+        function renderMyReviews() {
+            const mine = allReviews.filter(r => r.userId === currentUser.id);
+            const el = document.getElementById('my-reviews-list');
+            if (mine.length === 0) {
+                el.innerHTML = '<div class="card" style="text-align:center;padding:48px;"><h3 style="color:#334155;">You haven\'t submitted any reviews yet</h3><p style="color:#64748b;font-size:13px;margin-top:8px;">Share your experience working with GCs to help the community.</p></div>';
+                return;
+            }
+            el.innerHTML = mine.map(r => {
+                const dateStr = r.created ? new Date(r.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+                return '<div class="review-card">' +
+                    '<div class="review-header">' +
+                        '<div><div class="review-gc">' + (r.gc || '') + '</div>' +
+                        (r.project ? '<div class="review-project">' + r.project + '</div>' : '') + '</div>' +
+                        '<div class="review-stars">' + starStr(r.overall) + '</div>' +
+                    '</div>' +
+                    (r.text ? '<div class="review-text">' + r.text + '</div>' : '') +
+                    '<div class="review-meta"><span>' + dateStr + '</span></div>' +
+                '</div>';
+            }).join('');
+        }
+
+        async function handleSignOut() {
+            if (sbClient) await sbClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+    <script src="toast.js"></script>
+</body>
+</html>
