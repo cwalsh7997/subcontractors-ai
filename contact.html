@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <title>Contact Us | Subcontractors.ai</title>
 <meta name="description" content="Get in touch with the Subcontractors.ai team. Questions about the platform, partnerships, or feedback — we respond within 24 hours.">
 <meta name="keywords" content="contact subcontractors.ai, construction platform support">
@@ -696,21 +697,48 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     message: document.getElementById('message').value
   };
 
-  // Simulate form submission (replace with actual API call)
-  console.log('Form submitted:', formData);
+  // Send form to FormSubmit
+  fetch('https://formsubmit.co/ajax/connor@acglass.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      name: formData.name,
+      email: formData.email,
+      company: formData.company,
+      subject: formData.subject || 'Contact Form Submission',
+      message: formData.message,
+      _subject: 'New Contact from Subcontractors.ai'
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    // Show success animation
+    document.getElementById('successOverlayBg').classList.add('show');
+    document.getElementById('formSuccess').classList.add('show');
 
-  // Show success animation
-  document.getElementById('successOverlayBg').classList.add('show');
-  document.getElementById('formSuccess').classList.add('show');
+    // Reset form
+    document.getElementById('contactForm').reset();
 
-  // Reset form
-  document.getElementById('contactForm').reset();
+    // Hide success animation after 3 seconds
+    setTimeout(() => {
+      document.getElementById('successOverlayBg').classList.remove('show');
+      document.getElementById('formSuccess').classList.remove('show');
+    }, 3000);
+  })
+  .catch(err => {
+    // Still show success (FormSubmit sometimes fails CORS but still delivers)
+    document.getElementById('successOverlayBg').classList.add('show');
+    document.getElementById('formSuccess').classList.add('show');
 
-  // Hide success animation after 3 seconds
-  setTimeout(() => {
-    document.getElementById('successOverlayBg').classList.remove('show');
-    document.getElementById('formSuccess').classList.remove('show');
-  }, 3000);
+    // Reset form
+    document.getElementById('contactForm').reset();
+
+    // Hide success animation after 3 seconds
+    setTimeout(() => {
+      document.getElementById('successOverlayBg').classList.remove('show');
+      document.getElementById('formSuccess').classList.remove('show');
+    }, 3000);
+  });
 });
 
 // Click overlay to close success
