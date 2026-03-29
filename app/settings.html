@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Subcontractors.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #0f1729; color: #e2e8f0; position: fixed; height: 100vh; overflow-y: auto; padding: 24px 0; border-right: 1px solid #1e293b; z-index: 1000; }
+        .sidebar-header { padding: 0 24px 32px 24px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+        .logo { font-size: 20px; font-weight: 800; color: #2563eb; margin-bottom: 12px; }
+        .user-info { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .user-name { color: #e2e8f0; font-weight: 600; display: block; margin-bottom: 4px; }
+        .nav-menu { list-style: none; }
+        .nav-item { padding: 0 16px; margin-bottom: 8px; }
+        .nav-link { display: block; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-link:hover { background-color: #1e293b; color: #f1f5f9; }
+        .nav-link.active { background-color: #2563eb; color: #ffffff; }
+        .sidebar-footer { padding: 24px; border-top: 1px solid #334155; margin-top: 24px; }
+        .sign-out-btn { width: 100%; padding: 10px 16px; background-color: transparent; border: 1px solid #475569; color: #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
+        .sign-out-btn:hover { background-color: #7f1d1d; border-color: #dc2626; color: #fca5a5; }
+        .main { margin-left: 280px; flex: 1; padding: 32px; overflow-y: auto; max-width: 800px; }
+
+        .top-bar { margin-bottom: 32px; }
+        .page-title { font-size: 24px; font-weight: 700; }
+        .page-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
+        .setting-row:last-child { border-bottom: none; }
+        .setting-info { flex: 1; }
+        .setting-label { font-size: 14px; font-weight: 600; color: #1e293b; }
+        .setting-desc { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+        /* Toggle switch */
+        .toggle { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #d1d5db; transition: .3s; border-radius: 24px; }
+        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        .toggle input:checked + .toggle-slider { background-color: #2563eb; }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        .plan-card { display: flex; gap: 20px; align-items: flex-start; }
+        .plan-badge { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .plan-price { font-size: 28px; font-weight: 800; margin: 8px 0 4px; }
+        .plan-period { font-size: 13px; color: #64748b; }
+        .plan-features { list-style: none; margin-top: 16px; }
+        .plan-features li { font-size: 13px; color: #475569; padding: 4px 0; }
+        .plan-features li:before { content: "✓ "; color: #16a34a; font-weight: 700; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-danger { background: transparent; border: 1px solid #fecaca; color: #dc2626; }
+        .btn-danger:hover { background: #fef2f2; }
+
+        .danger-zone { border-color: #fecaca; }
+        .danger-zone .card-title { color: #dc2626; }
+
+        .hamburger { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; background: #0f1729; border: none; color: #fff; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .hamburger { display: flex; align-items: center; justify-content: center; }
+            .main { margin-left: 0; padding: 24px 16px; padding-top: 64px; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Subcontractors.ai</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-name">Loading...</span>
+                    <span id="sidebar-detail"></span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">&#x1f4ca; Dashboard</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">&#x1f464; Profile</a></li>
+                <li class="nav-item"><a href="payments.html" class="nav-link">&#x1f4b0; Payments</a></li>
+                <li class="nav-item"><a href="bid-assistant.html" class="nav-link">&#x1f4dd; Bid Assistant</a></li>
+                <li class="nav-item"><a href="compliance.html" class="nav-link">&#x1f6e1; Compliance</a></li>
+                <li class="nav-item"><a href="../ai-tools.html" class="nav-link">&#x1f916; AI Tools</a></li>
+                <li class="nav-item"><a href="../gc-ratings.html" class="nav-link">&#x2b50; GC Ratings</a></li>
+                <li class="nav-item"><a href="../project-board.html" class="nav-link">&#x1f4cb; Projects</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link" id="admin-link" style="display:none;">&#x2699; Admin Panel</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div class="page-title">Settings</div>
+                <div class="page-subtitle">Manage your account preferences and subscription</div>
+            </div>
+
+            <!-- Subscription -->
+            <div class="card">
+                <div class="card-title">Your Plan</div>
+                <div class="card-subtitle">Manage your subscription and billing</div>
+                <div>
+                    <span class="plan-badge" id="plan-badge">Early Access — Free</span>
+                    <div class="plan-price">$0<span style="font-size:14px;font-weight:400;color:#64748b;">/month</span></div>
+                    <div class="plan-period">You're on the free early access plan. All features included during beta.</div>
+                    <ul class="plan-features">
+                        <li>Unlimited invoice tracking</li>
+                        <li>AI Bid Assistant</li>
+                        <li>Compliance monitoring</li>
+                        <li>Document storage</li>
+                        <li>GC ratings & reviews</li>
+                        <li>Priority support during beta</li>
+                    </ul>
+                    <div style="margin-top:16px;padding:12px 16px;background:#eff6ff;border-radius:8px;font-size:13px;color:#1d4ed8;">
+                        As an early access user, you'll be locked into the best pricing when paid plans launch.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Preferences -->
+            <div class="card">
+                <div class="card-title">Notifications</div>
+                <div class="card-subtitle">Choose what you want to be notified about</div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Payment Reminders</div>
+                        <div class="setting-desc">Get notified when invoices are due or overdue</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="notif-payments" checked onchange="saveSetting('notif-payments', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Insurance Expiry Alerts</div>
+                        <div class="setting-desc">Remind you 60, 30, and 7 days before policies expire</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="notif-insurance" checked onchange="saveSetting('notif-insurance', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">New Project Opportunities</div>
+                        <div class="setting-desc">Get alerts when GCs post projects matching your trade</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="notif-projects" checked onchange="saveSetting('notif-projects', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Weekly Summary Email</div>
+                        <div class="setting-desc">Digest of your payments, compliance, and activity</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="notif-weekly" checked onchange="saveSetting('notif-weekly', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Product Updates</div>
+                        <div class="setting-desc">New features, improvements, and announcements</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="notif-updates" checked onchange="saveSetting('notif-updates', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Display Settings -->
+            <div class="card">
+                <div class="card-title">Display</div>
+                <div class="card-subtitle">Customize your dashboard experience</div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Compact Mode</div>
+                        <div class="setting-desc">Reduce spacing for more data on screen</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="display-compact" onchange="saveSetting('display-compact', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Show Compliance Alerts on Dashboard</div>
+                        <div class="setting-desc">Display insurance and license warnings on the main dashboard</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="display-alerts" checked onchange="saveSetting('display-alerts', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Data & Privacy -->
+            <div class="card">
+                <div class="card-title">Data & Privacy</div>
+                <div class="card-subtitle">Manage your data and export options</div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Export All Data</div>
+                        <div class="setting-desc">Download all your profile, payments, and compliance data as JSON</div>
+                    </div>
+                    <button class="btn btn-outline" onclick="exportAllData()">Export Data</button>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Profile Visibility</div>
+                        <div class="setting-desc">Allow GCs to find you in the subcontractor directory</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="privacy-visible" checked onchange="saveSetting('privacy-visible', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="card danger-zone">
+                <div class="card-title">Danger Zone</div>
+                <div class="card-subtitle">Irreversible actions</div>
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-label">Delete Account</div>
+                        <div class="setting-desc">Permanently delete your account and all associated data</div>
+                    </div>
+                    <button class="btn btn-danger" onclick="requestDelete()">Delete Account</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let sbClient = null;
+        let currentUser = null;
+
+        async function init() {
+            const url = window.SUPABASE_URL;
+            const key = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
+            if (url && key && window.supabase && window.supabase.createClient) {
+                sbClient = window.supabase.createClient(url, key);
+            }
+            if (sbClient) {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) { window.location.href = 'login.html'; return; }
+                currentUser = session.user;
+            } else {
+                const demo = JSON.parse(localStorage.getItem('sb-demo-user') || 'null');
+                if (!demo) { window.location.href = 'login.html'; return; }
+                currentUser = demo;
+            }
+
+            const meta = currentUser.user_metadata || {};
+            document.getElementById('sidebar-name').textContent = meta.company_name || currentUser.email;
+            document.getElementById('sidebar-detail').textContent = meta.trade || '';
+
+            if (['connor@acglass.com'].includes(currentUser.email)) {
+                document.getElementById('admin-link').style.display = '';
+            }
+
+            loadSettings();
+        }
+
+        function loadSettings() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('app_settings') || '{}');
+                Object.entries(saved).forEach(([key, val]) => {
+                    const el = document.getElementById(key);
+                    if (el && el.type === 'checkbox') el.checked = val;
+                });
+            } catch (e) {}
+        }
+
+        function saveSetting(key, value) {
+            try {
+                const saved = JSON.parse(localStorage.getItem('app_settings') || '{}');
+                saved[key] = value;
+                localStorage.setItem('app_settings', JSON.stringify(saved));
+                if (window.toast) toast.success('Setting saved');
+            } catch (e) {
+                if (window.toast) toast.error('Error saving setting');
+            }
+        }
+
+        async function exportAllData() {
+            const data = { exported_at: new Date().toISOString(), user: { email: currentUser.email } };
+
+            if (sbClient) {
+                try {
+                    const { data: profile } = await sbClient.from('profiles').select('*').eq('id', currentUser.id).single();
+                    data.profile = profile;
+                } catch (e) {}
+                try {
+                    const { data: payments } = await sbClient.from('payments').select('*').eq('user_id', currentUser.id);
+                    data.payments = payments;
+                } catch (e) {}
+            }
+
+            data.settings = JSON.parse(localStorage.getItem('app_settings') || '{}');
+            data.documents = JSON.parse(localStorage.getItem('uploaded_docs') || '{}');
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'subcontractors-ai-export-' + new Date().toISOString().slice(0, 10) + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            if (window.toast) toast.success('Data exported successfully!');
+        }
+
+        function requestDelete() {
+            if (window.toast) toast.info('Account deletion will be available when the full platform launches. Contact support at connor@acglass.com.');
+        }
+
+        async function handleSignOut() {
+            if (sbClient) await sbClient.auth.signOut();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+    <script src="toast.js"></script>
+</body>
+</html>
