@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Subcontractors.ai - Built by a Sub, for Subs</title>
+<meta name="description" content="Learn the story behind Subcontractors.ai. Founded by a commercial glazing contractor tired of chasing payments and working with outdated tools. Now serving thousands of subs across the U.S.">
+<meta property="og:title" content="About Subcontractors.ai - Built by a Sub, for Subs">
+<meta property="og:description" content="Learn the story behind Subcontractors.ai. Founded by a commercial glazing contractor tired of chasing payments and working with outdated tools.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ PAGE SPECIFIC STYLES ============ */
+.breadcrumb { padding: 24px 0; border-bottom: 1px solid var(--gray-200); }
+.breadcrumb a { color: var(--blue); }
+.breadcrumb span { color: var(--gray-500); margin: 0 8px; }
+
+.hero-section { padding: 100px 0; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: #fff; }
+.hero-section h1 { font-size: 3.2rem; font-weight: 900; margin-bottom: 20px; letter-spacing: -0.02em; }
+.hero-section p { font-size: 1.15rem; color: #94a3b8; max-width: 700px; margin-bottom: 32px; }
+
+.story-section { padding: 80px 0; background: #fff; }
+.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.story-content h2 { font-size: 2.2rem; font-weight: 800; color: var(--navy); margin-bottom: 24px; line-height: 1.2; }
+.story-content p { font-size: 1rem; color: var(--gray-600); line-height: 1.8; margin-bottom: 20px; }
+.story-highlight { background: var(--blue-bg); border-left: 4px solid var(--blue); padding: 24px; border-radius: var(--radius); margin: 32px 0; }
+.story-highlight p { margin: 0; color: var(--blue-dark); font-size: 1rem; font-weight: 500; }
+
+.mission-section { padding: 80px 0; background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue) 100%); color: #fff; text-align: center; }
+.mission-section h2 { font-size: 2.8rem; font-weight: 900; margin-bottom: 16px; }
+.mission-section p { font-size: 1.2rem; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+
+.values-section { padding: 80px 0; background: #fff; }
+.values-section h2 { font-size: 2.4rem; font-weight: 900; color: var(--navy); text-align: center; margin-bottom: 60px; }
+.values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.value-card { background: var(--gray-50); border-radius: var(--radius); padding: 40px 32px; text-align: center; border: 1px solid var(--gray-200); transition: all 0.3s; }
+.value-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--blue); }
+.value-card h3 { font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+.value-card p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.7; margin: 0; }
+.value-icon { font-size: 2.4rem; margin-bottom: 16px; }
+
+.stats-section { padding: 80px 0; background: linear-gradient(135deg, #0f1729 0%, var(--navy) 100%); color: #fff; }
+.stats-section h2 { font-size: 2.4rem; font-weight: 900; text-align: center; margin-bottom: 60px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 48px; text-align: center; }
+.stat-card { }
+.stat-number { font-size: 2.8rem; font-weight: 900; margin-bottom: 8px; }
+.stat-label { font-size: 0.95rem; color: #94a3b8; font-weight: 500; letter-spacing: 0.02em; }
+
+.team-section { padding: 80px 0; background: #fff; }
+.team-section h2 { font-size: 2.4rem; font-weight: 900; color: var(--navy); text-align: center; margin-bottom: 60px; }
+.team-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+.team-card { background: var(--gray-50); border-radius: var(--radius); padding: 40px 32px; text-align: center; border: 1px solid var(--gray-200); }
+.team-avatar { width: 120px; height: 120px; background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; color: #fff; margin: 0 auto 24px; }
+.team-name { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.team-role { font-size: 0.9rem; color: var(--blue); font-weight: 600; margin-bottom: 16px; }
+.team-bio { font-size: 0.9rem; color: var(--gray-600); line-height: 1.6; }
+
+.cta-section { padding: 80px 0; background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%); text-align: center; color: #fff; }
+.cta-section h2 { font-size: 2.2rem; font-weight: 900; margin-bottom: 16px; }
+.cta-section p { font-size: 1.1rem; opacity: 0.95; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+@media (max-width: 768px) {
+  .hero-section h1 { font-size: 2rem; }
+  .story-grid { grid-template-columns: 1fr; gap: 40px; }
+  .story-content h2 { font-size: 1.6rem; }
+  .values-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .team-grid { grid-template-columns: 1fr; }
+  .mission-section h2 { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Find Subs</a>
+      <a class="nav-link" href="project-board.html">Project Board</a>
+      <a class="nav-link" href="gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="ai-tools.html">AI Tools</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="openModal()">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">Get Started Free</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ BREADCRUMB ============ -->
+<div class="breadcrumb">
+  <div class="container">
+    <a href="index.html">Home</a>
+    <span>/</span>
+    <span style="color:var(--gray-600);">About Us</span>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero-section">
+  <div class="container">
+    <h1>Built by a Sub, for Subs.</h1>
+    <p>We're not consultants or venture capitalists. We're construction people who got tired of broken tools and unfair payment practices. Subcontractors.ai was born from 15+ years in the trenches.</p>
+  </div>
+</section>
+
+<!-- ============ ORIGIN STORY ============ -->
+<section class="story-section">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-content">
+        <h2>The Story</h2>
+        <p>For over 15 years, I ran a commercial glazing subcontracting company. We did good work. We showed up on time. We delivered quality results.</p>
+        <p>And yet, I was constantly chasing payments. General contractors would "lose" invoices. Payment promises would slip from 30 days to 60 to 90. I'd be pulled away from managing my crew to babysit cash flow. And when it came time to bid on new work, I had no data — just gut feel and outdated spreadsheets.</p>
+        <p>The worst part? I watched talented subcontractors go out of business, not because they couldn't do the work, but because they couldn't survive the broken business tools and payment culture around them.</p>
+        <div class="story-highlight">
+          <p>"I knew there had to be a better way. So I stopped waiting for someone else to build it and started building it myself."</p>
+        </div>
+        <p>I started learning AI, talking to hundreds of subs across different trades, and building tools that solved the problems I actually lived. The result is Subcontractors.ai — a platform built by someone who knows exactly how hard it is to run a subcontracting company.</p>
+      </div>
+      <div style="background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue) 100%); border-radius: var(--radius); height: 400px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; font-weight: 500; text-align: center; padding: 40px;">
+        A commercial glazing sub with too many spreadsheets and not enough answers.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSION ============ -->
+<section class="mission-section">
+  <div class="container">
+    <h2>Our Mission</h2>
+    <p>Give every subcontractor the tools, data, and community they need to run a better business — without complexity, without politics, and without middlemen.</p>
+  </div>
+</section>
+
+<!-- ============ VALUES ============ -->
+<section class="values-section">
+  <div class="container">
+    <h2>How We Do It</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <h3>Subs First</h3>
+        <p>Every feature, every decision, every line of code starts with one question: Does this help the sub? Not the GC. Not the consultant. The sub running the business.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">👁️</div>
+        <h3>Transparency</h3>
+        <p>You deserve to see GC ratings, real payment trends, and honest market data. No hidden metrics. No opaque algorithms. Real numbers from real subs.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">📈</div>
+        <h3>Built to Scale</h3>
+        <p>Whether you're a solo operator or running 50+ crews, Subcontractors.ai scales with you. More crew members, more projects, more data — the platform grows with your business.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤖</div>
+        <h3>AI That Actually Helps</h3>
+        <p>We use AI to automate the tedious stuff — pay app writing, contract analysis, risk flagging. Not to replace your judgment. To give you more time for the decisions that matter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BY THE NUMBERS ============ -->
+<section class="stats-section">
+  <div class="container">
+    <h2>By the Numbers</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">650K+</div>
+        <div class="stat-label">U.S. Subcontractors</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$1.8T</div>
+        <div class="stat-label">Annual Market</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">10</div>
+        <div class="stat-label">States Covered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2,400+</div>
+        <div class="stat-label">Early Access Members</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="team-section">
+  <div class="container">
+    <h2>Meet the Team</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">CW</div>
+        <div class="team-name">Connor Walsh</div>
+        <div class="team-role">Founder & CEO</div>
+        <div class="team-bio">15+ years in commercial glazing. Tired of chasing payments and working with broken tools. Building the platform every sub deserves.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%);">JM</div>
+        <div class="team-name">James Martinez</div>
+        <div class="team-role">Head of Product</div>
+        <div class="team-bio">Former electrical contractor turned product builder. Obsessed with solving real construction problems, not solving problems for problems' sake.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">SL</div>
+        <div class="team-name">Sarah Lee</div>
+        <div class="team-role">Head of Engineering</div>
+        <div class="team-bio">Former Vercel engineer who fell in love with the construction problem. Ensures our platform is reliable, fast, and built to last.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Join Thousands of Subs Taking Control</h2>
+    <p>Start managing your business better today. No credit card required. Free forever plan available.</p>
+    <button class="btn btn-ghost" style="color:#fff; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); padding:14px 32px; font-size:1rem; font-weight:600;" onclick="openModal()">Create Free Profile →</button>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+        <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Find Subs</a></li>
+          <li><a href="project-board.html">Project Board</a></li>
+          <li><a href="gc-ratings.html">GC Ratings</a></li>
+          <li><a href="ai-tools.html">AI Tools</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+            <div>
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="resources/lien-waiver-templates.html">Lien Waiver Templates</a></li>
+          <li><a href="resources/pay-app-templates.html">Pay App Templates</a></li>
+          <li><a href="resources/insurance-guide.html">Insurance Guide</a></li>
+          <li><a href="resources/bonding-guide.html">Bonding Guide</a></li>
+          <li><a href="resources/blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">About / Our Story</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+      <span>Built with &#x26A1; by a sub, for subs.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SIGNUP MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Create Your Free Profile</h2>
+    <p>Join thousands of subcontractors who are taking control of their business.</p>
+    <input type="text" class="modal-input" placeholder="Company Name">
+    <input type="email" class="modal-input" placeholder="Email Address">
+    <select class="modal-input" style="appearance:auto;">
+      <option value="">Select Your Trade</option>
+      <option>Electrical</option>
+      <option>Plumbing</option>
+      <option>HVAC</option>
+      <option>Glass & Glazing</option>
+      <option>Concrete</option>
+      <option>Roofing</option>
+      <option>Painting</option>
+      <option>Framing</option>
+      <option>Excavation</option>
+      <option>Drywall</option>
+      <option>Flooring</option>
+      <option>Fire Protection</option>
+      <option>Steel / Iron</option>
+      <option>Other</option>
+    </select>
+    <input type="text" class="modal-input" placeholder="City, State">
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile →</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
+  </div>
+</div>
+
+<script>
+function openModal() { document.getElementById('modal').classList.add('show'); }
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+function toggleMobile() {
+  const navLinks = document.querySelector('.nav-links');
+  const navCta = document.querySelector('.nav-cta');
+  navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+  navCta.style.display = navCta.style.display === 'flex' ? 'none' : 'flex';
+}
+</script>
+
+</body>
+</html>

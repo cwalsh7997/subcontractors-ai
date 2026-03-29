@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Construction Subcontractor Blog | Subcontractors.ai</title>
+<meta name="description" content="Expert insights for construction subcontractors. Tips on lien rights, payment, bonding, bidding, and growing your sub business from $500K to $5M+">
+<meta property="og:title" content="Construction Subcontractor Blog | Subcontractors.ai">
+<meta property="og:description" content="Expert insights for construction subcontractors. Tips on lien rights, payment, bonding, bidding, and growing your sub business from $500K to $5M+">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ PAGE SPECIFIC STYLES ============ */
+.breadcrumb { padding: 24px 0; border-bottom: 1px solid var(--gray-200); }
+.breadcrumb a { color: var(--blue); }
+.breadcrumb span { color: var(--gray-500); margin: 0 8px; }
+
+.hero-section { padding: 80px 0; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: #fff; }
+.hero-section h1 { font-size: 2.8rem; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.02em; }
+.hero-section p { font-size: 1.1rem; color: #94a3b8; max-width: 600px; margin-bottom: 32px; }
+
+.newsletter-section { padding: 60px 0; background: var(--gray-50); }
+.newsletter-box { max-width: 600px; margin: 0 auto; }
+.newsletter-box h3 { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; text-align: center; }
+.newsletter-box p { font-size: 0.95rem; color: var(--gray-600); text-align: center; margin-bottom: 24px; }
+.newsletter-form { display: flex; gap: 8px; }
+.newsletter-form input { flex: 1; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: inherit; }
+.newsletter-form input:focus { outline: none; border-color: var(--blue); }
+.newsletter-form .btn { margin-bottom: 0; white-space: nowrap; }
+
+.content-section { padding: 60px 0; }
+
+.filter-tabs { display: flex; gap: 12px; margin-bottom: 48px; flex-wrap: wrap; }
+.filter-tab { padding: 8px 16px; border: 2px solid var(--gray-200); border-radius: 20px; background: #fff; font-size: 0.9rem; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all 0.3s; }
+.filter-tab:hover { border-color: var(--blue); color: var(--blue); }
+.filter-tab.active { border-color: var(--blue); background: var(--blue); color: #fff; }
+
+.blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 48px; }
+.blog-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column; }
+.blog-card:hover { border-color: var(--blue); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+
+.blog-card-header { position: relative; height: 200px; background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%); display: flex; align-items: center; justify-content: center; }
+.blog-card-number { font-size: 3rem; font-weight: 900; color: var(--gray-300); opacity: 0.5; }
+
+.blog-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+
+.blog-category { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; width: fit-content; text-transform: uppercase; letter-spacing: 0.05em; }
+.blog-category.business { background: #dbeafe; color: var(--blue); }
+.blog-category.compliance { background: #dcfce7; color: var(--green); }
+.blog-category.growth { background: #fed7aa; color: #b45309; }
+.blog-category.technology { background: #e9d5ff; color: #7e22ce; }
+
+.blog-title { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; line-height: 1.4; }
+.blog-excerpt { font-size: 0.9rem; color: var(--gray-600); line-height: 1.6; margin-bottom: 20px; flex: 1; }
+
+.blog-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--gray-100); margin-bottom: 16px; }
+.blog-date { font-size: 0.8rem; color: var(--gray-500); }
+.blog-readtime { font-size: 0.8rem; color: var(--gray-500); }
+
+.blog-author { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.blog-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+.blog-author-name { font-size: 0.85rem; color: var(--gray-700); font-weight: 500; }
+
+.blog-read-more { color: var(--blue); font-weight: 600; text-decoration: none; cursor: pointer; font-size: 0.95rem; }
+.blog-read-more:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  .hero-section h1 { font-size: 1.8rem; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .newsletter-form { flex-direction: column; }
+  .filter-tabs { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="../index.html">Find Subs</a>
+      <a class="nav-link" href="../project-board.html">Project Board</a>
+      <a class="nav-link" href="../gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="../ai-tools.html">AI Tools</a>
+      <a class="nav-link" href="../pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="openModal()">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">Get Started Free</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ BREADCRUMB ============ -->
+<div class="breadcrumb">
+  <div class="container">
+    <a href="../index.html">Home</a>
+    <span>/</span>
+    <a href="#">Resources</a>
+    <span>/</span>
+    <span style="color:var(--gray-600);">Blog</span>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero-section">
+  <div class="container">
+    <h1>Subcontractor Insights<br>Built for Your Business</h1>
+    <p>Expert tips on payment protection, growth strategies, bonding, bidding, and construction tech. Learn from industry veterans who've been in your shoes.</p>
+  </div>
+</section>
+
+<!-- ============ NEWSLETTER SIGNUP ============ -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-box">
+      <h3>Get the Latest Every Friday</h3>
+      <p>Insights from subs, for subs. Plus industry news and tool recommendations.</p>
+      <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+        <input type="email" placeholder="your@email.com" required>
+        <button class="btn btn-primary" type="submit">Subscribe →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTENT SECTION ============ -->
+<section class="content-section">
+  <div class="container">
+    <!-- Category Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterPosts('all')">All Posts</button>
+      <button class="filter-tab" onclick="filterPosts('business')">Business</button>
+      <button class="filter-tab" onclick="filterPosts('compliance')">Compliance</button>
+      <button class="filter-tab" onclick="filterPosts('growth')">Growth</button>
+      <button class="filter-tab" onclick="filterPosts('technology')">Technology</button>
+    </div>
+
+    <!-- Blog Posts Grid -->
+    <div class="blog-grid" id="blog-grid">
+
+      <!-- POST 1: Lien Rights -->
+      <div class="blog-card" data-category="compliance">
+        <div class="blog-card-header">
+          <div class="blog-card-number">01</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category compliance">Compliance</span>
+          <h2 class="blog-title">How to Protect Your Lien Rights in 2026</h2>
+          <p class="blog-excerpt">Lien rights are your most powerful payment protection tool. Learn the deadlines, notice requirements, and filing procedures that vary by state—and the costly mistakes that forfeit your rights forever.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">SR</div>
+            <div class="blog-author-name">Sarah Rodriguez</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Mar 15, 2026</span>
+            <span class="blog-readtime">8 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 2: Late Payment Signs -->
+      <div class="blog-card" data-category="business">
+        <div class="blog-card-header">
+          <div class="blog-card-number">02</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category business">Business</span>
+          <h2 class="blog-title">5 Signs a GC Will Pay You Late (And What to Do)</h2>
+          <p class="blog-excerpt">Before a job turns into a payment nightmare, here are the red flags every sub should watch for. Spot these warning signs early and protect yourself before work starts.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">MT</div>
+            <div class="blog-author-name">Marcus Thompson</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Mar 13, 2026</span>
+            <span class="blog-readtime">6 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 3: AI Bidding -->
+      <div class="blog-card" data-category="technology">
+        <div class="blog-card-header">
+          <div class="blog-card-number">03</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category technology">Technology</span>
+          <h2 class="blog-title">AI is Changing Construction Bidding — Here's How</h2>
+          <p class="blog-excerpt">AI-powered bidding tools are already reshaping how subs respond to opportunities. Understand the shift, leverage it, and don't get left behind. This is the future of estimating.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">JP</div>
+            <div class="blog-author-name">James Park</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Mar 10, 2026</span>
+            <span class="blog-readtime">10 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 4: Bonding Guide -->
+      <div class="blog-card" data-category="business">
+        <div class="blog-card-header">
+          <div class="blog-card-number">04</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category business">Business</span>
+          <h2 class="blog-title">The Subcontractor's Guide to Bonding</h2>
+          <p class="blog-excerpt">Bid bonds, performance bonds, payment bonds—what do they cost, why do you need them, and how do they protect (or expose) your business? A practical breakdown for every sub.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">KC</div>
+            <div class="blog-author-name">Karen Chen</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Mar 8, 2026</span>
+            <span class="blog-readtime">9 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 5: Insurance Costs -->
+      <div class="blog-card" data-category="compliance">
+        <div class="blog-card-header">
+          <div class="blog-card-number">05</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category compliance">Compliance</span>
+          <h2 class="blog-title">Why Your Insurance Costs Are Rising and How to Fight Back</h2>
+          <p class="blog-excerpt">Insurance premiums are soaring industry-wide. Learn what's driving the spike, how to shop competitively, and the risk management strategies that get you better rates.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">DB</div>
+            <div class="blog-author-name">David Brown</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Mar 5, 2026</span>
+            <span class="blog-readtime">7 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 6: Scaling from $500K to $5M -->
+      <div class="blog-card" data-category="growth">
+        <div class="blog-card-header">
+          <div class="blog-card-number">06</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category growth">Growth</span>
+          <h2 class="blog-title">From $500K to $5M: Scaling Your Sub Business</h2>
+          <p class="blog-excerpt">Growth isn't just about landing bigger jobs. It's about people, processes, and strategy. Here's the roadmap we've seen work for subs scaling to $5M+ in annual revenue.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">LG</div>
+            <div class="blog-author-name">Lisa Garcia</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Mar 1, 2026</span>
+            <span class="blog-readtime">12 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 7: Pay App Mistakes -->
+      <div class="blog-card" data-category="business">
+        <div class="blog-card-header">
+          <div class="blog-card-number">07</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category business">Business</span>
+          <h2 class="blog-title">Pay App Mistakes That Cost You Thousands</h2>
+          <p class="blog-excerpt">Payment applications are where deals get approved—or stalled. Learn the 7 errors that slow down payment and how to format apps that get paid on time, every time.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">RK</div>
+            <div class="blog-author-name">Rajesh Kumar</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Feb 27, 2026</span>
+            <span class="blog-readtime">6 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 8: Winning More Bids -->
+      <div class="blog-card" data-category="growth">
+        <div class="blog-card-header">
+          <div class="blog-card-number">08</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category growth">Growth</span>
+          <h2 class="blog-title">How to Win More Bids Without Lowering Your Price</h2>
+          <p class="blog-excerpt">Price wars kill margins. Instead, stand out through value, reliability, and positioning. See the bidding strategies that win work without competing on cost alone.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">NV</div>
+            <div class="blog-author-name">Nicole Vargas</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Feb 24, 2026</span>
+            <span class="blog-readtime">8 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+      <!-- POST 9: Construction Tech Stack -->
+      <div class="blog-card" data-category="technology">
+        <div class="blog-card-header">
+          <div class="blog-card-number">09</div>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category technology">Technology</span>
+          <h2 class="blog-title">Construction Tech Stack: Tools Every Sub Needs in 2026</h2>
+          <p class="blog-excerpt">From project management to payment tracking and AI-powered estimating, here are the tools that modern subs rely on to stay competitive and profitable.</p>
+          <div class="blog-author">
+            <div class="blog-avatar">AW</div>
+            <div class="blog-author-name">Alex Wilson</div>
+          </div>
+          <div class="blog-meta">
+            <span class="blog-date">Feb 21, 2026</span>
+            <span class="blog-readtime">11 min read</span>
+          </div>
+          <a class="blog-read-more" href="#" onclick="alert('Coming soon!')">Read More →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+        <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="../index.html">Find Subs</a></li>
+          <li><a href="../project-board.html">Project Board</a></li>
+          <li><a href="../gc-ratings.html">GC Ratings</a></li>
+          <li><a href="../ai-tools.html">AI Tools</a></li>
+          <li><a href="../pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+            <div>
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="../resources/lien-waiver-templates.html">Lien Waiver Templates</a></li>
+          <li><a href="../resources/pay-app-templates.html">Pay App Templates</a></li>
+          <li><a href="../resources/insurance-guide.html">Insurance Guide</a></li>
+          <li><a href="../resources/bonding-guide.html">Bonding Guide</a></li>
+          <li><a href="../resources/blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="../about.html">About / Our Story</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+          <li><a href="../privacy.html">Privacy Policy</a></li>
+          <li><a href="../terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+      <span>Built with &#x26A1; by a sub, for subs.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SIGNUP MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Create Your Free Profile</h2>
+    <p>Join thousands of subcontractors who are taking control of their business.</p>
+    <input type="text" class="modal-input" placeholder="Company Name">
+    <input type="email" class="modal-input" placeholder="Email Address">
+    <select class="modal-input" style="appearance:auto;">
+      <option value="">Select Your Trade</option>
+      <option>Electrical</option>
+      <option>Plumbing</option>
+      <option>HVAC</option>
+      <option>Glass & Glazing</option>
+      <option>Concrete</option>
+      <option>Roofing</option>
+      <option>Painting</option>
+      <option>Framing</option>
+      <option>Excavation</option>
+      <option>Drywall</option>
+      <option>Flooring</option>
+      <option>Fire Protection</option>
+      <option>Steel / Iron</option>
+      <option>Other</option>
+    </select>
+    <input type="text" class="modal-input" placeholder="City, State">
+    <button class="btn btn-primary btn-lg" style="width:100%;margin-top:8px;" onclick="closeModal()">Create Free Profile →</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:12px;margin-bottom:0;">Free forever. No credit card required.</p>
+  </div>
+</div>
+
+<script>
+// Modal functions
+function openModal() { document.getElementById('modal').classList.add('show'); }
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// Filter posts by category
+function filterPosts(category) {
+  const cards = document.querySelectorAll('.blog-card');
+  const tabs = document.querySelectorAll('.filter-tab');
+
+  // Update active tab
+  tabs.forEach(tab => tab.classList.remove('active'));
+  event.target.classList.add('active');
+
+  // Filter cards
+  cards.forEach(card => {
+    if (category === 'all' || card.dataset.category === category) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// Newsletter signup
+function handleNewsletterSignup(e) {
+  e.preventDefault();
+  alert('Thank you for subscribing! Check your email for confirmation.');
+  e.target.reset();
+}
+
+// Mobile menu toggle (inherits from nav structure)
+function toggleMobile() {
+  // Functionality handled by nav.js in main styles.css
+}
+</script>
+
+</body>
+</html>
