@@ -313,9 +313,54 @@
             document.getElementById('dateTime').textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
             // Load real data
+            await loadDashboardStats(session.access_token);
             await loadPayments();
             await loadProfile();
             buildAlerts();
+        }
+
+        async function loadDashboardStats(accessToken) {
+            try {
+                const resp = await fetch('/api/dashboard-stats', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (resp.ok) {
+                    const data = await resp.json();
+
+                    // Update stat cards with real data
+                    if (data.stats) {
+                        const stats = data.stats;
+                        document.getElementById('stat-invoices').textContent = stats.total_invoices || 0;
+                        document.getElementById('stat-invoices-meta').textContent = (stats.total_invoices || 0) === 0 ? 'Add your first invoice' : stats.paid_count + ' paid, ' + (stats.unpaid_count || 0) + ' outstanding';
+                        document.getElementById('stat-pending').textContent = '$' + (stats.pending_amount || 0).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                        document.getElementById('stat-pending-meta').textContent = (stats.pending_count || 0) + ' pending invoice' + ((stats.pending_count || 0) !== 1 ? 's' : '');
+                        document.getElementById('stat-overdue').textContent = '$' + (stats.overdue_amount || 0).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                        document.getElementById('stat-overdue-meta').textContent = (stats.overdue_count || 0) === 0 ? 'No overdue payments' : stats.overdue_count + ' invoice' + (stats.overdue_count !== 1 ? 's' : '') + ' overdue';
+                    }
+
+                    // Update recent projects if available
+                    if (data.recent_projects && data.recent_projects.length > 0) {
+                        // You can use this data for a future projects section if needed
+                        window._recentProjects = data.recent_projects;
+                    }
+                } else {
+                    // API failed, show 0 values
+                    document.getElementById('stat-invoices').textContent = 0;
+                    document.getElementById('stat-pending').textContent = '$0';
+                    document.getElementById('stat-overdue').textContent = '$0';
+                }
+            } catch (e) {
+                console.error('Error loading dashboard stats:', e);
+                // Graceful fallback: show 0 values
+                document.getElementById('stat-invoices').textContent = 0;
+                document.getElementById('stat-pending').textContent = '$0';
+                document.getElementById('stat-overdue').textContent = '$0';
+            }
         }
 
         async function loadPayments() {
