@@ -361,10 +361,15 @@
         const demoBanner = document.getElementById('demoBanner');
         const forgotLink = document.getElementById('forgotLink');
 
-        // Check if running in demo mode
+        // Initialize Supabase client
         const supabaseUrl = window.SUPABASE_URL;
-        const supabaseKey = window.SUPABASE_KEY;
+        const supabaseKey = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
         const isDemoMode = !supabaseUrl || !supabaseKey;
+        let sbClient = null;
+
+        if (!isDemoMode && window.supabase && window.supabase.createClient) {
+            sbClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+        }
 
         if (isDemoMode) {
             demoBanner.classList.add('show');
@@ -466,7 +471,7 @@
                     }, 1000);
                 } else {
                     // Production mode: use Supabase
-                    const { data, error } = await window.supabase.auth.signInWithPassword({
+                    const { data, error } = await sbClient.auth.signInWithPassword({
                         email: emailInput.value,
                         password: passwordInput.value
                     });
@@ -503,8 +508,8 @@
         });
 
         // Check if user is already logged in
-        if (!isDemoMode && window.supabase) {
-            window.supabase.auth.onAuthStateChange((event, session) => {
+        if (!isDemoMode && sbClient) {
+            sbClient.auth.onAuthStateChange((event, session) => {
                 if (session) {
                     window.location.href = 'dashboard.html';
                 }

@@ -568,10 +568,15 @@
         const strengthFill = document.getElementById('strengthFill');
         const strengthText = document.getElementById('strengthText');
 
-        // Check if running in demo mode
+        // Initialize Supabase client
         const supabaseUrl = window.SUPABASE_URL;
-        const supabaseKey = window.SUPABASE_KEY;
+        const supabaseKey = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
         const isDemoMode = !supabaseUrl || !supabaseKey;
+        let sbClient = null;
+
+        if (!isDemoMode && window.supabase && window.supabase.createClient) {
+            sbClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+        }
 
         if (isDemoMode) {
             demoBanner.classList.add('show');
@@ -792,7 +797,7 @@
                     }, 1500);
                 } else {
                     // Production mode: use Supabase
-                    const { data, error } = await window.supabase.auth.signUp({
+                    const { data, error } = await sbClient.auth.signUp({
                         email: emailInput.value,
                         password: passwordInput.value,
                         options: {
@@ -837,8 +842,8 @@
         });
 
         // Check if user is already logged in
-        if (!isDemoMode && window.supabase) {
-            window.supabase.auth.onAuthStateChange((event, session) => {
+        if (!isDemoMode && sbClient) {
+            sbClient.auth.onAuthStateChange((event, session) => {
                 if (session) {
                     window.location.href = 'dashboard.html';
                 }
