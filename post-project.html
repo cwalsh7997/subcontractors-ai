@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Project — Subcontractors.ai | Find Qualified Subs Fast</title>
+    <meta name="description" content="Post your construction project and get matched with verified, qualified subcontractors. Free for GCs.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #f8fafc; color: #1e293b; }
+
+        .header { background: #0f1729; padding: 16px 0; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; }
+        .header-logo { font-size: 20px; font-weight: 800; color: #2563eb; text-decoration: none; }
+        .header-links a { color: #94a3b8; text-decoration: none; font-size: 14px; margin-left: 24px; }
+        .header-links a:hover { color: #fff; }
+        .header-links .btn-login { background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-weight: 600; }
+
+        .hero { background: linear-gradient(135deg, #0f1729 0%, #1e3a5f 100%); color: #fff; padding: 60px 0 40px; text-align: center; }
+        .hero h1 { font-size: 36px; font-weight: 900; margin-bottom: 12px; }
+        .hero p { font-size: 16px; color: #94a3b8; max-width: 600px; margin: 0 auto; }
+
+        .form-container { max-width: 800px; margin: -20px auto 60px; padding: 0 24px; }
+        .card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 32px; margin-bottom: 20px; }
+        .card-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+        .form-label .required { color: #dc2626; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; background: #fff; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .form-textarea { min-height: 100px; resize: vertical; }
+
+        .trades-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .trade-checkbox { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; padding: 6px 8px; border-radius: 6px; transition: background 0.2s; }
+        .trade-checkbox:hover { background: #f1f5f9; }
+        .trade-checkbox input { width: 16px; height: 16px; accent-color: #2563eb; }
+
+        .btn { padding: 14px 28px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .btn-submit { background: #2563eb; color: #fff; width: 100%; }
+        .btn-submit:hover { background: #1d4ed8; }
+
+        .benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+        .benefit { text-align: center; padding: 16px; }
+        .benefit-icon { font-size: 24px; margin-bottom: 8px; }
+        .benefit-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .benefit-desc { font-size: 12px; color: #64748b; }
+
+        .success-message { display: none; text-align: center; padding: 60px 32px; }
+        .success-message h2 { font-size: 28px; font-weight: 800; color: #16a34a; margin-bottom: 12px; }
+        .success-message p { font-size: 16px; color: #64748b; margin-bottom: 24px; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .trades-grid { grid-template-columns: repeat(2, 1fr); }
+            .benefits { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="header-logo">Subcontractors.ai</a>
+            <div class="header-links">
+                <a href="app/login.html" class="btn-login">Log In</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Post a Project. Find Qualified Subs.</h1>
+        <p>Reach verified subcontractors matched to your project's trade, location, and requirements. Free for GCs.</p>
+    </section>
+
+    <div class="form-container">
+        <div class="benefits">
+            <div class="benefit">
+                <div class="benefit-icon">&#x1f3af;</div>
+                <div class="benefit-title">Trade-Matched Subs</div>
+                <div class="benefit-desc">AI matches your project to subs with the right trade, capacity, and compliance status</div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">&#x26a1;</div>
+                <div class="benefit-title">Instant Distribution</div>
+                <div class="benefit-desc">Your project reaches qualified subs the moment you post — no waiting</div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">&#x2705;</div>
+                <div class="benefit-title">Verified & Compliant</div>
+                <div class="benefit-desc">Every sub on our platform has verified insurance, licenses, and credentials</div>
+            </div>
+        </div>
+
+        <div id="form-content">
+            <form id="project-form" action="https://formsubmit.co/connor@acglass.com" method="POST">
+                <input type="hidden" name="_subject" value="New Project Posted on Subcontractors.ai">
+                <input type="hidden" name="_template" value="box">
+                <input type="hidden" name="_next" value="https://www.subcontractors.ai/post-project.html?success=true">
+                <input type="hidden" name="_captcha" value="false">
+
+                <!-- GC Info -->
+                <div class="card">
+                    <div class="card-title">Your Information</div>
+                    <div class="card-subtitle">Tell us about your company</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Company Name <span class="required">*</span></label>
+                            <input type="text" name="gc_company" class="form-input" required placeholder="Your GC company name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact Name <span class="required">*</span></label>
+                            <input type="text" name="gc_contact" class="form-input" required placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email <span class="required">*</span></label>
+                            <input type="email" name="gc_email" class="form-input" required placeholder="email@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" name="gc_phone" class="form-input" placeholder="(555) 555-5555">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Details -->
+                <div class="card">
+                    <div class="card-title">Project Details</div>
+                    <div class="card-subtitle">Describe the project so we can match the right subcontractors</div>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">Project Name <span class="required">*</span></label>
+                            <input type="text" name="project_name" class="form-input" required placeholder="e.g. Riverside Medical Center - Phase 2">
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Project Location <span class="required">*</span></label>
+                            <input type="text" name="project_location" class="form-input" required placeholder="Full address or city/state">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Project Type</label>
+                            <select name="project_type" class="form-select">
+                                <option value="">Select type</option>
+                                <option>Commercial</option>
+                                <option>Healthcare</option>
+                                <option>Education / K-12</option>
+                                <option>Government</option>
+                                <option>Industrial</option>
+                                <option>Multi-Family Residential</option>
+                                <option>Retail</option>
+                                <option>Hospitality</option>
+                                <option>Mixed-Use</option>
+                                <option>Religious</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estimated Value</label>
+                            <input type="text" name="estimated_value" class="form-input" placeholder="e.g. $5M - $10M">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Square Footage</label>
+                            <input type="text" name="sqft" class="form-input" placeholder="e.g. 50,000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bid Due Date <span class="required">*</span></label>
+                            <input type="date" name="bid_due" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Pre-Bid Meeting Date</label>
+                            <input type="date" name="prebid_date" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Plans Available?</label>
+                            <select name="plans_available" class="form-select">
+                                <option value="yes">Yes — Plans are ready</option>
+                                <option value="soon">Coming soon</option>
+                                <option value="on_request">Available on request</option>
+                                <option value="no">Not yet</option>
+                            </select>
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Project Description / Scope</label>
+                            <textarea name="description" class="form-textarea" placeholder="Brief description of scope, phasing, special requirements (prevailing wage, LEED, night work, etc.)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trades Needed -->
+                <div class="card">
+                    <div class="card-title">Trades Needed <span class="required">*</span></div>
+                    <div class="card-subtitle">Select all subcontractor trades you're looking for</div>
+                    <div class="trades-grid">
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Electrical"> Electrical</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Plumbing"> Plumbing</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="HVAC"> HVAC/Mechanical</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Glass & Glazing"> Glass & Glazing</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Concrete"> Concrete</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Roofing"> Roofing</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Drywall"> Drywall</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Painting"> Painting</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Framing"> Framing/Carpentry</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Fire Protection"> Fire Protection</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Flooring"> Flooring</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Steel/Iron"> Steel/Iron</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Landscaping"> Landscaping</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Sitework"> Sitework</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Demolition"> Demolition</label>
+                        <label class="trade-checkbox"><input type="checkbox" name="trades" value="Masonry"> Masonry</label>
+                    </div>
+                </div>
+
+                <!-- Requirements -->
+                <div class="card">
+                    <div class="card-title">Requirements</div>
+                    <div class="card-subtitle">Minimum sub qualifications for this project</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Minimum GL Insurance</label>
+                            <select name="min_gl" class="form-select">
+                                <option value="">No minimum</option>
+                                <option>$1,000,000</option>
+                                <option>$2,000,000</option>
+                                <option>$5,000,000</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bonding Required?</label>
+                            <select name="bonding_required" class="form-select">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prevailing Wage?</label>
+                            <select name="prevailing_wage" class="form-select">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Minimum Years in Business</label>
+                            <select name="min_years" class="form-select">
+                                <option value="">No minimum</option>
+                                <option>3+</option>
+                                <option>5+</option>
+                                <option>10+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-submit">Post Project — Free</button>
+            </form>
+        </div>
+
+        <div class="success-message" id="success-message">
+            <div style="font-size:48px;margin-bottom:16px;">&#x2705;</div>
+            <h2>Project Posted Successfully!</h2>
+            <p>Your project has been submitted and will be distributed to matched subcontractors. You'll receive responses directly to your email.</p>
+            <a href="index.html" class="btn btn-submit" style="display:inline-block;width:auto;padding:12px 32px;text-decoration:none;">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Show success message if redirected
+        if (window.location.search.includes('success=true')) {
+            document.getElementById('form-content').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
