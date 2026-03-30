@@ -11,7 +11,7 @@
 const SUPABASE_URL = window.SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || '';
 
-var sbClient = null;
+var _appSb = null;
 let currentUser = null;
 let userProfile = null;
 
@@ -54,9 +54,9 @@ async function initApp() {
 
     // Initialize Supabase client (loaded via CDN in HTML)
     if (window.supabase && window.supabase.createClient) {
-      sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      _appSb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      const { data: { session } } = await sbClient.auth.getSession();
+      const { data: { session } } = await _appSb.auth.getSession();
       if (session && session.user) {
         currentUser = session.user;
         userProfile = await loadUserProfile();
@@ -106,7 +106,7 @@ async function signUp(email, password, metadata = {}) {
     return { user: demoUser, error: null };
   }
 
-  const { data, error } = await sbClient.auth.signUp({
+  const { data, error } = await _appSb.auth.signUp({
     email,
     password,
     options: { data: metadata }
@@ -115,7 +115,7 @@ async function signUp(email, password, metadata = {}) {
   if (data && data.user) {
     currentUser = data.user;
     // Create profile entry
-    await sbClient.from('profiles').insert({
+    await _appSb.from('profiles').insert({
       id: data.user.id,
       email: email,
       created_at: new Date().toISOString()
@@ -157,7 +157,7 @@ async function signIn(email, password) {
     return { user: newUser, error: null };
   }
 
-  const { data, error } = await sbClient.auth.signInWithPassword({
+  const { data, error } = await _appSb.auth.signInWithPassword({
     email,
     password
   });
@@ -183,8 +183,8 @@ async function signOut() {
   localStorage.removeItem('sb-demo-user');
   localStorage.removeItem('sb-demo-session');
 
-  if (sbClient) {
-    try { await sbClient.auth.signOut(); } catch(e) {}
+  if (_appSb) {
+    try { await _appSb.auth.signOut(); } catch(e) {}
   }
   currentUser = null;
   userProfile = null;
@@ -226,13 +226,13 @@ function getUserProfile() {
  */
 async function requireAuth() {
   // Initialize Supabase client if not already done
-  if (!sbClient && isConfigured() && window.supabase && window.supabase.createClient) {
-    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  if (!_appSb && isConfigured() && window.supabase && window.supabase.createClient) {
+    _appSb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 
-  if (sbClient) {
+  if (_appSb) {
     try {
-      const { data: { session } } = await sbClient.auth.getSession();
+      const { data: { session } } = await _appSb.auth.getSession();
       if (session && session.user) {
         currentUser = session.user;
         return currentUser;
@@ -292,10 +292,10 @@ async function loadUserProfile() {
     return JSON.parse(localStorage.getItem('demo_profile') || '{}');
   }
 
-  if (!sbClient || !currentUser) return {};
+  if (!_appSb || !currentUser) return {};
 
   try {
-    const { data } = await sbClient
+    const { data } = await _appSb
       .from('profiles')
       .select('*')
       .eq('id', currentUser.id)
@@ -321,12 +321,12 @@ async function saveUserProfile(profile) {
     return { data: userProfile, error: null };
   }
 
-  if (!sbClient || !currentUser) {
+  if (!_appSb || !currentUser) {
     return { data: null, error: { message: 'Not authenticated' } };
   }
 
   try {
-    const { data, error } = await sbClient
+    const { data, error } = await _appSb
       .from('profiles')
       .upsert({
         id: currentUser.id,
@@ -357,10 +357,10 @@ async function getPayments() {
     return JSON.parse(localStorage.getItem('demo_payments') || '[]');
   }
 
-  if (!sbClient || !currentUser) return [];
+  if (!_appSb || !currentUser) return [];
 
   try {
-    const { data } = await sbClient
+    const { data } = await _appSb
       .from('payments')
       .select('*')
       .eq('user_id', currentUser.id)
@@ -392,12 +392,12 @@ async function addPayment(payment) {
     return { data: newPayment, error: null };
   }
 
-  if (!sbClient || !currentUser) {
+  if (!_appSb || !currentUser) {
     return { data: null, error: { message: 'Not authenticated' } };
   }
 
   try {
-    const { data, error } = await sbClient
+    const { data, error } = await _appSb
       .from('payments')
       .insert({
         user_id: currentUser.id,
@@ -431,12 +431,12 @@ async function updatePayment(id, updates) {
     return { data: null, error: { message: 'Payment not found' } };
   }
 
-  if (!sbClient) {
+  if (!_appSb) {
     return { data: null, error: { message: 'Not configured' } };
   }
 
   try {
-    const { data, error } = await sbClient
+    const { data, error } = await _appSb
       .from('payments')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', id)
@@ -462,12 +462,12 @@ async function deletePayment(id) {
     return { error: null };
   }
 
-  if (!sbClient) {
+  if (!_appSb) {
     return { error: { message: 'Not configured' } };
   }
 
   try {
-    const { error } = await sbClient
+    const { error } = await _appSb
       .from('payments')
       .delete()
       .eq('id', id);
@@ -491,10 +491,10 @@ async function getProjects() {
     return JSON.parse(localStorage.getItem('demo_projects') || '[]');
   }
 
-  if (!sbClient || !currentUser) return [];
+  if (!_appSb || !currentUser) return [];
 
   try {
-    const { data } = await sbClient
+    const { data } = await _appSb
       .from('projects')
       .select('*')
       .eq('user_id', currentUser.id)
@@ -526,12 +526,12 @@ async function addProject(project) {
     return { data: newProject, error: null };
   }
 
-  if (!sbClient || !currentUser) {
+  if (!_appSb || !currentUser) {
     return { data: null, error: { message: 'Not authenticated' } };
   }
 
   try {
-    const { data, error } = await sbClient
+    const { data, error } = await _appSb
       .from('projects')
       .insert({
         user_id: currentUser.id,
@@ -565,12 +565,12 @@ async function updateProject(id, updates) {
     return { data: null, error: { message: 'Project not found' } };
   }
 
-  if (!sbClient) {
+  if (!_appSb) {
     return { data: null, error: { message: 'Not configured' } };
   }
 
   try {
-    const { data, error } = await sbClient
+    const { data, error } = await _appSb
       .from('projects')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', id)
@@ -596,12 +596,12 @@ async function deleteProject(id) {
     return { error: null };
   }
 
-  if (!sbClient) {
+  if (!_appSb) {
     return { error: { message: 'Not configured' } };
   }
 
   try {
-    const { error } = await sbClient
+    const { error } = await _appSb
       .from('projects')
       .delete()
       .eq('id', id);
@@ -628,10 +628,10 @@ async function getAllUsers() {
     return demoUser ? [demoUser] : [];
   }
 
-  if (!sbClient) return [];
+  if (!_appSb) return [];
 
   try {
-    const { data } = await sbClient
+    const { data } = await _appSb
       .from('profiles')
       .select('*')
       .order('created_at', { ascending: false });
@@ -654,10 +654,10 @@ async function getAllPayments() {
     return JSON.parse(localStorage.getItem('demo_payments') || '[]');
   }
 
-  if (!sbClient) return [];
+  if (!_appSb) return [];
 
   try {
-    const { data } = await sbClient
+    const { data } = await _appSb
       .from('payments')
       .select('*, profiles(email, name)')
       .order('due_date', { ascending: false });
