@@ -12,8 +12,8 @@ const SUPABASE_URL = window.SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || '';
 
 var _appSb = null;
-let currentUser = null;
-let userProfile = null;
+let _appUser = null;
+let _appProfile = null;
 
 /**
  * Check if Supabase is configured
@@ -46,8 +46,8 @@ async function initApp() {
       console.log('Supabase not configured — running in demo mode');
       const demoUser = JSON.parse(localStorage.getItem('demo_user') || 'null');
       if (demoUser) {
-        currentUser = demoUser;
-        userProfile = JSON.parse(localStorage.getItem('demo_profile') || '{}');
+        _appUser = demoUser;
+        _appProfile = JSON.parse(localStorage.getItem('demo_profile') || '{}');
       }
       return;
     }
@@ -58,8 +58,8 @@ async function initApp() {
 
       const { data: { session } } = await _appSb.auth.getSession();
       if (session && session.user) {
-        currentUser = session.user;
-        userProfile = await loadUserProfile();
+        _appUser = session.user;
+        _appProfile = await load_appProfile();
       }
     }
   } catch (error) {
@@ -74,7 +74,7 @@ async function initApp() {
  */
 async function checkAuthAndInit() {
   await initApp();
-  if (!currentUser && !isDemoMode()) {
+  if (!_appUser && !isDemoMode()) {
     window.location.href = 'login.html';
   }
 }
@@ -100,9 +100,9 @@ async function signUp(email, password, metadata = {}) {
       created_at: new Date().toISOString()
     };
     localStorage.setItem('demo_user', JSON.stringify(demoUser));
-    currentUser = demoUser;
-    userProfile = {};
-    localStorage.setItem('demo_profile', JSON.stringify(userProfile));
+    _appUser = demoUser;
+    _appProfile = {};
+    localStorage.setItem('demo_profile', JSON.stringify(_appProfile));
     return { user: demoUser, error: null };
   }
 
@@ -113,7 +113,7 @@ async function signUp(email, password, metadata = {}) {
   });
 
   if (data && data.user) {
-    currentUser = data.user;
+    _appUser = data.user;
     // Create profile entry
     await _appSb.from('profiles').insert({
       id: data.user.id,
@@ -138,8 +138,8 @@ async function signIn(email, password) {
     const demoUser = JSON.parse(localStorage.getItem('demo_user') || 'null');
 
     if (demoUser && demoUser.email === email) {
-      currentUser = demoUser;
-      userProfile = JSON.parse(localStorage.getItem('demo_profile') || '{}');
+      _appUser = demoUser;
+      _appProfile = JSON.parse(localStorage.getItem('demo_profile') || '{}');
       return { user: demoUser, error: null };
     }
 
@@ -151,9 +151,9 @@ async function signIn(email, password) {
       created_at: new Date().toISOString()
     };
     localStorage.setItem('demo_user', JSON.stringify(newUser));
-    currentUser = newUser;
-    userProfile = {};
-    localStorage.setItem('demo_profile', JSON.stringify(userProfile));
+    _appUser = newUser;
+    _appProfile = {};
+    localStorage.setItem('demo_profile', JSON.stringify(_appProfile));
     return { user: newUser, error: null };
   }
 
@@ -163,8 +163,8 @@ async function signIn(email, password) {
   });
 
   if (data && data.user) {
-    currentUser = data.user;
-    userProfile = await loadUserProfile();
+    _appUser = data.user;
+    _appProfile = await load_appProfile();
   }
 
   return { user: data?.user, error };
@@ -186,8 +186,8 @@ async function signOut() {
   if (_appSb) {
     try { await _appSb.auth.signOut(); } catch(e) {}
   }
-  currentUser = null;
-  userProfile = null;
+  _appUser = null;
+  _appProfile = null;
   window.location.href = 'login.html';
 }
 
@@ -196,23 +196,23 @@ async function signOut() {
  * @returns {boolean}
  */
 function isAuthenticated() {
-  return currentUser !== null && currentUser !== undefined;
+  return _appUser !== null && _appUser !== undefined;
 }
 
 /**
  * Get current user
  * @returns {object|null}
  */
-function getCurrentUser() {
-  return currentUser;
+function get_appUser() {
+  return _appUser;
 }
 
 /**
  * Get current user profile
  * @returns {object}
  */
-function getUserProfile() {
-  return userProfile || {};
+function get_appProfile() {
+  return _appProfile || {};
 }
 
 // =============================================================================
@@ -234,8 +234,8 @@ async function requireAuth() {
     try {
       const { data: { session } } = await _appSb.auth.getSession();
       if (session && session.user) {
-        currentUser = session.user;
-        return currentUser;
+        _appUser = session.user;
+        return _appUser;
       }
     } catch (e) {
       console.error('Auth check error:', e);
@@ -246,8 +246,8 @@ async function requireAuth() {
   if (isDemoMode()) {
     const demoUser = JSON.parse(localStorage.getItem('demo_user') || localStorage.getItem('sb-demo-user') || 'null');
     if (demoUser) {
-      currentUser = demoUser;
-      return currentUser;
+      _appUser = demoUser;
+      return _appUser;
     }
   }
 
@@ -262,7 +262,7 @@ async function requireAuth() {
  */
 function requireAdmin() {
   const adminEmails = window.ADMIN_EMAILS || ['connor@acglass.com'];
-  if (!isAuthenticated() || !adminEmails.includes(currentUser.email)) {
+  if (!isAuthenticated() || !adminEmails.includes(_appUser.email)) {
     window.location.href = 'dashboard.html';
     return false;
   }
@@ -275,7 +275,7 @@ function requireAdmin() {
  */
 function isAdmin() {
   const adminEmails = window.ADMIN_EMAILS || ['connor@acglass.com'];
-  return isAuthenticated() && adminEmails.includes(currentUser.email);
+  return isAuthenticated() && adminEmails.includes(_appUser.email);
 }
 
 // =============================================================================
@@ -287,21 +287,21 @@ function isAdmin() {
  * @async
  * @returns {Promise<object>}
  */
-async function loadUserProfile() {
+async function load_appProfile() {
   if (isDemoMode()) {
     return JSON.parse(localStorage.getItem('demo_profile') || '{}');
   }
 
-  if (!_appSb || !currentUser) return {};
+  if (!_appSb || !_appUser) return {};
 
   try {
     const { data } = await _appSb
       .from('profiles')
       .select('*')
-      .eq('id', currentUser.id)
+      .eq('id', _appUser.id)
       .single();
-    userProfile = data || {};
-    return userProfile;
+    _appProfile = data || {};
+    return _appProfile;
   } catch (error) {
     console.error('Error loading profile:', error);
     return {};
@@ -314,14 +314,14 @@ async function loadUserProfile() {
  * @param {object} profile - Profile data to save
  * @returns {Promise<{data: object, error: object}>}
  */
-async function saveUserProfile(profile) {
+async function save_appProfile(profile) {
   if (isDemoMode()) {
-    userProfile = { ...userProfile, ...profile };
-    localStorage.setItem('demo_profile', JSON.stringify(userProfile));
-    return { data: userProfile, error: null };
+    _appProfile = { ..._appProfile, ...profile };
+    localStorage.setItem('demo_profile', JSON.stringify(_appProfile));
+    return { data: _appProfile, error: null };
   }
 
-  if (!_appSb || !currentUser) {
+  if (!_appSb || !_appUser) {
     return { data: null, error: { message: 'Not authenticated' } };
   }
 
@@ -329,13 +329,13 @@ async function saveUserProfile(profile) {
     const { data, error } = await _appSb
       .from('profiles')
       .upsert({
-        id: currentUser.id,
+        id: _appUser.id,
         ...profile,
         updated_at: new Date().toISOString()
       });
 
     if (!error) {
-      userProfile = { ...userProfile, ...profile };
+      _appProfile = { ..._appProfile, ...profile };
     }
     return { data, error };
   } catch (error) {
@@ -357,13 +357,13 @@ async function getPayments() {
     return JSON.parse(localStorage.getItem('demo_payments') || '[]');
   }
 
-  if (!_appSb || !currentUser) return [];
+  if (!_appSb || !_appUser) return [];
 
   try {
     const { data } = await _appSb
       .from('payments')
       .select('*')
-      .eq('user_id', currentUser.id)
+      .eq('user_id', _appUser.id)
       .order('due_date', { ascending: false });
     return data || [];
   } catch (error) {
@@ -383,7 +383,7 @@ async function addPayment(payment) {
     const payments = JSON.parse(localStorage.getItem('demo_payments') || '[]');
     const newPayment = {
       id: 'pay-' + Date.now(),
-      user_id: currentUser?.id || 'demo-user',
+      user_id: _appUser?.id || 'demo-user',
       ...payment,
       created_at: new Date().toISOString()
     };
@@ -392,7 +392,7 @@ async function addPayment(payment) {
     return { data: newPayment, error: null };
   }
 
-  if (!_appSb || !currentUser) {
+  if (!_appSb || !_appUser) {
     return { data: null, error: { message: 'Not authenticated' } };
   }
 
@@ -400,7 +400,7 @@ async function addPayment(payment) {
     const { data, error } = await _appSb
       .from('payments')
       .insert({
-        user_id: currentUser.id,
+        user_id: _appUser.id,
         ...payment,
         created_at: new Date().toISOString()
       })
@@ -491,13 +491,13 @@ async function getProjects() {
     return JSON.parse(localStorage.getItem('demo_projects') || '[]');
   }
 
-  if (!_appSb || !currentUser) return [];
+  if (!_appSb || !_appUser) return [];
 
   try {
     const { data } = await _appSb
       .from('projects')
       .select('*')
-      .eq('user_id', currentUser.id)
+      .eq('user_id', _appUser.id)
       .order('created_at', { ascending: false });
     return data || [];
   } catch (error) {
@@ -517,7 +517,7 @@ async function addProject(project) {
     const projects = JSON.parse(localStorage.getItem('demo_projects') || '[]');
     const newProject = {
       id: 'proj-' + Date.now(),
-      user_id: currentUser?.id || 'demo-user',
+      user_id: _appUser?.id || 'demo-user',
       ...project,
       created_at: new Date().toISOString()
     };
@@ -526,7 +526,7 @@ async function addProject(project) {
     return { data: newProject, error: null };
   }
 
-  if (!_appSb || !currentUser) {
+  if (!_appSb || !_appUser) {
     return { data: null, error: { message: 'Not authenticated' } };
   }
 
@@ -534,7 +534,7 @@ async function addProject(project) {
     const { data, error } = await _appSb
       .from('projects')
       .insert({
-        user_id: currentUser.id,
+        user_id: _appUser.id,
         ...project,
         created_at: new Date().toISOString()
       })
