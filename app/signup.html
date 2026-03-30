@@ -582,14 +582,14 @@
         // Initialize Supabase client
         const supabaseUrl = window.SUPABASE_URL;
         const supabaseKey = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
-        const isDemoMode = !supabaseUrl || !supabaseKey;
+        const isInDemoMode = !supabaseUrl || !supabaseKey;
         let sbClient = null;
 
-        if (!isDemoMode && window.supabase && window.supabase.createClient) {
+        if (!isInDemoMode && window.supabase && window.supabase.createClient) {
             sbClient = window.supabase.createClient(supabaseUrl, supabaseKey);
         }
 
-        if (isDemoMode) {
+        if (isInDemoMode) {
             demoBanner.classList.add('show');
         }
 
@@ -789,7 +789,7 @@
             buttonSpinner.style.display = 'inline-block';
 
             try {
-                if (isDemoMode) {
+                if (isInDemoMode) {
                     // Demo mode: store user data in localStorage
                     const userData = {
                         id: 'demo-' + Date.now(),
@@ -878,7 +878,7 @@
         });
 
         // Check if user is already logged in
-        if (!isDemoMode && sbClient) {
+        if (!isInDemoMode && sbClient) {
             sbClient.auth.onAuthStateChange((event, session) => {
                 if (session) {
                     window.location.href = 'welcome.html';
