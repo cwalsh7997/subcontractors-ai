@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>How to Read Construction Plans: A Subcontractor's Guide | Subcontractors.ai</title>
+  <meta name="description" content="Learn how to read construction plans, blueprints, symbols, and scale drawings. Complete guide for subcontractors to understand elevations, sections, and specifications.">
+  <meta name="keywords" content="how to read construction plans, reading blueprints subcontractors, construction symbols, blueprint scale, construction drawings">
+  <meta property="og:title" content="How to Read Construction Plans: A Subcontractor's Guide | Subcontractors.ai">
+  <meta property="og:description" content="Learn how to read construction plans, blueprints, symbols, and scale drawings. Complete guide for subcontractors to understand elevations, sections, and specifications.">
+  <meta property="og:url" content="https://www.subcontractors.ai/resources/blog/how-to-read-construction-plans.html">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://www.subcontractors.ai/resources/blog/how-to-read-construction-plans.html">
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .breadcrumb { padding: 24px 0; border-bottom: 1px solid var(--gray-200); }
+    .breadcrumb a { color: var(--blue); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { color: var(--gray-500); margin: 0 8px; }
+
+    .article-header { padding: 80px 0 40px; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: #fff; }
+    .article-header h1 { font-size: 2.5rem; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.02em; max-width: 800px; }
+    .article-meta { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .article-meta-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #94a3b8; }
+    .article-avatar { width: 40px; height: 40px; border-radius: 50%; background: #b45309; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .article-category { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; background: #fed7aa; color: #b45309; }
+
+    .article-content { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+    .article-content h2 { font-size: 1.5rem; font-weight: 800; color: var(--navy); margin: 40px 0 16px; }
+    .article-content h3 { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin: 32px 0 12px; }
+    .article-content p { font-size: 1.05rem; line-height: 1.8; color: #334155; margin-bottom: 20px; }
+    .article-content ul, .article-content ol { margin: 16px 0 24px 24px; }
+    .article-content li { font-size: 1.05rem; line-height: 1.8; color: #334155; margin-bottom: 8px; }
+    .article-content blockquote { border-left: 4px solid var(--blue); padding: 16px 24px; margin: 24px 0; background: #f8fafc; border-radius: 0 8px 8px 0; }
+    .article-content blockquote p { color: var(--navy); font-weight: 500; margin-bottom: 0; }
+
+    .table-of-contents { background: #f0f4f8; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; margin: 32px 0; }
+    .table-of-contents h3 { margin-top: 0; color: var(--navy); }
+    .table-of-contents ul { margin: 12px 0 0 24px; }
+    .table-of-contents a { color: var(--blue); text-decoration: none; }
+    .table-of-contents a:hover { text-decoration: underline; }
+
+    .callout-box { padding: 24px; border-radius: 12px; margin: 32px 0; }
+    .callout-box.warning { background: #fef3c7; border: 1px solid #f59e0b; }
+    .callout-box.tip { background: #dbeafe; border: 1px solid #2563eb; }
+    .callout-box.important { background: #dcfce7; border: 1px solid #16a34a; }
+    .callout-box h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+
+    .cta-section { background: linear-gradient(135deg, #0f1729 0%, #1e3a5f 100%); color: #fff; padding: 40px; border-radius: 12px; margin: 40px 0; text-align: center; }
+    .cta-section h3 { color: #fff; font-size: 1.3rem; margin-bottom: 12px; }
+    .cta-section p { color: #94a3b8; margin-bottom: 20px; }
+    .cta-section .btn { margin-bottom: 0; }
+
+    .related-posts { padding: 60px 0; background: var(--gray-50); }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    .related-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 24px; transition: all 0.3s; text-decoration: none; color: inherit; }
+    .related-card:hover { border-color: var(--blue); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .related-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .related-card p { font-size: 0.9rem; color: var(--gray-600); line-height: 1.5; }
+
+    .newsletter-cta { padding: 60px 0; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: #fff; text-align: center; }
+    .newsletter-cta h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
+    .newsletter-cta p { color: #94a3b8; margin-bottom: 24px; }
+    .newsletter-form { display: flex; gap: 8px; max-width: 480px; margin: 0 auto; }
+    .newsletter-form input { flex: 1; padding: 12px 16px; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; font-family: inherit; }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+    .newsletter-form input:focus { outline: none; border-color: var(--orange); }
+    .newsletter-form button { padding: 12px 32px; }
+
+    @media (max-width: 768px) {
+      .article-header h1 { font-size: 1.6rem; }
+      .article-meta { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .related-grid { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+    }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Read Construction Plans: A Subcontractor's Guide",
+  "description": "Learn how to read construction plans, blueprints, symbols, and scale drawings. Complete guide for subcontractors to understand elevations, sections, and specifications.",
+  "url": "https://www.subcontractors.ai/resources/blog/how-to-read-construction-plans.html",
+  "datePublished": "2026-03-29",
+  "dateModified": "2026-03-29",
+  "author": { "@type": "Organization", "name": "Subcontractors.ai" },
+  "publisher": { "@type": "Organization", "name": "Subcontractors.ai", "url": "https://www.subcontractors.ai" }
+}
+  </script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../../index.html" class="nav-logo">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+        Subcontractors<span style="color:var(--blue)">.ai</span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="../../find-subs.html">Find Subs</a>
+        <a class="nav-link" href="../../project-board.html">Project Board</a>
+        <a class="nav-link" href="../../gc-ratings.html">GC Ratings</a>
+        <a class="nav-link" href="../../ai-tools.html">AI Tools</a>
+        <a class="nav-link" href="../../pricing.html">Pricing</a>
+      </div>
+      <div class="nav-cta">
+        <button class="btn btn-secondary btn-sm" onclick="window.location.href='../../app/login.html'">Log In</button>
+        <button class="btn btn-primary btn-sm" onclick="window.location.href='../../app/signup.html'">Get Started Free</button>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobile()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span>/</span>
+      <a href="../blog.html">Resources</a>
+      <span>/</span>
+      <a href="./blog.html">Blog</a>
+      <span>/</span>
+      <span>How to Read Construction Plans</span>
+    </div>
+  </div>
+
+  <div class="article-header">
+    <div class="container">
+      <span class="article-category">Education</span>
+      <h1>How to Read Construction Plans: A Subcontractor's Guide</h1>
+      <div class="article-meta">
+        <div class="article-meta-item">
+          <div class="article-avatar">ER</div>
+          <div>Elena Rodriguez</div>
+        </div>
+        <div class="article-meta-item">Mar 29, 2026</div>
+        <div class="article-meta-item">10 min read</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <article class="article-content">
+      <p>Reading construction plans is a fundamental skill for every subcontractor. Whether you're bidding on a job or managing the work once you've won it, understanding blueprints directly impacts your accuracy, timeline, and profitability. Yet many subs struggle with plan interpretation, leading to costly miscalculations, missed details, and scope disputes.</p>
+
+      <p>This guide walks you through the essential elements of construction plans so you can read them with confidence and catch details before they become problems.</p>
+
+      <div class="table-of-contents">
+        <h3>Table of Contents</h3>
+        <ul>
+          <li><a href="#plan-types">Types of Construction Plans</a></li>
+          <li><a href="#scale">Understanding Scale</a></li>
+          <li><a href="#symbols">Common Symbols and Abbreviations</a></li>
+          <li><a href="#elevations">Elevations vs. Sections</a></li>
+          <li><a href="#specs">Reading Specifications</a></li>
+          <li><a href="#details">Plan Details and Call-Outs</a></li>
+          <li><a href="#mistakes">Common Reading Mistakes</a></li>
+        </ul>
+      </div>
+
+      <h2 id="plan-types">Types of Construction Plans</h2>
+
+      <p>Construction drawings typically include several plan types, each showing different information about the same project:</p>
+
+      <h3>Site Plans</h3>
+      <p>The bird's-eye view of the entire project location. Shows property lines, building footprint, parking, utilities, and site access. Use this to understand how your work fits into the broader site context and where equipment access points are.</p>
+
+      <h3>Floor Plans</h3>
+      <p>A horizontal slice of the building at a specific level. Shows room layouts, wall locations, door/window positions, and dimensions. This is where most subs spend the most time because it clearly shows the spatial relationships of the work.</p>
+
+      <h3>Elevation Drawings</h3>
+      <p>Vertical views of the building from different sides (North, South, East, West). Shows exterior appearance, height relationships, and material finishes. Critical if your work touches the exterior or depends on specific heights.</p>
+
+      <h3>Section Drawings</h3>
+      <p>A vertical "slice" through the building showing how different components stack and relate vertically. Shows floor heights, ceiling details, roof structure, and vertical relationships between systems. Invaluable for understanding clearances and vertical routing.</p>
+
+      <h3>Detail Drawings</h3>
+      <p>Magnified views of specific areas (usually noted with a circle on the main plan). Shows exact construction methods, material connections, dimensions, and tolerances. These are critical—details are where the work actually gets built.</p>
+
+      <h2 id="scale">Understanding Scale</h2>
+
+      <p>Every blueprint includes a scale notation, typically shown as a ratio like 1/4" = 1'-0" (meaning 1/4 inch on the drawing equals 1 foot in real life). This is essential information.</p>
+
+      <h3>Common Scales and When They're Used</h3>
+
+      <ul>
+        <li><strong>1/8" = 1'-0"</strong> — Large buildings or large areas (site plans, floor plans)</li>
+        <li><strong>1/4" = 1'-0"</strong> — Standard scale for most floor plans and sections</li>
+        <li><strong>1/2" = 1'-0"</strong> — More detailed work (smaller areas, mechanical plans)</li>
+        <li><strong>1" = 1'-0"</strong> — Detail work where precision is critical</li>
+        <li><strong>Full size (1:1)</strong> — Critical details requiring exact dimensions</li>
+      </ul>
+
+      <p>When in doubt about dimensions shown on a plan, always use the written dimension rather than scaling it with a ruler. Prints can shrink or expand through copying, and the written dimension is the legal requirement.</p>
+
+      <div class="callout-box tip">
+        <h4>Pro Tip</h4>
+        <p>Never scale a drawing to get dimensions. Always use the written dimensions on the plan. If a dimension is missing, ask the architect or GC. Getting it right from the start saves rework and conflict later.</p>
+      </div>
+
+      <h2 id="symbols">Common Symbols and Abbreviations</h2>
+
+      <p>Plans are full of symbols that represent common elements. Learning these saves time and prevents misreading:</p>
+
+      <h3>Material Symbols (cross-hatching patterns)</h3>
+
+      <ul>
+        <li><strong>Brick</strong> — Diagonal lines in rectangular pattern</li>
+        <li><strong>Concrete</strong> — Dots or stippled pattern</li>
+        <li><strong>Stone</strong> — Random dash pattern</li>
+        <li><strong>Steel</strong> — Diagonal lines in opposite directions (crosshatch)</li>
+        <li><strong>Wood</strong> — Diagonal parallel lines</li>
+        <li><strong>Insulation</strong> — Batts shown as parallel diagonal lines, rigid foam as stippled</li>
+      </ul>
+
+      <h3>Common Abbreviations</h3>
+
+      <ul>
+        <li><strong>A/C</strong> — Air Conditioning</li>
+        <li><strong>CI</strong> — Cast Iron</li>
+        <li><strong>DWV</strong> — Drain, Waste, Vent</li>
+        <li><strong>GYP</strong> — Gypsum (drywall)</li>
+        <li><strong>H.W.</strong> — Hot Water</li>
+        <li><strong>NIC</strong> — Not In Contract</li>
+        <li><strong>RCP</strong> — Reflected Ceiling Plan</li>
+        <li><strong>SVT</strong> — Safety Valve and Trap</li>
+        <li><strong>VCT</strong> — Vinyl Composition Tile</li>
+      </ul>
+
+      <p>A key or legend is typically included on the first page of plans. If you see a symbol you don't recognize, check the legend first.</p>
+
+      <h2 id="elevations">Elevations vs. Sections: What's the Difference?</h2>
+
+      <p>These are often confused by new subs, but they show different information:</p>
+
+      <h3>Elevations</h3>
+
+      <p>An elevation is a straight-on view from outside the building (think of taking a photo from far away). It shows:</p>
+
+      <ul>
+        <li>Height and vertical proportions</li>
+        <li>Exterior materials and finishes</li>
+        <li>Window and door locations and sizes</li>
+        <li>Roofline and peak height</li>
+        <li>How materials change (brick base, vinyl above, etc.)</li>
+      </ul>
+
+      <p>Use elevations when your work involves the exterior, affects the facade, or depends on knowing exact finish heights.</p>
+
+      <h3>Sections</h3>
+
+      <p>A section is a vertical "slice" through the building. Imagine cutting the building with a knife and looking at the edge. It shows:</p>
+
+      <ul>
+        <li>Vertical relationships between floor levels</li>
+        <li>Ceiling heights and floor-to-floor dimensions</li>
+        <li>How different systems (structure, mechanical, electrical) stack</li>
+        <li>Roof structure and pitch</li>
+        <li>Foundation and subsurface conditions</li>
+      </ul>
+
+      <p>Sections are critical for understanding vertical routing, clearances, and how your work integrates with other trades.</p>
+
+      <div class="callout-box important">
+        <h4>Critical Detail</h4>
+        <p>Always check the section that cuts through your work area. It reveals clearances, structural members, and conflicts you won't see on floor plans alone. Many expensive surprises are visible in sections.</p>
+      </div>
+
+      <h2 id="specs">Reading Specifications</h2>
+
+      <p>Specifications (the "spec book" or "specs") are the written documents that accompany drawings. They describe materials, methods, quality standards, and performance requirements that drawings alone can't show clearly.</p>
+
+      <h3>How Specs Are Organized</h3>
+
+      <p>Specs follow the MasterFormat system with divisions like:</p>
+
+      <ul>
+        <li><strong>Division 3</strong> — Concrete</li>
+        <li><strong>Division 5</strong> — Metals (steel, structural iron)</li>
+        <li><strong>Division 6</strong> — Wood, Plastics & Composites</li>
+        <li><strong>Division 7</strong> — Thermal & Moisture Protection (roofing, waterproofing)</li>
+        <li><strong>Division 8</strong> — Openings (doors, windows, glass)</li>
+        <li><strong>Division 9</strong> — Finishes (drywall, flooring, painting)</li>
+      </ul>
+
+      <p>Find your trade's division and read it thoroughly before bidding. Specifications often include:</p>
+
+      <ul>
+        <li>Exact material brands and specifications</li>
+        <li>Installation methods and tolerances</li>
+        <li>Quality standards and testing requirements</li>
+        <li>Cleanup and protection requirements</li>
+        <li>Submittals required (samples, certifications, shop drawings)</li>
+      </ul>
+
+      <h3>Critical Spec Details Not to Miss</h3>
+
+      <ul>
+        <li><strong>"Or equal"</strong> — Allows you to substitute equivalent materials (saves money)</li>
+        <li><strong>"As specified"</strong> — Requires exact brand/model (no substitutions)</li>
+        <li><strong>Submittals</strong> — Often required before ordering material (budget time for approvals)</li>
+        <li><strong>Warranties</strong> — Some specs require extended warranties affecting cost</li>
+        <li><strong>Cleaning and Protection</strong> — May require specific methods you need to plan for</li>
+      </ul>
+
+      <h2 id="details">Plan Details and Call-Outs</h2>
+
+      <p>Details are magnified views of specific parts of the building, and they're where the actual construction happens. A detail might be circled on the main floor plan and referenced as "Detail A2.1" (Floor Plan, Sheet 2, Detail 1).</p>
+
+      <h3>Reading a Detail</h3>
+
+      <ul>
+        <li>Check the scale—details are typically at larger scales (1/2" = 1'-0" or larger)</li>
+        <li>Read all dimensions, starting with overall dimensions, then breaking down to smaller components</li>
+        <li>Identify all materials shown (note the cross-hatching or labels)</li>
+        <li>Look for notes that reference specifications or standards</li>
+        <li>Understand the connection points—how does this detail connect to adjacent work?</li>
+      </ul>
+
+      <p>Details often reveal tolerance requirements, specific sequencing, and conflicts with other trades that aren't visible on floor plans.</p>
+
+      <h2 id="mistakes">Common Plan Reading Mistakes (and How to Avoid Them)</h2>
+
+      <h3>Mistake #1: Not Checking All Sheets</h3>
+
+      <p>Details that affect your work might be on a different sheet than the main floor plan. Always cross-reference sheet references and check every referenced detail.</p>
+
+      <h3>Mistake #2: Scaling a Drawing Instead of Using Written Dimensions</h3>
+
+      <p>Prints shrink and stretch. Written dimensions are the legal requirement. If a dimension is missing, ask for it in writing.</p>
+
+      <h3>Mistake #3: Missing Section Information</h3>
+
+      <p>If you only look at floor plans, you'll miss critical vertical clearances, structural conflicts, and routing problems visible only in sections. Always review sections for your work area.</p>
+
+      <h3>Mistake #4: Ignoring the Specifications</h3>
+
+      <p>Plans show the "what," specs show the "how." Missing spec details often means cost overruns or rework.</p>
+
+      <h3>Mistake #5: Not Identifying Conflicts Early</h3>
+
+      <p>Before you bid, compare your work area across all drawings. Look for conflicting dimensions, material changes, or unclear details. Clarifications should happen before you submit the bid, not during construction.</p>
+
+      <div class="callout-box warning">
+        <h4>Protect Yourself</h4>
+        <p>Document all unclear areas on the plans with a marked-up set and submit a written list of questions before bidding. This creates a paper trail of what was unclear and when you asked about it. This protects you if a dispute arises later.</p>
+      </div>
+
+      <h2>Put It Together: Your Plan-Reading Checklist</h2>
+
+      <ol>
+        <li>Start with the cover sheet and table of contents to understand what's included</li>
+        <li>Review site plan to understand overall project context</li>
+        <li>Find and read the floor plan(s) for your work area</li>
+        <li>Review all sections that cut through your work area</li>
+        <li>Check elevations if your work affects the exterior or depends on specific heights</li>
+        <li>Find and read all detail drawings that reference your work</li>
+        <li>Read the specification section(s) for your trade</li>
+        <li>Create a marked-up set noting unclear areas, conflicts, or missing dimensions</li>
+        <li>Submit written questions to the architect/GC before bidding</li>
+        <li>Keep your marked-up set and clarification responses for reference during construction</li>
+      </ol>
+
+      <div class="cta-section">
+        <h3>Ready to Bid Smarter?</h3>
+        <p>Subcontractors.ai helps you manage plans, track changes, and document clarifications all in one platform.</p>
+        <a href="../../pricing.html" class="btn btn-primary">Explore Subcontractors.ai</a>
+      </div>
+
+      <h2>The Bottom Line</h2>
+
+      <p>Reading plans accurately is one of the most valuable skills you can develop as a subcontractor. It directly impacts your estimates, your profitability, and the quality of your work. Invest time in understanding plans thoroughly, ask clarifying questions early, and document everything. The extra hour spent reading plans carefully before bidding can save you thousands in change orders and rework.</p>
+
+      <p>Master plan reading, and you'll win more bids, have fewer surprises on site, and build a reputation for detail-oriented work. That's a competitive advantage.</p>
+    </article>
+  </div>
+
+  <div class="related-posts">
+    <div class="container">
+      <h2 style="font-size: 2rem; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Related Articles</h2>
+      <p style="color: var(--gray-600); margin-bottom: 32px;">Learn more about construction fundamentals</p>
+      <div class="related-grid">
+        <a href="./construction-change-order-guide.html" class="related-card">
+          <span style="color: #b45309; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Business</span>
+          <h3>Construction Change Orders: How Subs Can Protect Their Profit</h3>
+          <p>Learn to document change orders, negotiate scope changes, and protect your margins from GC tactics.</p>
+        </a>
+        <a href="./winning-more-bids.html" class="related-card">
+          <span style="color: #b45309; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Growth</span>
+          <h3>How to Win More Bids Without Lowering Your Price</h3>
+          <p>Strategies for winning bids through value, reliability, and positioning instead of price cuts.</p>
+        </a>
+        <a href="./best-construction-accounting-software.html" class="related-card">
+          <span style="color: #7e22ce; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Technology</span>
+          <h3>Best Accounting Software for Subcontractors (2026 Comparison)</h3>
+          <p>Compare construction accounting tools to track estimates, change orders, and profitability.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="newsletter-cta">
+    <div class="container">
+      <h2>Get Construction Insights Weekly</h2>
+      <p>Real advice from people who work in construction</p>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="Your email" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+          <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="footer-links">
+            <li><a href="../../find-subs.html">Find Subs</a></li>
+            <li><a href="../../project-board.html">Project Board</a></li>
+            <li><a href="../../gc-ratings.html">GC Ratings</a></li>
+            <li><a href="../../ai-tools.html">AI Tools</a></li>
+            <li><a href="../../pricing.html">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="../lien-waiver-templates.html">Lien Waiver Templates</a></li>
+            <li><a href="../pay-app-templates.html">Pay App Templates</a></li>
+            <li><a href="../insurance-guide.html">Insurance Guide</a></li>
+            <li><a href="../bonding-guide.html">Bonding Guide</a></li>
+            <li><a href="../blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="../../about.html">About / Our Story</a></li>
+            <li><a href="../../contact.html">Contact</a></li>
+            <li><a href="../../privacy.html">Privacy Policy</a></li>
+            <li><a href="../../terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+        <span>Built with ⚡ by a sub, for subs.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobile() {
+      const navLinks = document.querySelector('.nav-links');
+      const navCta = document.querySelector('.nav-cta');
+      navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+      navCta.style.display = navCta.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
+</body>
+</html>

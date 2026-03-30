@@ -1,0 +1,25 @@
+{
+  "name": "Subcontractors.ai",
+  "short_name": "Subcontractors",
+  "description": "AI-powered platform built exclusively for construction subcontractors. Find projects, rate GCs, track payments, and grow your business.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1729",
+  "theme_color": "#2563eb",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.svg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml"
+    }
+  ]
+}

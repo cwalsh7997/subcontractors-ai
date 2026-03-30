@@ -1,0 +1,7 @@
+# Ads.txt file for subcontractors.ai
+# This file serves as a placeholder for future ad network integration
+# Add your ad network account information here when ready to monetize
+# Format: https://iabtechlab.com/ads-txt/
+#
+# Example entries (to be populated):
+# google.com, pub-xxxxxxxxxxxxxxxx, DIRECT, f08c47fec0942fa0

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Construction Change Orders: How Subs Can Protect Their Profit | Subcontractors.ai</title>
+  <meta name="description" content="Learn how to manage construction change orders, document scope changes, protect your margins, and defend against common GC tactics that erode profit.">
+  <meta name="keywords" content="construction change order, change order process, scope changes construction, protect profit subcontractor">
+  <meta property="og:title" content="Construction Change Orders: How Subs Can Protect Their Profit | Subcontractors.ai">
+  <meta property="og:description" content="Learn how to manage construction change orders, document scope changes, protect your margins, and defend against common GC tactics that erode profit.">
+  <meta property="og:url" content="https://www.subcontractors.ai/resources/blog/construction-change-order-guide.html">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://www.subcontractors.ai/resources/blog/construction-change-order-guide.html">
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .breadcrumb { padding: 24px 0; border-bottom: 1px solid var(--gray-200); }
+    .breadcrumb a { color: var(--blue); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { color: var(--gray-500); margin: 0 8px; }
+
+    .article-header { padding: 80px 0 40px; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: #fff; }
+    .article-header h1 { font-size: 2.5rem; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.02em; max-width: 800px; }
+    .article-meta { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .article-meta-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #94a3b8; }
+    .article-avatar { width: 40px; height: 40px; border-radius: 50%; background: #b45309; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .article-category { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; background: #fed7aa; color: #b45309; }
+
+    .article-content { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+    .article-content h2 { font-size: 1.5rem; font-weight: 800; color: var(--navy); margin: 40px 0 16px; }
+    .article-content h3 { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin: 32px 0 12px; }
+    .article-content p { font-size: 1.05rem; line-height: 1.8; color: #334155; margin-bottom: 20px; }
+    .article-content ul, .article-content ol { margin: 16px 0 24px 24px; }
+    .article-content li { font-size: 1.05rem; line-height: 1.8; color: #334155; margin-bottom: 8px; }
+
+    .callout-box { padding: 24px; border-radius: 12px; margin: 32px 0; }
+    .callout-box.warning { background: #fef3c7; border: 1px solid #f59e0b; }
+    .callout-box.tip { background: #dbeafe; border: 1px solid #2563eb; }
+    .callout-box.important { background: #dcfce7; border: 1px solid #16a34a; }
+    .callout-box h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+
+    .cta-section { background: linear-gradient(135deg, #0f1729 0%, #1e3a5f 100%); color: #fff; padding: 40px; border-radius: 12px; margin: 40px 0; text-align: center; }
+    .cta-section h3 { color: #fff; font-size: 1.3rem; margin-bottom: 12px; }
+    .cta-section p { color: #94a3b8; margin-bottom: 20px; }
+
+    .related-posts { padding: 60px 0; background: var(--gray-50); }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    .related-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 24px; transition: all 0.3s; text-decoration: none; color: inherit; }
+    .related-card:hover { border-color: var(--blue); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .related-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .related-card p { font-size: 0.9rem; color: var(--gray-600); line-height: 1.5; }
+
+    .newsletter-cta { padding: 60px 0; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: #fff; text-align: center; }
+    .newsletter-cta h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
+    .newsletter-cta p { color: #94a3b8; margin-bottom: 24px; }
+    .newsletter-form { display: flex; gap: 8px; max-width: 480px; margin: 0 auto; }
+    .newsletter-form input { flex: 1; padding: 12px 16px; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; font-family: inherit; }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+    .newsletter-form input:focus { outline: none; border-color: var(--orange); }
+    .newsletter-form button { padding: 12px 32px; }
+
+    @media (max-width: 768px) {
+      .article-header h1 { font-size: 1.6rem; }
+      .article-meta { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .related-grid { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+    }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Construction Change Orders: How Subs Can Protect Their Profit",
+  "description": "Learn how to manage construction change orders, document scope changes, protect your margins, and defend against common GC tactics that erode profit.",
+  "url": "https://www.subcontractors.ai/resources/blog/construction-change-order-guide.html",
+  "datePublished": "2026-03-29",
+  "dateModified": "2026-03-29",
+  "author": { "@type": "Organization", "name": "Subcontractors.ai" },
+  "publisher": { "@type": "Organization", "name": "Subcontractors.ai", "url": "https://www.subcontractors.ai" }
+}
+  </script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../../index.html" class="nav-logo">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+        Subcontractors<span style="color:var(--blue)">.ai</span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="../../find-subs.html">Find Subs</a>
+        <a class="nav-link" href="../../project-board.html">Project Board</a>
+        <a class="nav-link" href="../../gc-ratings.html">GC Ratings</a>
+        <a class="nav-link" href="../../ai-tools.html">AI Tools</a>
+        <a class="nav-link" href="../../pricing.html">Pricing</a>
+      </div>
+      <div class="nav-cta">
+        <button class="btn btn-secondary btn-sm" onclick="window.location.href='../../app/login.html'">Log In</button>
+        <button class="btn btn-primary btn-sm" onclick="window.location.href='../../app/signup.html'">Get Started Free</button>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobile()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span>/</span>
+      <a href="../blog.html">Resources</a>
+      <span>/</span>
+      <a href="./blog.html">Blog</a>
+      <span>/</span>
+      <span>Construction Change Orders</span>
+    </div>
+  </div>
+
+  <div class="article-header">
+    <div class="container">
+      <span class="article-category">Business</span>
+      <h1>Construction Change Orders: How Subs Can Protect Their Profit</h1>
+      <div class="article-meta">
+        <div class="article-meta-item">
+          <div class="article-avatar">JM</div>
+          <div>Jake Mitchell</div>
+        </div>
+        <div class="article-meta-item">Mar 29, 2026</div>
+        <div class="article-meta-item">11 min read</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <article class="article-content">
+      <p>Change orders are where sub profits go to die. Or they're where you make money instead of breaking even. The difference is whether you understand how to document, price, and defend scope changes.</p>
+
+      <p>Most subs are sloppy with change orders. They start work without approval, document changes poorly, and accept below-cost pricing from GCs. Meanwhile, professional subs treat every change order as a line item on their P&L. This guide shows you how.</p>
+
+      <h2>What Is a Change Order? (And What It's Not)</h2>
+
+      <p>A change order is a written directive that modifies the scope of work in your contract. It should include:</p>
+
+      <ul>
+        <li>Description of the change (what's being added or removed)</li>
+        <li>Reason for the change (who requested it and why)</li>
+        <li>Impact on cost (how much the change costs or saves)</li>
+        <li>Impact on schedule (how much time the change adds or removes)</li>
+        <li>Approval signature (from GC and sometimes the owner)</li>
+      </ul>
+
+      <p>A change order is NOT:</p>
+
+      <ul>
+        <li>Verbal approval from the GC to do extra work</li>
+        <li>An email saying "go ahead and fix that"</li>
+        <li>A text message asking you to add something</li>
+        <li>A modification to the plans you discover on site</li>
+      </ul>
+
+      <p>If it's not in writing with approval signatures, it's not a change order. And if it's not a change order, you likely won't get paid for it.</p>
+
+      <div class="callout-box warning">
+        <h4>Critical Rule</h4>
+        <p>Do not perform work outside your contract scope without a signed change order. If the GC asks you to do it anyway, get it in writing before you start. "We'll figure it out later" is code for "you'll never see payment for this."</p>
+      </div>
+
+      <h2>The Three Types of Change Orders You'll Face</h2>
+
+      <h3>1. Owner-Requested Changes (The Easy Ones)</h3>
+
+      <p>The owner changes their mind about a design detail, wants to upgrade materials, or modifies the scope. The GC issues a change order to you. This is straightforward—the change is typically approved and funded because the owner requested it.</p>
+
+      <p><strong>Your job:</strong> Document the exact scope change, quote it at your normal margin (don't discount), and get it signed before you start work.</p>
+
+      <h3>2. Design Corrections (The Tricky Ones)</h3>
+
+      <p>The plans showed something one way, but the architect discovers an error or the owner wants to fix a problem. This triggers a change order. The GC might try to pressure you to absorb some cost as "our problem" or "just fix it."</p>
+
+      <p><strong>Your job:</strong> Distinguish between your error and the designer's error. If the plans were wrong, the cost is a change order and the owner pays. If you bid wrong, that's your problem. Be clear on which one it is.</p>
+
+      <h3>3. Site Condition Changes (The Expensive Ones)</h3>
+
+      <p>You discover conditions different from what the plans suggested—subsurface conditions, existing conditions that need rework, safety issues. This is often contentious because nobody wants to pay for it.</p>
+
+      <p><strong>Your job:</strong> Document the unexpected condition immediately with photos, descriptions, and scope impact. Notify the GC in writing that you're stopping normal work and request a change order. Don't keep working and bill it later—that looks like you absorbed it voluntarily.</p>
+
+      <h2>The Change Order Process: How to Do It Right</h2>
+
+      <h3>Step 1: Identify the Scope Change</h3>
+
+      <p>Something's different from the contract. It could be:</p>
+
+      <ul>
+        <li>Work the GC is asking you to add (verbal request)</li>
+        <li>Work you discover is necessary that wasn't in the contract</li>
+        <li>A change in how the work needs to be done</li>
+        <li>An error in the plans that requires rework</li>
+      </ul>
+
+      <p><strong>Action:</strong> Stop and notify the GC immediately. Don't assume it's your responsibility or that you'll absorb the cost.</p>
+
+      <h3>Step 2: Document the Change</h3>
+
+      <p>Create a detailed description of what's changing:</p>
+
+      <ul>
+        <li>What was in the original contract (the baseline)</li>
+        <li>What is being changed (the modification)</li>
+        <li>Why (reason for change)</li>
+        <li>How it affects the work (scope, timing, coordination)</li>
+      </ul>
+
+      <p>Include photos, marked-up plans, or any visual documentation that supports the change.</p>
+
+      <h3>Step 3: Price the Change Order</h3>
+
+      <p>This is where most subs lose money. They either:</p>
+
+      <ul>
+        <li>Guess at the price without calculating costs</li>
+        <li>Underprice it to appease the GC</li>
+        <li>Base it on the original bid margin instead of actual cost</li>
+      </ul>
+
+      <p><strong>How to price it correctly:</strong></p>
+
+      <ol>
+        <li>Calculate actual material cost (not estimated)</li>
+        <li>Calculate labor hours at your loaded labor rate (wage + burden)</li>
+        <li>Add equipment costs if applicable</li>
+        <li>Apply your normal margin (10-15% for established work, higher for risky work)</li>
+        <li>Factor in schedule impact if it delays other work</li>
+      </ol>
+
+      <p>Example: Your crew normally costs $150/hour loaded. A change order requires 20 hours of labor, $2,000 in materials, and 2 hours of equipment rental at $100/hour.</p>
+
+      <ul>
+        <li>Labor: 20 hrs × $150 = $3,000</li>
+        <li>Materials: $2,000</li>
+        <li>Equipment: 2 hrs × $100 = $200</li>
+        <li>Subtotal: $5,200</li>
+        <li>Margin (12%): $624</li>
+        <li><strong>Change order cost: $5,824</strong></li>
+      </ul>
+
+      <p>Some GCs will push back on that margin. Don't budge. You're not absorbing their mistakes or design changes. That margin covers your overhead and profit.</p>
+
+      <h3>Step 4: Submit for Approval</h3>
+
+      <p>Send the change order to the GC with:</p>
+
+      <ul>
+        <li>Detailed description of the change</li>
+        <li>Cost breakdown (labor, materials, equipment)</li>
+        <li>Schedule impact (how many days does this add?)</li>
+        <li>Supporting documentation (photos, calculations)</li>
+        <li>Date needed for approval (usually "before work begins")</li>
+      </ul>
+
+      <p>Request written approval before you start work. If the GC says "start and we'll approve later," respond in writing: "I'll start after I receive approved change order #X, dated [date]."</p>
+
+      <h3>Step 5: Track the Change Order</h3>
+
+      <p>Keep a running log of all approved change orders. Track:</p>
+
+      <ul>
+        <li>Change order number</li>
+        <li>Date approved</li>
+        <li>Amount approved</li>
+        <li>Work completed to date</li>
+        <li>Status (pending/approved/paid)</li>
+      </ul>
+
+      <p>This prevents disputes later when the GC claims they never approved it or approved a different amount.</p>
+
+      <div class="callout-box tip">
+        <h4>Pro Tip</h4>
+        <p>Include a line on every change order: "This change order is contingent on receipt of payment before we start." Some GCs will push back, but it protects you from doing work and never getting paid.</p>
+      </div>
+
+      <h2>Common GC Tactics and How to Counter Them</h2>
+
+      <h3>Tactic #1: "Let's Just Do It and Figure Out the Price Later"</h3>
+
+      <p><strong>Translation:</strong> We might not pay you for this, or we'll pay you much less later.</p>
+
+      <p><strong>Your response:</strong> "I'll get started as soon as I receive an approved change order. What's the timeline on getting that approved?"</p>
+
+      <p>If they won't approve it in writing, they either don't plan to pay you or they're hiding the cost from the owner. Either way, don't start work.</p>
+
+      <h3>Tactic #2: "Your Price Is Too High"</h3>
+
+      <p><strong>Translation:</strong> I want you to absorb some of the cost.</p>
+
+      <p><strong>Your response:</strong> "The price reflects actual cost plus our standard margin. If you see an error in the calculations, I'm happy to review it. Otherwise, this is what the work costs."</p>
+
+      <p>Then wait. Many GCs approve the high price later because they don't have another option. Don't negotiate down just because they complain.</p>
+
+      <h3>Tactic #3: "We'll Pay You When We Get Paid by the Owner"</h3>
+
+      <p><strong>Translation:</strong> Your change order might not get paid for months.</p>
+
+      <p><strong>Your response:</strong> "Our contract terms are Net 30 from invoice date. I'll invoice as soon as the work is complete."</p>
+
+      <p>If they won't commit to your normal payment terms, add a contingency—the change order cost increases 2-3% per month of delay.</p>
+
+      <h3>Tactic #4: Scope Creep (Small Changes Add Up)</h3>
+
+      <p>The GC asks for "just a few more ..." and before you know it, you've done $10K of unapproved work. Each small request seems minor, so you do it. But collectively, they add up.</p>
+
+      <p><strong>Your response:</strong> Document EVERY change, no matter how small. If it's outside the original scope, it needs a change order. No exceptions, no "we'll settle up later."</p>
+
+      <h2>Red Flags: When NOT to Trust a Change Order</h2>
+
+      <ul>
+        <li><strong>Verbal approval only</strong> — If it's not in writing, it doesn't exist</li>
+        <li><strong>No signature or approval authority</strong> — Did the GC's project manager approve it? Or did they pass the buck?</li>
+        <li><strong>Retroactive change orders</strong> — "You already did the work, now we're approving it" often means you won't get paid</li>
+        <li><strong>Change order issued by someone without authority</strong> — The sub foreman can't approve change orders. It needs to come from the GC's management</li>
+        <li><strong>Owner not mentioned or approving</strong> — If the owner didn't approve the change order, the GC can't pay it</li>
+      </ul>
+
+      <h2>The Most Important Rule</h2>
+
+      <p>Your contract scope is your contract scope. Everything outside that scope is a change order. You have zero obligation to absorb design errors, owner changes, or site condition surprises. That's what change orders are for.</p>
+
+      <p>Subs who treat change orders as optional profit losses end the year surprised at how little they made. Subs who treat each change order as a billable line item protect their margin and build a sustainable business.</p>
+
+      <div class="cta-section">
+        <h3>Track Change Orders Professionally</h3>
+        <p>Subcontractors.ai helps you document, track, and manage change orders to protect your profit margins.</p>
+        <a href="../../pricing.html" class="btn btn-primary">Start Managing Change Orders</a>
+      </div>
+
+      <h2>Bottom Line</h2>
+
+      <p>Change orders are not optional. They're how you protect your bid margin from scope creep and change. Document everything, price it right, get approval before you start, and track it all the way through payment. Do that and change orders become profit instead of headaches.</p>
+    </article>
+  </div>
+
+  <div class="related-posts">
+    <div class="container">
+      <h2 style="font-size: 2rem; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Related Articles</h2>
+      <p style="color: var(--gray-600); margin-bottom: 32px;">Protect your margins and project profitability</p>
+      <div class="related-grid">
+        <a href="./construction-retainage-guide.html" class="related-card">
+          <span style="color: #b45309; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Business</span>
+          <h3>Construction Retainage: How Subs Can Get Paid What They're Owed</h3>
+          <p>Navigate retainage laws, negotiate release, and collect final payment efficiently.</p>
+        </a>
+        <a href="./how-to-read-construction-plans.html" class="related-card">
+          <span style="color: #b45309; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Education</span>
+          <h3>How to Read Construction Plans: A Subcontractor's Guide</h3>
+          <p>Understand plans and specs to avoid bidding errors and surprise costs.</p>
+        </a>
+        <a href="./gc-late-payment-signs.html" class="related-card">
+          <span style="color: #b45309; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Business</span>
+          <h3>5 Signs a GC Will Pay You Late (And What to Do)</h3>
+          <p>Spot payment red flags early and protect yourself before work starts.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="newsletter-cta">
+    <div class="container">
+      <h2>Get Construction Insights Weekly</h2>
+      <p>Real advice from people who work in construction</p>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="Your email" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="font-weight:800;font-size:1.2rem;color:#fff;">Subcontractors<span style="color:var(--blue-light);">.ai</span></div>
+          <p>The AI-powered platform built exclusively for construction subcontractors. Built by a sub, for subs.</p>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="footer-links">
+            <li><a href="../../find-subs.html">Find Subs</a></li>
+            <li><a href="../../project-board.html">Project Board</a></li>
+            <li><a href="../../gc-ratings.html">GC Ratings</a></li>
+            <li><a href="../../ai-tools.html">AI Tools</a></li>
+            <li><a href="../../pricing.html">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="../lien-waiver-templates.html">Lien Waiver Templates</a></li>
+            <li><a href="../pay-app-templates.html">Pay App Templates</a></li>
+            <li><a href="../insurance-guide.html">Insurance Guide</a></li>
+            <li><a href="../bonding-guide.html">Bonding Guide</a></li>
+            <li><a href="../blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="../../about.html">About / Our Story</a></li>
+            <li><a href="../../contact.html">Contact</a></li>
+            <li><a href="../../privacy.html">Privacy Policy</a></li>
+            <li><a href="../../terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Subcontractors.ai. All rights reserved.</span>
+        <span>Built with ⚡ by a sub, for subs.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobile() {
+      const navLinks = document.querySelector('.nav-links');
+      const navCta = document.querySelector('.nav-cta');
+      navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+      navCta.style.display = navCta.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
+</body>
+</html>

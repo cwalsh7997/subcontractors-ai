@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>AI Tools by Trade | Construction Subcontractors | Subcontractors.ai</title>
+<meta name="description" content="Trade-specific AI tools for construction subcontractors. Electricians, plumbers, HVAC, concrete, steel, and glass contractors. Find the right tools for your trade.">
+<meta name="keywords" content="subcontractor tools by trade, electrical tools, plumbing tools, HVAC tools, concrete tools, steel tools, glass tools, construction estimating">
+<meta property="og:title" content="AI Tools by Trade | Subcontractors.ai">
+<meta property="og:description" content="Trade-specific AI tools for construction subcontractors across all major trades.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.subcontractors.ai/trades/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Tools by Trade">
+<meta name="twitter:description" content="Construction estimating and bidding tools for all trades.">
+<link rel="canonical" href="https://www.subcontractors.ai/trades/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Subcontractors.ai"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI Tools by Trade",
+  "description": "Trade-specific AI tools for construction subcontractors",
+  "url": "https://www.subcontractors.ai/trades/"
+}
+</script>
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a2e; line-height: 1.6; background: #fff; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* ============ BRAND TOKENS ============ */
+:root {
+  --navy: #0f1729;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --orange: #f59e0b;
+  --green: #10b981;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+/* ============ UTILITIES ============ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section-alt { background: var(--gray-50); }
+.text-center { text-align: center; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mt-4 { margin-top: 32px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mb-4 { margin-bottom: 32px; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 16px; }
+.gap-3 { gap: 24px; }
+
+/* ============ BUTTONS ============ */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-secondary { background: #fff; color: var(--navy); border: 2px solid var(--gray-200); }
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+.btn-sm { padding: 8px 16px; font-size: 0.85rem; }
+.btn-lg { padding: 16px 32px; font-size: 1.1rem; }
+
+/* ============ NAVIGATION ============ */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gray-200); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; max-width: 1200px; margin: 0 auto; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; color: var(--navy); white-space: nowrap; letter-spacing: -0.02em; }
+.nav-logo svg { width: 34px; height: 34px; flex-shrink: 0; }
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-link { padding: 8px 14px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.nav-link:hover { color: var(--navy); background: var(--gray-50); }
+.nav-link.active { color: var(--blue); font-weight: 600; }
+.nav-cta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+/* ============ HERO ============ */
+.hero { padding: 140px 0 80px; background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 50%, #1a3352 100%); color: #fff; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.hero-content { position: relative; z-index: 1; }
+.hero h1 { font-size: 3.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.02em; }
+.hero h1 span { color: var(--orange); }
+.hero-sub { font-size: 1.2rem; color: #94a3b8; line-height: 1.7; margin-bottom: 32px; }
+
+/* ============ SECTION LABEL ============ */
+.section-label { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 16px; }
+.section-label-blue { background: rgba(37,99,235,0.1); color: var(--blue); }
+
+/* ============ TRADE CARDS ============ */
+.trade-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 40px 28px; text-align: center; transition: all 0.3s; cursor: pointer; display: block; }
+.trade-card:hover { border-color: var(--blue); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.trade-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+.trade-card h3 { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.trade-card p { font-size: 0.9rem; color: var(--gray-600); line-height: 1.6; margin-bottom: 20px; }
+.trade-card .btn { margin: 0 auto; }
+
+/* ============ GRID ============ */
+.grid { display: grid; gap: 24px; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* ============ FOOTER ============ */
+.footer { background: var(--navy); color: #fff; padding: 60px 0 20px; margin-top: 80px; }
+.footer-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 40px; }
+.footer-section h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; color: #fff; }
+.footer-section a { color: #cbd5e1; font-size: 0.85rem; display: block; margin-bottom: 8px; transition: color 0.2s; }
+.footer-section a:hover { color: var(--orange); }
+.footer-bottom { border-top: 1px solid #1e3a5f; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #94a3b8; }
+
+/* ============ MEDIA QUERIES ============ */
+@media (max-width: 768px) {
+  .hero { padding: 100px 0 60px; }
+  .hero h1 { font-size: 2rem; }
+  .section { padding: 60px 0; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/index.html" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0f1729"/><path d="M8 22V14l8-6 8 6v8a2 2 0 01-2 2H10a2 2 0 01-2-2z" stroke="#f59e0b" stroke-width="2" fill="none"/><path d="M13 24v-6h6v6" stroke="#f59e0b" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#2563eb"/></svg>
+      Subcontractors<span style="color:var(--blue)">.ai</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/find-subs.html">Find Subs</a>
+      <a class="nav-link" href="/gc-ratings.html">GC Ratings</a>
+      <a class="nav-link" href="/ai-tools.html">AI Tools</a>
+      <a class="nav-link" href="/pricing.html">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary btn-sm" onclick="window.location.href='/app/login.html'">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="window.location.href='/app/signup.html'">Get Started</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="section-label section-label-blue">AI Tools for Every Trade</div>
+    <h1>Trade-Specific <span>AI Estimating</span></h1>
+    <p class="hero-sub">Choose your trade and discover AI-powered tools built specifically for your construction business. Faster bidding, better estimating, higher profit margins.</p>
+  </div>
+</section>
+
+<!-- Trades Directory Section -->
+<section class="section">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:60px;">
+      <h2 style="font-size:2.4rem; font-weight:900; color:var(--navy);">Find Your Trade</h2>
+      <p style="color:var(--gray-600); margin-top:12px; font-size:1.05rem;">Select your trade to explore AI tools designed for your specific needs.</p>
+    </div>
+
+    <div class="grid grid-3">
+      <a href="/trades/electricians.html" class="trade-card">
+        <span class="trade-icon">⚡</span>
+        <h3>Electricians</h3>
+        <p>AI electrical bid estimating, panel sizing, and contract review built for electrical subcontractors.</p>
+        <button class="btn btn-primary btn-sm">Explore</button>
+      </a>
+
+      <a href="/trades/plumbing.html" class="trade-card">
+        <span class="trade-icon">🔧</span>
+        <h3>Plumbing</h3>
+        <p>Plumbing bid software with AI scope extraction, material pricing, and labor estimation.</p>
+        <button class="btn btn-primary btn-sm">Explore</button>
+      </a>
+
+      <a href="/trades/hvac.html" class="trade-card">
+        <span class="trade-icon">❄️</span>
+        <h3>HVAC</h3>
+        <p>HVAC estimating software with load calculations, equipment pricing, and labor management.</p>
+        <button class="btn btn-primary btn-sm">Explore</button>
+      </a>
+
+      <a href="/trades/concrete.html" class="trade-card">
+        <span class="trade-icon">🏗️</span>
+        <h3>Concrete</h3>
+        <p>Concrete estimating with AI volume calculation, material pricing, and productivity tracking.</p>
+        <button class="btn btn-primary btn-sm">Explore</button>
+      </a>
+
+      <a href="/trades/steel.html" class="trade-card">
+        <span class="trade-icon">⚙️</span>
+        <h3>Structural Steel</h3>
+        <p>Steel fabrication and erection estimating with tonnage extraction and mill pricing.</p>
+        <button class="btn btn-primary btn-sm">Explore</button>
+      </a>
+
+      <a href="/trades/glass-glazing.html" class="trade-card">
+        <span class="trade-icon">🪟</span>
+        <h3>Glass & Glazing</h3>
+        <p>Curtain wall and storefront estimating with square footage extraction and real-time pricing.</p>
+        <button class="btn btn-primary btn-sm">Explore</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Why Trade-Specific Section -->
+<section class="section section-alt">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:60px;">
+      <h2 style="font-size:2.4rem; font-weight:900; color:var(--navy);">Why Trade-Specific Tools?</h2>
+    </div>
+
+    <div class="grid grid-3">
+      <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:28px; text-align:center;">
+        <div style="font-size:2.4rem; margin-bottom:16px;">✓</div>
+        <h3 style="font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:12px;">Built for Your Workflow</h3>
+        <p style="color:var(--gray-600); font-size:0.9rem; line-height:1.6;">Each trade has unique estimating needs. Our tools are purpose-built for electricians, plumbers, concrete, and more.</p>
+      </div>
+
+      <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:28px; text-align:center;">
+        <div style="font-size:2.4rem; margin-bottom:16px;">📊</div>
+        <h3 style="font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:12px;">Industry-Specific Data</h3>
+        <p style="color:var(--gray-600); font-size:0.9rem; line-height:1.6;">Real-time pricing, labor rates, and productivity data specific to your trade and market.</p>
+      </div>
+
+      <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:28px; text-align:center;">
+        <div style="font-size:2.4rem; margin-bottom:16px;">💡</div>
+        <h3 style="font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:12px;">Smart AI Scope Extraction</h3>
+        <p style="color:var(--gray-600); font-size:0.9rem; line-height:1.6;">AI understands your trade's unique scope requirements and extracts what you need to bid accurately.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section">
+  <div class="container">
+    <div style="background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%); color: #fff; padding: 60px 0; border-radius: var(--radius-lg); text-align: center;">
+      <h2 style="font-size:2rem; font-weight:900; margin-bottom:16px;">Ready to Get Started?</h2>
+      <p style="font-size:1.1rem; color:#dbeafe; margin-bottom:32px; max-width:600px; margin-left:auto; margin-right:auto;">Join hundreds of construction subcontractors bidding smarter and winning more profitable work.</p>
+      <button class="btn btn-secondary btn-lg" style="background:#fff; color:var(--blue); border:none;" onclick="window.location.href='/app/signup.html'">Get Your Free 14-Day Trial</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Product</h3>
+        <a href="/ai-tools.html">AI Tools</a>
+        <a href="/trades/">By Trade</a>
+        <a href="/find-subs.html">Find Subs</a>
+        <a href="/pricing.html">Pricing</a>
+      </div>
+      <div class="footer-section">
+        <h3>Company</h3>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy.html">Privacy</a>
+      </div>
+      <div class="footer-section">
+        <h3>Resources</h3>
+        <a href="/blog">Blog</a>
+        <a href="/faq">FAQ</a>
+        <a href="/help">Help Center</a>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <a href="/trades/electricians.html">Electricians</a>
+        <a href="/trades/plumbing.html">Plumbing</a>
+        <a href="/trades/hvac.html">HVAC</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Subcontractors.ai. All rights reserved.</div>
+      <div style="display:flex; gap:24px;">
+        <a href="#" style="color:#94a3b8;">Twitter</a>
+        <a href="#" style="color:#94a3b8;">LinkedIn</a>
+        <a href="#" style="color:#94a3b8;">Facebook</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
