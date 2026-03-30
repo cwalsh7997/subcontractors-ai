@@ -583,10 +583,10 @@
         const supabaseUrl = window.SUPABASE_URL;
         const supabaseKey = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
         const isInDemoMode = !supabaseUrl || !supabaseKey;
-        let sbClient = null;
+        let signupClient = null;
 
         if (!isInDemoMode && window.supabase && window.supabase.createClient) {
-            sbClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            signupClient = window.supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         if (isInDemoMode) {
@@ -815,7 +815,7 @@
                     }, 1500);
                 } else {
                     // Production mode: use Supabase
-                    const { data, error } = await sbClient.auth.signUp({
+                    const { data, error } = await signupClient.auth.signUp({
                         email: emailInput.value,
                         password: passwordInput.value,
                         options: {
@@ -878,8 +878,8 @@
         });
 
         // Check if user is already logged in
-        if (!isInDemoMode && sbClient) {
-            sbClient.auth.onAuthStateChange((event, session) => {
+        if (!isInDemoMode && signupClient) {
+            signupClient.auth.onAuthStateChange((event, session) => {
                 if (session) {
                     window.location.href = 'welcome.html';
                 }
