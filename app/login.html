@@ -365,10 +365,10 @@
         const supabaseUrl = window.SUPABASE_URL;
         const supabaseKey = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY;
         const isInDemoMode = !supabaseUrl || !supabaseKey;
-        let sbClient = null;
+        let loginClient = null;
 
         if (!isInDemoMode && window.supabase && window.supabase.createClient) {
-            sbClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            loginClient = window.supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         if (isInDemoMode) {
@@ -385,12 +385,12 @@
                 emailInput.classList.add('error');
                 return;
             }
-            if (!sbClient) {
+            if (!loginClient) {
                 alert('Password reset requires a connected account.');
                 return;
             }
             try {
-                const { error } = await sbClient.auth.resetPasswordForEmail(email, {
+                const { error } = await loginClient.auth.resetPasswordForEmail(email, {
                     redirectTo: window.location.origin + '/app/reset-password.html'
                 });
                 if (error) {
@@ -496,7 +496,7 @@
                     }, 1000);
                 } else {
                     // Production mode: use Supabase
-                    const { data, error } = await sbClient.auth.signInWithPassword({
+                    const { data, error } = await loginClient.auth.signInWithPassword({
                         email: emailInput.value,
                         password: passwordInput.value
                     });
@@ -533,8 +533,8 @@
         });
 
         // Check if user is already logged in
-        if (!isInDemoMode && sbClient) {
-            sbClient.auth.onAuthStateChange((event, session) => {
+        if (!isInDemoMode && loginClient) {
+            loginClient.auth.onAuthStateChange((event, session) => {
                 if (session) {
                     window.location.href = 'dashboard.html';
                 }
