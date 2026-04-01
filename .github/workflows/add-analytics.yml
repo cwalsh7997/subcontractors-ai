@@ -1,0 +1,36 @@
+name: Add Vercel Analytics Script
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-analytics.yml'
+
+jobs:
+  add-analytics:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add analytics script to HTML files
+        run: |
+          SCRIPT_TAG='<script defer src="/_vercel/insights/script.js"></script>'
+          find . -name "*.html" -type f | while read file; do
+            if ! grep -q "/_vercel/insights/script.js" "$file"; then
+              sed -i "s|</head>|${SCRIPT_TAG}\n</head>|" "$file"
+              echo "Updated: $file"
+            else
+              echo "Skipped (already has script): $file"
+            fi
+          done
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Add Vercel analytics tracking script to all HTML pages"
+          git push
