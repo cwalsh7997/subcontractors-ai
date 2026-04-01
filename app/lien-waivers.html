@@ -82,6 +82,7 @@
             .form-grid { grid-template-columns: 1fr; }
         }
     </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
     <button class="hamburger" onclick="toggleSidebar ? toggleSidebar() : document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
@@ -582,7 +583,8 @@
         function printWaiver() {
             const content = document.getElementById('preview').innerHTML;
             const win = window.open('', '_blank');
-            win.document.write('<html><head><title>Lien Waiver</title><style>body{font-family:"Times New Roman",serif;padding:40px;font-size:13px;line-height:1.8;} .preview-title{font-size:16px;font-weight:bold;text-align:center;margin-bottom:20px;text-transform:uppercase;letter-spacing:1px;} .preview-field{font-weight:bold;} .sig-section{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:24px;} .sig-block-line{border-bottom:1px solid #000;height:40px;margin-bottom:4px;} .sig-block-label{font-size:11px;color:#666;}</style></head><body>' + content + '</body></html>');
+            win.document.write('<html><head><title>Lien Waiver</title><style>body{font-family:"Times New Roman",serif;padding:40px;font-size:13px;line-height:1.8;} .preview-title{font-size:16px;font-weight:bold;text-align:center;margin-bottom:20px;text-transform:uppercase;letter-spacing:1px;} .preview-field{font-weight:bold;} .sig-section{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:24px;} .sig-block-line{border-bottom:1px solid #000;height:40px;margin-bottom:4px;} .sig-block-label{font-size:11px;color:#666;}</style><script defer src="/_vercel/insights/script.js"></script>
+</head><body>' + content + '</body></html>');
             win.document.close();
             win.print();
         }
